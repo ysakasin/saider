@@ -1,0 +1,96 @@
+<html>
+<head lang="jp">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Saider</title>
+
+  <link href="/css/bootstrap-honoka.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/style.css" rel="stylesheet" type="text/css">
+  <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <header>
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">Saider</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-main">
+          <ul class="nav navbar-nav">
+            <li><a class="btn btn-default" onclick="rollDice({n:1, d:6});">1D6</a></li>
+            <li><a class="btn btn-default" onclick="rollDice({n:2, d:6});">2D6</a></li>
+            <li><a class="btn btn-default" onclick="rollDice({n:1, d:10});">1D10</a></li>
+          </ul>
+          <form class="navbar-form navbar-left" role="search" onsubmit="return(publishMessage());">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="0D0" id="msg-input">
+            </div>
+            <input type="submit" class="btn btn-default" value="roll" id="submit-roll">
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a class="btn btn-default" data-toggle="modal" data-target="#modal-join">Join</a></li>
+          </ul>
+          <p class="nav navbar-nab navbar-text navbar-right" id="room-id" style="color:black;">Not joined</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div id="msg-area"></div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-join" tabindex="-1" role="dialog" aria-labelledby="modal-join-label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-labelClose>
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="modal-join-label">入室</h4>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="return login();">
+            <div class="form-group">
+              <label for="room-number">ルーム番号</label>
+              <select class="form-control" id="room-number">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="user-name">名前</label>
+              <input type="text" class="form-control" id="user-name">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal">Close</button>
+          <button class="btn btn-primary" onclick="login();">Join</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/jquery-2.1.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/dice.js"></script>
+  <script src="/js/script.js"></script>
+</body>
+</html>

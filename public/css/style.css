@@ -1,0 +1,40 @@
+body {
+  padding-top: 90px;
+}
+
+.navbar input.form-control {
+  width: 100px !important;
+}
+
+.dice {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+
+.dice img {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  top: 0;
+}
+
+#room-id {
+  margin-right: 15px;
+}
+
+#amount {
+  width: 100px;
+  position: absolute;
+  border: solid 1px #000000;
+  border-radius: 5px;
+  padding: 10px 0;
+  text-align: center;
+  background-color: #ffffff;
+}
+
+#msg {
+  height: 100%;
+  overflow: scroll;
+}

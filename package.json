@@ -1,0 +1,24 @@
+{
+  "name": "Saider",
+  "version": "0.1.0",
+  "description": "A interactive dice bot",
+  "main": "saider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NKMR6194/saider.git"
+  },
+  "author": "SAKATA Sinji",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/NKMR6194/saider/issues"
+  },
+  "homepage": "https://github.com/NKMR6194/saider",
+  "devDependencies": {
+    "socket.io": "1.3.5",
+    "express": "4.10.2",
+    "forever": "0.14.2"
+  }
+}
