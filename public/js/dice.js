@@ -1,6 +1,11 @@
 var DiceRoll = (function() {
 
   var dice_src = [];
+  dice_src[4] = [];
+  for (var i = 1; i <= 4; i++) {
+    dice_src[4][i] = '/dice/4_dice/4_dice[' + i + '].png';
+  }
+
   dice_src[6] = [];
   for (var i = 1; i <= 6; i++) {
     dice_src[6][i] = '/dice/6_dice/6_dice[' + i + '].png';
@@ -18,7 +23,7 @@ var DiceRoll = (function() {
     dice_src[100][i] = '/dice/100_dice/100_dice[' + i + '].png';
   }
 
-  var drawing_dice = [6, 10, 100];
+  var drawing_dice = [4, 6, 10, 100];
 
   var que = [];
   var timer;
