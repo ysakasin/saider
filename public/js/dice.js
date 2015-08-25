@@ -22,13 +22,18 @@ var DiceRoll = (function() {
     dice_src[10][i] = '/dice/10_dice/10_dice[' + i + '].png';
   }
 
+  dice_src[20] = [];
+  for (var i = 1; i <= 20; i++) {
+    dice_src[20][i] = '/dice/20_dice/20_dice[' + i + '].png';
+  }
+
   dice_src[100] = [];
   dice_src[100][0] = '/dice/100_dice/100_dice[10].png';
   for (var i = 1; i <= 10; i++) {
     dice_src[100][i] = '/dice/100_dice/100_dice[' + i + '].png';
   }
 
-  var drawing_dice = [4, 6, 8, 10, 100];
+  var drawing_dice = [4, 6, 8, 10, 20, 100];
 
   var que = [];
   var timer;
