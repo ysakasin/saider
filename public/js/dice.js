@@ -7,11 +7,18 @@ var DiceRoll = (function() {
   }
 
   dice_src[10] = [];
+  dice_src[10][0] = '/dice/100_dice/100_dice[10].png';
   for (var i = 1; i <= 10; i++) {
     dice_src[10][i] = '/dice/10_dice/10_dice[' + i + '].png';
   }
 
-  var drawing_dice = [6, 10];
+  dice_src[100] = [];
+  dice_src[100][0] = '/dice/100_dice/100_dice[10].png';
+  for (var i = 1; i <= 10; i++) {
+    dice_src[100][i] = '/dice/100_dice/100_dice[' + i + '].png';
+  }
+
+  var drawing_dice = [6, 10, 100];
 
   var que = [];
   var timer;
@@ -65,7 +72,13 @@ var DiceRoll = (function() {
       for (var i = 0; i < instans.dice.length; i++) {
         var obj = instans.dice[i];
 
-        obj.img.src = dice_src[instans.d][instans.count % instans.d + 1];
+        if (instans.d == 100) {
+          obj.img.src  = dice_src[100][instans.count % 10 + 1];
+          obj.img2.src = dice_src[10][instans.count % 10 + 1];
+        }
+        else {
+          obj.img.src = dice_src[instans.d][instans.count % instans.d + 1];
+        }
 
         obj.vy = obj.vy - 9.8;
         obj.y -= obj.vy;
@@ -85,7 +98,13 @@ var DiceRoll = (function() {
 
         if (obj.base_of_dounding < obj.epsilon_y || state == 'stop') {
           state = 'stop';
-          obj.img.src = dice_src[instans.d][obj.number];
+          if (instans.d == 100) {
+            obj.img.src  = dice_src[100][Math.floor(obj.number / 10)];
+            obj.img2.src = dice_src[10][obj.number % 10];
+          }
+          else{
+            obj.img.src = dice_src[instans.d][obj.number];
+          }
           obj.onclick = erase;
           continue;
         }
@@ -132,7 +151,7 @@ var DiceRoll = (function() {
     obj.number = number;
     obj.className = "dice";
 
-    obj.x = window_width - 100 - 100 * (id % 5);
+    obj.x = window_width - 100 - 150 * (id % 5);
     obj.y = window_height - 100 * Math.floor(id / 5 + 1);
 
     obj.epsilon_y = 110 * 1.8;
@@ -148,8 +167,13 @@ var DiceRoll = (function() {
 
     obj.img = document.createElement("img");
     obj.img.src = dice_src[d][1];
-
     obj.appendChild(obj.img);
+
+    if (d == 100) {
+      obj.img2 = document.createElement("img");
+      obj.img2.src = dice_src[10][1];
+      obj.appendChild(obj.img2);
+    }
     return obj;
   };
 
