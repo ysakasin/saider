@@ -17,7 +17,7 @@ var DiceRoll = (function() {
   }
 
   dice_src[10] = [];
-  dice_src[10][0] = '/dice/100_dice/100_dice[10].png';
+  dice_src[10][0] = '/dice/10_dice/10_dice[10].png';
   for (var i = 1; i <= 10; i++) {
     dice_src[10][i] = '/dice/10_dice/10_dice[' + i + '].png';
   }
