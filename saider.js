@@ -7,6 +7,10 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/licenses', function(req, res) {
+  res.sendFile(__dirname + '/licenses.html');
+});
+
 app.use(express.static('public'));
 
 var user_hash = {};
