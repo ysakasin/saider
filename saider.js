@@ -33,6 +33,10 @@ var rollDice = function(n, d) {
   return result;
 };
 
+var isDiceRequest = function(req) {
+  return /^\d+[dD]\d+(([+-]\d+[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/.test(req);
+};
+
 io.sockets.on('connection', function(socket) {
 
   socket.on('connected', function(user) {
@@ -48,13 +52,33 @@ io.sockets.on('connection', function(socket) {
     io.sockets.to(socket.room).emit('publish', {value:data.value});
   });
 
-  socket.on('roll', function(dice) {
-    var res = rollDice(dice.n, dice.d);
-    res['name'] = user_hash[socket.id];
-    res['comp'] = dice.comp;
-    if (dice.comp) {
-      res['success'] = eval(res['total'] + dice.comp);
+  socket.on('roll', function(request) {
+    if (!isDiceRequest(request)) {
+      console.log('is no request');
+      return;
     }
+    var comp = (request.match(/[<>]=?\d+/) || [])[0];
+    var formula = request.replace(/[<>]=?\d+/, '');
+
+    var res = {};
+    var rolled = [];
+
+    var dices = formula.match(/\d+[dD]\d+/g);
+    dices.forEach(function(dice){
+      var data = dice.split(/d|D/);
+      var result = rollDice(parseInt(data[0]), parseInt(data[1]));
+      formula = formula.replace(dice, result.total);
+      rolled.push(result);
+    });
+
+    res['name'] = user_hash[socket.id];
+    res['request'] = request;
+    res['dices'] = rolled;
+    res['total'] = eval(formula);
+    if (comp != null) {
+      res['result'] = eval(res.total + comp) ? '成功' : '失敗';
+    }
+
     io.sockets.to(socket.room).emit('roll', res);
   });
 

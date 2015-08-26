@@ -42,11 +42,10 @@ var DiceRoll = (function() {
   var window_width, window_height;
 
   var DiceRoll = function(option) {
-    this.d       = option.d;
+    this.request = option.request;
     this.total   = option.total;
-    this.numbers = option.numbers;
-    this.comp    = option.comp;
-    this.success = option.success;
+    this.dices   = option.dices;
+    this.result  = option.result;
     this.name    = option.name;
     this.dice    = [];
     this.count   = 0;
@@ -64,7 +63,11 @@ var DiceRoll = (function() {
   };
 
   DiceRoll.prototype.begin = function() {
-    if (drawing_dice.indexOf(this.d) == -1) {
+    var is_drawable = true;
+    for (var i = 0; i < this.dices.length; i++) {
+      is_drawable &= drawing_dice.indexOf(this.dices[i].d) != -1;
+    }
+    if (!is_drawable) {
       this.showResultToLog();
       return;
     }
@@ -72,11 +75,16 @@ var DiceRoll = (function() {
     window_width  = $(window).width();
     window_height = $(window).height();
 
-    var num = this.numbers.length;
-    for (var i = 0; i < num; i++) {
-      var obj = genDiceObj(i, this.numbers[i], this.d);
-      document.body.appendChild(obj);
-      this.dice.push(obj);
+    var p = 0;
+    for (var j = 0; j < this.dices.length; j++) {
+      var data = this.dices[j];
+      var num = data.numbers.length;
+      for (var i = 0; i < num; i++) {
+        var obj = genDiceObj(p, data.numbers[i], data.d);
+        p++;
+        document.body.appendChild(obj);
+        this.dice.push(obj);
+      }
     }
 
     timer = setInterval(this.updateDice, 50, this);
@@ -89,12 +97,12 @@ var DiceRoll = (function() {
       for (var i = 0; i < instans.dice.length; i++) {
         var obj = instans.dice[i];
 
-        if (instans.d == 100) {
+        if (obj.d == 100) {
           obj.img.src  = dice_src[100][instans.count % 10 + 1];
           obj.img2.src = dice_src[10][instans.count % 10 + 1];
         }
         else {
-          obj.img.src = dice_src[instans.d][instans.count % instans.d + 1];
+          obj.img.src = dice_src[obj.d][instans.count % obj.d + 1];
         }
 
         obj.vy = obj.vy - 9.8;
@@ -115,12 +123,12 @@ var DiceRoll = (function() {
 
         if (obj.base_of_dounding < obj.epsilon_y || state == 'stop') {
           state = 'stop';
-          if (instans.d == 100) {
+          if (obj.d == 100) {
             obj.img.src  = dice_src[100][Math.floor(obj.number / 10)];
             obj.img2.src = dice_src[10][obj.number % 10];
           }
           else{
-            obj.img.src = dice_src[instans.d][obj.number];
+            obj.img.src = dice_src[obj.d][obj.number];
           }
           obj.onclick = erase;
           continue;
@@ -141,18 +149,19 @@ var DiceRoll = (function() {
         }, 500);
       }
       instans.showResultToLog();
-      showAmount(instans.total, instans.success, (instans.dice[0].y - 50) + 'px', instans.dice[0].style.left);
+      showAmount(instans.total, instans.result, (instans.dice[0].y - 50) + 'px', instans.dice[0].style.left);
     }
   };
 
   DiceRoll.prototype.showResultToLog = function() {
-    var roll   = this.numbers.length + 'D' + this.d;
-    var amount = this.total + ' ー> [' + this.numbers + ']';
-    if (this.success != null) {
-      roll   += this.comp;
-      amount += ' ー> ' + (this.success ? '成功' : '失敗');
+    var amount = this.total + ' ー>';
+    this.dices.forEach(function(dice) {
+      amount += ' D' + dice.d + '[' + dice.numbers + ']';
+    });
+    if (this.result) {
+      amount += 'ー> ' + this.result;
     }
-    addMessage(this.name + ' ( ' + roll + ' ) ー> ' + amount);
+    addMessage(this.name + ' ( ' + this.request + ' ) ー> ' + amount);
   };
 
   var erase = function() {
@@ -170,6 +179,7 @@ var DiceRoll = (function() {
   var genDiceObj = function(id, number, d) {
     var obj = document.createElement("div");
     obj.number = number;
+    obj.d = d;
     obj.className = "dice";
 
     obj.x = window_width - 100 - 150 * (id % 5);
@@ -187,7 +197,7 @@ var DiceRoll = (function() {
     obj.base_of_dounding = obj.epsilon_y + (window_height - obj.epsilon_y) * 0.2;
 
     obj.img = document.createElement("img");
-    obj.img.src = dice_src[d][1];
+    obj.img.src = dice_src[obj.d][1];
     obj.appendChild(obj.img);
 
     if (d == 100) {
@@ -198,15 +208,10 @@ var DiceRoll = (function() {
     return obj;
   };
 
-  var showAmount = function (number, success, top, left) {
+  var showAmount = function (number, result, top, left) {
     var obj = document.createElement("div");
     obj.id = 'amount'
-    if (success == null) {
-      obj.textContent = number;
-    }
-    else {
-      obj.textContent = success ? '成功' : '失敗';
-    }
+    obj.textContent = result || number;
     obj.style.top = top;
     obj.style.left = left;
     document.body.appendChild(obj);

@@ -13,13 +13,7 @@ function publishMessage() {
   var msg = textInput.value;
 
   if (isOrderDiceRoll(msg)) {
-    var data = msg.split(/d|D/);
-    var comp = data[1].match(/(<=|<|>=|>)\d+$/);
-    if (comp) {
-      comp = comp[0];
-    }
-    var dice = {n: parseInt(data[0]), d: parseInt(data[1]), comp: comp};
-    rollDice(dice);
+    rollDice(msg.replace(/d/g, 'D'));
   }
   else {
     socketio.emit("publish", {name: user_name, value: msg});
@@ -45,7 +39,7 @@ function addNumber(data) {
 }
 
 function isOrderDiceRoll(msg) {
-  return /^\d+(d|D)\d+((<=|<|>|>=)\d+)*$/.test(msg);
+  return /^\d+[dD]\d+(([+-]\d+[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/.test(msg);
 }
 
 function login() {
