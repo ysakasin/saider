@@ -45,6 +45,8 @@ var DiceRoll = (function() {
     this.d       = option.d;
     this.total   = option.total;
     this.numbers = option.numbers;
+    this.comp    = option.comp;
+    this.success = option.success;
     this.name    = option.name;
     this.dice    = [];
     this.count   = 0;
@@ -139,13 +141,17 @@ var DiceRoll = (function() {
         }, 500);
       }
       instans.showResultToLog();
-      showAmount(instans.total, (instans.dice[0].y - 50) + 'px', instans.dice[0].style.left);
+      showAmount(instans.total, instans.success, (instans.dice[0].y - 50) + 'px', instans.dice[0].style.left);
     }
   };
 
   DiceRoll.prototype.showResultToLog = function() {
     var roll   = this.numbers.length + 'D' + this.d;
     var amount = this.total + ' ー> [' + this.numbers + ']';
+    if (this.success != null) {
+      roll   += this.comp;
+      amount += ' ー> ' + (this.success ? '成功' : '失敗');
+    }
     addMessage(this.name + ' ( ' + roll + ' ) ー> ' + amount);
   };
 
@@ -192,10 +198,15 @@ var DiceRoll = (function() {
     return obj;
   };
 
-  var showAmount = function (number, top, left) {
+  var showAmount = function (number, success, top, left) {
     var obj = document.createElement("div");
     obj.id = 'amount'
-    obj.textContent = '' + number;
+    if (success == null) {
+      obj.textContent = number;
+    }
+    else {
+      obj.textContent = success ? '成功' : '失敗';
+    }
     obj.style.top = top;
     obj.style.left = left;
     document.body.appendChild(obj);

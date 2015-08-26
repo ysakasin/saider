@@ -14,7 +14,11 @@ function publishMessage() {
 
   if (isOrderDiceRoll(msg)) {
     var data = msg.split(/d|D/);
-    var dice = {n: parseInt(data[0]), d: parseInt(data[1])};
+    var comp = data[1].match(/(<=|<|>=|>)\d+$/);
+    if (comp) {
+      comp = comp[0];
+    }
+    var dice = {n: parseInt(data[0]), d: parseInt(data[1]), comp: comp};
     rollDice(dice);
   }
   else {
@@ -41,7 +45,7 @@ function addNumber(data) {
 }
 
 function isOrderDiceRoll(msg) {
-  return /^\d+(d|D)\d+$/.test(msg);
+  return /^\d+(d|D)\d+((<=|<|>|>=)\d+)*$/.test(msg);
 }
 
 function login() {

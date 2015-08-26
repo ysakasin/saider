@@ -51,6 +51,10 @@ io.sockets.on('connection', function(socket) {
   socket.on('roll', function(dice) {
     var res = rollDice(dice.n, dice.d);
     res['name'] = user_hash[socket.id];
+    res['comp'] = dice.comp;
+    if (dice.comp) {
+      res['success'] = eval(res['total'] + dice.comp);
+    }
     io.sockets.to(socket.room).emit('roll', res);
   });
 
