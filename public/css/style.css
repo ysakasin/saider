@@ -33,7 +33,7 @@ body {
   background-color: #ffffff;
 }
 
-#msg {
+#msg-area {
   height: 100%;
   overflow: scroll;
 }
