@@ -3,9 +3,21 @@ $('#modal-join').modal('show');
 var socketio;
 var user_name;
 var msg_area = document.getElementById('msg-area');
+var room_number;
 
-function start(name) {
+socketio = io.connect(document.URL);
+
+socketio.on("connected",  function(name) {});
+socketio.on("publish",    function(data) { addMessage(data.value); });
+socketio.on("roll",       function(data) { addNumber(data); });
+socketio.on("disconnect", function() {});
+
+function joinRoom(name) {
   socketio.emit("connected", name);
+}
+
+function leaveRoom() {
+  socketio.emit("leave");
 }
 
 function publishMessage() {
@@ -43,19 +55,16 @@ function isOrderDiceRoll(msg) {
 }
 
 function login() {
-  socketio= io.connect(document.URL);
+  if (room_number != null) {
+    leaveRoom();
+  }
 
-  socketio.on("connected",  function(name) {});
-  socketio.on("publish",    function(data) { addMessage(data.value); });
-  socketio.on("roll",       function(data) { addNumber(data); });
-  socketio.on("disconnect", function() {});
-
-  user_name       = document.getElementById('user-name').value;
-  var room_number = document.getElementById('room-number').value;
+  user_name   = document.getElementById('user-name').value;
+  room_number = document.getElementById('room-number').value;
 
   document.getElementById('room-id').innerText = 'Room ' + room_number;
   addMessage("貴方は" + user_name + "として入室しました");
-  start({name: user_name, room: room_number});
+  joinRoom({name: user_name, room: room_number});
 
   $('#modal-join').modal('hide');
 

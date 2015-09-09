@@ -82,6 +82,16 @@ io.sockets.on('connection', function(socket) {
     io.sockets.to(socket.room).emit('roll', res);
   });
 
+  socket.on('leave', function() {
+    var room = socket.room;
+    socket.leave(socket.room);
+    if (user_hash[socket.id]) {
+      var msg = user_hash[socket.id] + 'が退出しました';
+      delete user_hash[socket.id];
+      io.sockets.to(socket.room).emit('publish', {value: msg});
+    }
+  });
+
   socket.on('disconnect', function() {
     if (user_hash[socket.id]) {
       var msg = user_hash[socket.id] + 'が退出しました';
