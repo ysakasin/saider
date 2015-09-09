@@ -1,6 +1,8 @@
 # Saider
 A interactive dice bot
 
+[Demo](http://saider.sinjis-view.mydns.jp)
+
 ## ローカルで動かす方法
 
 Node.jsをインストールする
