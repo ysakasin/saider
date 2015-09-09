@@ -4,33 +4,45 @@ var DiceRoll = (function() {
   dice_src[4] = [];
   for (var i = 1; i <= 4; i++) {
     dice_src[4][i] = '/dice/4_dice/4_dice[' + i + '].png';
+    var tmp = new Image();
+    tmp.src = dice_src[4][i];
   }
 
   dice_src[6] = [];
   for (var i = 1; i <= 6; i++) {
     dice_src[6][i] = '/dice/6_dice/6_dice[' + i + '].png';
+    var tmp = new Image();
+    tmp.src = dice_src[6][i];
   }
 
   dice_src[8] = [];
   for (var i = 1; i <= 8; i++) {
     dice_src[8][i] = '/dice/8_dice/8_dice[' + i + '].png';
+    var tmp = new Image();
+    tmp.src = dice_src[8][i];
   }
 
   dice_src[10] = [];
   dice_src[10][0] = '/dice/10_dice/10_dice[10].png';
   for (var i = 1; i <= 10; i++) {
     dice_src[10][i] = '/dice/10_dice/10_dice[' + i + '].png';
+    var tmp = new Image();
+    tmp.src = dice_src[10][i];
   }
 
   dice_src[20] = [];
   for (var i = 1; i <= 20; i++) {
     dice_src[20][i] = '/dice/20_dice/20_dice[' + i + '].png';
+    var tmp = new Image();
+    tmp.src = dice_src[20][i];
   }
 
   dice_src[100] = [];
   dice_src[100][0] = '/dice/100_dice/100_dice[10].png';
   for (var i = 1; i <= 10; i++) {
     dice_src[100][i] = '/dice/100_dice/100_dice[' + i + '].png';
+    var tmp = new Image();
+    tmp.src = dice_src[100][i];
   }
 
   var drawing_dice = [4, 6, 8, 10, 20, 100];
