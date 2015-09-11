@@ -47,7 +47,7 @@ function publishMessage() {
 
 function addMessage(msg) {
   var domMsg = document.createElement('div');
-  domMsg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
+  domMsg.innerText = new Date().toLocaleTimeString() + ' ' + msg;
   msg_area.appendChild(domMsg);
 }
 
