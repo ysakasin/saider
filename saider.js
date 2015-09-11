@@ -2,6 +2,9 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var fs = require('fs');
+
+var settings = JSON.parse(fs.readFileSync('./settings.json'));
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -9,6 +12,12 @@ app.get('/', function(req, res) {
 
 app.get('/licenses', function(req, res) {
   res.sendFile(__dirname + '/licenses.html');
+});
+
+app.get('/room.json', function(request, response) {
+  response.contentType('application/json');
+  var amountJSON = JSON.stringify({amount: settings['amount_of_room']});
+  response.send(amountJSON);
 });
 
 app.use(express.static('public'));
@@ -40,6 +49,9 @@ var isDiceRequest = function(req) {
 io.sockets.on('connection', function(socket) {
 
   socket.on('connected', function(user) {
+    if (user.room < 1 || user.room > settings['amount_of_room'] || user.name === '' || user.name == null)  {
+      socket.disconnect();
+    }
     var msg = user.name + 'が入室しました';
     user_hash[socket.id] = user.name;
     socket.name = user.name;

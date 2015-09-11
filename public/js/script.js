@@ -1,3 +1,12 @@
+$.getJSON('./room.json', function(data) {
+  var select = $('#room-number');
+  var amount = data['amount'];
+  for (var i = 1; i <= amount; i++) {
+    var option = $('<option/>').val(i).text(i);
+    select.append(option);
+  }
+});
+
 $('#modal-join').modal('show');
 
 var socketio;
@@ -10,7 +19,7 @@ socketio = io.connect(document.URL);
 socketio.on("connected",  function(name) {});
 socketio.on("publish",    function(data) { addMessage(data.value); });
 socketio.on("roll",       function(data) { addNumber(data); });
-socketio.on("disconnect", function() {});
+socketio.on("disconnect", function() { addMessage('通信が切断されました') });
 
 function joinRoom(name) {
   socketio.emit("connected", name);
@@ -61,6 +70,10 @@ function login() {
 
   user_name   = document.getElementById('user-name').value;
   room_number = document.getElementById('room-number').value;
+
+  if (user_name == '') {
+    return false;
+  }
 
   document.getElementById('room-id').innerText = 'Room ' + room_number;
   addMessage("貴方は" + user_name + "として入室しました");
