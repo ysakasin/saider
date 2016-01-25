@@ -3,6 +3,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var fs = require('fs');
+var dicebot = require ('./lib/dicebot/dicebot.js');
 
 var settings = JSON.parse(fs.readFileSync('./settings.json'));
 
@@ -24,28 +25,6 @@ app.use(express.static('public'));
 
 var user_hash = {};
 
-var rollDice = function(n, d) {
-  var numbers = [];
-  var total = 0;
-  for (var i = 0; i < n; i++) {
-    var dice = Math.ceil(Math.random() * d);
-    total += dice;
-    numbers.push(dice);
-  }
-
-  var result = {
-    n: n,
-    d: d,
-    numbers: numbers,
-    total: total
-  };
-  return result;
-};
-
-var isDiceRequest = function(req) {
-  return /^\d+[dD]\d+(([+-]\d+[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/.test(req);
-};
-
 io.sockets.on('connection', function(socket) {
 
   socket.on('connected', function(user) {
@@ -65,31 +44,15 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('roll', function(request) {
-    if (!isDiceRequest(request)) {
+    if (!dicebot.isDiceRequest(request)) {
       console.log('is no request');
       return;
     }
-    var comp = (request.match(/[<>]=?\d+/) || [])[0];
-    var formula = request.replace(/[<>]=?\d+/, '');
 
-    var res = {};
-    var rolled = [];
-
-    var dices = formula.match(/\d+[dD]\d+/g);
-    dices.forEach(function(dice){
-      var data = dice.split(/d|D/);
-      var result = rollDice(parseInt(data[0]), parseInt(data[1]));
-      formula = formula.replace(dice, result.total);
-      rolled.push(result);
-    });
+    var res = dicebot.roll(request)
 
     res['name'] = user_hash[socket.id];
     res['request'] = request;
-    res['dices'] = rolled;
-    res['total'] = eval(formula);
-    if (comp != null) {
-      res['result'] = eval(res.total + comp) ? '成功' : '失敗';
-    }
 
     io.sockets.to(socket.room).emit('roll', res);
   });
