@@ -50,7 +50,7 @@ body {
   float: left;
 }
 
-.memo-area {
+#memo-area {
   background-color: white;
   width: 180px;
   height: 100%;

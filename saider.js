@@ -70,6 +70,10 @@ io.sockets.on('connection', function(socket) {
     io.sockets.to(socket.room).emit('roll', res);
   });
 
+  socket.on('memo', function(request) {
+    io.sockets.to(socket.room).emit('memo', request);
+  });
+
   socket.on('leave', function() {
     var room = socket.room;
     socket.leave(socket.room);

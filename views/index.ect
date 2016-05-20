@@ -15,7 +15,7 @@
   <div class="contents">
     <div id="result-area" class="result-area">
     </div>
-    <div class="memo-area">
+    <div id="memo-area">
     </div>
     <div class="map-area">
       <img class="map-img" src="./tsukuba.jpg">
@@ -29,7 +29,7 @@
       </form>
     </div>
     <div class="memo-tool">
-      <button class="add-memo btn btn-default" onclick="$('#modal-join').modal('show');">+</button>
+      <button class="add-memo btn btn-default" onclick="showMemoModal();">+</button>
     </div>
   </div>
 
@@ -40,21 +40,21 @@
           <h4 class="modal-title" id="modal-join-label">共有メモ</h4>
         </div>
         <div class="modal-body">
-          <form onsubmit="return login();">
+          <form onsubmit="return sendMemo();">
             <div class="form-group">
-              <label for="room-number">タイトル</label>
-              <input type="text" class="form-control" id="user-name">
+              <label for="memo-title">タイトル</label>
+              <input id="memo-title" class="form-control" type="text">
             </div>
             <div class="form-group">
-              <label for="user-name">本文</label>
-              <textarea class="form-control" rows="8"></textarea>
+              <label for="memo-body">本文</label>
+              <textarea id="memo-body" class="form-control" rows="8"></textarea>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-danger pull-left" data-dismiss="modal">削除</button>
+          <!-- <button class="btn btn-danger pull-left" data-dismiss="modal">削除</button> -->
           <button class="btn btn-default" data-dismiss="modal">キャンセル</button>
-          <button class="btn btn-primary">変更</button>
+          <button class="btn btn-primary" onclick="sendMemo();">変更</button>
         </div>
       </div>
     </div>

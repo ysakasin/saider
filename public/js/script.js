@@ -12,13 +12,18 @@
 var socketio;
 var user_name;
 var msg_area = document.getElementById('result-area');
+var memo_area = document.getElementById('memo-area');
 var room_number;
+
+var input_memo_title = document.getElementById('memo-title');
+var input_memo_body = document.getElementById('memo-body');
 
 socketio = io.connect(document.URL);
 
 socketio.on("connected",  function(name) {});
 // socketio.on("publish",    function(data) { addMessage(data.value); });
 socketio.on("roll",       function(data) { addNumber(data); });
+socketio.on("memo",       function(data) { addMemo(data); });
 socketio.on("disconnect", function() { addMessage('通信が切断されました') });
 
 function joinRoom(name) {
@@ -71,6 +76,38 @@ function isOrderDiceRoll(msg) {
   return /^\d+[dD]\d+(([+-]\d+[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/.test(msg);
 }
 
+function addMemo(memo) {
+  var div = document.createElement('div');
+
+  div.className = 'memo';
+  div.setAttribute('data-container', 'body');
+  div.setAttribute('data-toggle', 'popover');
+  div.setAttribute('data-trigger', 'hover');
+  div.setAttribute('data-content', memo.body);
+  div.innerText = memo.title;
+
+  // div.onclick = function() {
+  //   $('.popover').popover('hide');
+  //   $('#modal-join').modal('show');
+  // };
+
+  $(div).popover();
+
+  memo_area.appendChild(div);
+}
+
+function sendMemo() {
+  socketio.emit("memo", {title: input_memo_title.value, body: input_memo_body.value});
+
+  $('#modal-join').modal('hide');
+}
+
+function showMemoModal() {
+  input_memo_title.value = "";
+  input_memo_body.value = "";
+  $('#modal-join').modal('show');
+}
+
 function login() {
   if (room_number != null) {
     leaveRoom();
@@ -95,5 +132,6 @@ function login() {
 $(function () {
   $('[data-toggle="popover"]').popover();
 })
+
 
 joinRoom({name: 'sakasin', room: '1'});
