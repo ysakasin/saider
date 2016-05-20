@@ -20,5 +20,8 @@
     "socket.io": "1.3.5",
     "express": "4.10.2",
     "forever": "0.14.2"
+  },
+  "dependencies": {
+    "ect": "^0.5.9"
   }
 }

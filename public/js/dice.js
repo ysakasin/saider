@@ -166,14 +166,7 @@ var DiceRoll = (function() {
   };
 
   DiceRoll.prototype.showResultToLog = function() {
-    var amount = this.total + ' ー>';
-    this.dices.forEach(function(dice) {
-      amount += ' D' + dice.d + '[' + dice.numbers + ']';
-    });
-    if (this.result) {
-      amount += 'ー> ' + this.result;
-    }
-    addMessage(this.name + ' ( ' + this.request + ' ) ー> ' + amount);
+    addMessage({name: this.name, request: this.request, total: this.total});
   };
 
   var erase = function() {

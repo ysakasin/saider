@@ -1,0 +1,69 @@
+<html>
+<head lang="jp">
+  <meta charset="UTF-8">
+
+  <title>Saider</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="header">
+    <span class="room">
+      Saider
+    </span>
+  </div>
+  <div class="contents">
+    <div id="result-area" class="result-area">
+    </div>
+    <div class="memo-area">
+    </div>
+    <div class="map-area">
+      <img class="map-img" src="./tsukuba.jpg">
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="dice-tool">
+      <form onsubmit="return(publishMessage());">
+        <input id="msg-input" class="dice-input" placeholder="Dice roll">
+      </form>
+    </div>
+    <div class="memo-tool">
+      <button class="add-memo btn btn-default" onclick="$('#modal-join').modal('show');">+</button>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-join" tabindex="-1" role="dialog" aria-labelledby="modal-join-label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-join-label">共有メモ</h4>
+        </div>
+        <div class="modal-body">
+          <form onsubmit="return login();">
+            <div class="form-group">
+              <label for="room-number">タイトル</label>
+              <input type="text" class="form-control" id="user-name">
+            </div>
+            <div class="form-group">
+              <label for="user-name">本文</label>
+              <textarea class="form-control" rows="8"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger pull-left" data-dismiss="modal">削除</button>
+          <button class="btn btn-default" data-dismiss="modal">キャンセル</button>
+          <button class="btn btn-primary">変更</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/jquery-2.1.1.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/dice.js"></script>
+  <script src="/js/script.js"></script>
+</body>
+</html>

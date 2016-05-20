@@ -4,11 +4,23 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var fs = require('fs');
 var dicebot = require ('./lib/dicebot/dicebot.js');
+var util = require('./lib/dicebot/module/util.js');
+var botPaths = util.getDicebotPaths();
+var bots = {};
+for (var botPath in botPaths) {
+  bots[botPath] = require(botPath)
+}
+
+
+var ECT = require('ect');
+var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' });
+app.engine('ect', ectRenderer.render);
+app.set('view engine', 'ect');
 
 var settings = JSON.parse(fs.readFileSync('./settings.json'));
 
 app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/index.html');
+  res.render('index', { bot: botPaths });
 });
 
 app.get('/licenses', function(req, res) {
@@ -44,6 +56,7 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('roll', function(request) {
+    console.log(request);
     if (!dicebot.isDiceRequest(request)) {
       console.log('is no request');
       return;

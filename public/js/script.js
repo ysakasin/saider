@@ -1,23 +1,23 @@
-$.getJSON('./room.json', function(data) {
-  var select = $('#room-number');
-  var amount = data['amount'];
-  for (var i = 1; i <= amount; i++) {
-    var option = $('<option/>').val(i).text(i);
-    select.append(option);
-  }
-});
+// $.getJSON('./room.json', function(data) {
+//   var select = $('#room-number');
+//   var amount = data['amount'];
+//   for (var i = 1; i <= amount; i++) {
+//     var option = $('<option/>').val(i).text(i);
+//     select.append(option);
+//   }
+// });
 
-$('#modal-join').modal('show');
+// $('#modal-join').modal('show');
 
 var socketio;
 var user_name;
-var msg_area = document.getElementById('msg-area');
+var msg_area = document.getElementById('result-area');
 var room_number;
 
 socketio = io.connect(document.URL);
 
 socketio.on("connected",  function(name) {});
-socketio.on("publish",    function(data) { addMessage(data.value); });
+// socketio.on("publish",    function(data) { addMessage(data.value); });
 socketio.on("roll",       function(data) { addNumber(data); });
 socketio.on("disconnect", function() { addMessage('通信が切断されました') });
 
@@ -47,7 +47,15 @@ function publishMessage() {
 
 function addMessage(msg) {
   var domMsg = document.createElement('div');
-  domMsg.innerText = new Date().toLocaleTimeString() + ' ' + msg;
+  var label = document.createElement('label');
+  var result = document.createElement('p');
+
+  label.innerText = msg.name;
+  result.innerText = msg.request + '→' + msg.total;
+
+  domMsg.className = "result";
+  domMsg.appendChild(label);
+  domMsg.appendChild(result);
   msg_area.appendChild(domMsg);
 }
 
@@ -83,3 +91,9 @@ function login() {
 
   return false; // form submitのキャンセル用
 }
+
+$(function () {
+  $('[data-toggle="popover"]').popover();
+})
+
+joinRoom({name: 'sakasin', room: '1'});
