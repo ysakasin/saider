@@ -182,3 +182,47 @@ body {
   text-align: center;
   background-color: #ffffff;
 }
+
+.btn-header {
+  margin: 5px;
+  height: 40px;
+  border-radius: 0;
+  border: none;
+  color: #000000;
+}
+
+.btn-header:hover, .btn-header:focus, .btn-header:hover:focus{
+  border: solid 1px #ffffff;
+  color: #ffffff;
+  background-color: #00bcd4;
+  outline: none;
+}
+
+
+
+/* room list */
+
+.room-list {
+  overflow-y: scroll;
+  height: 100%;
+  padding-top: 20px;
+}
+
+.name-form label {
+  line-height: 50px;
+}
+
+.name-form input {
+  width: 250px;
+  height: 40px;
+  margin: 5px 3px;
+  margin: 5px 5px;
+  border: solid 2px #e0e0e0;
+  line-height: 40px;
+  font-size: 20px;
+  outline: none;
+}
+
+.dice-input:hover, .dice-input:focus {
+  border-color: #00bcd4;
+}

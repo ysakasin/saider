@@ -7,6 +7,13 @@ var dicebot = require ('./lib/dicebot/dicebot.js');
 var util = require('./lib/dicebot/module/util.js');
 var botPaths = util.getDicebotPaths();
 var bots = {};
+
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({extended: true}));
+
+
+var counter = 0;
 for (var botPath in botPaths) {
   bots[botPath] = require(botPath)
 }
@@ -18,9 +25,24 @@ app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
 
 var settings = JSON.parse(fs.readFileSync('./settings.json'));
+var room_names = {'asdsad' : 'テストルーム'};
 
 app.get('/', function(req, res) {
-  res.render('index', { bot: botPaths });
+  res.render('list', { rooms: room_names });
+});
+
+app.post('/create-room', function (req, res) {
+  console.log(req.param('room-name'))
+  var room_id = counter.toString();
+  counter++;
+
+  room_names[room_id] = req.param('room-name');
+  res.redirect('./' + room_id);
+});
+
+app.get('/:room_id', function(req, res) {
+  var room_id = req.params.room_id;
+  res.render('index');
 });
 
 app.get('/licenses', function(req, res) {
@@ -40,9 +62,10 @@ var user_hash = {};
 io.sockets.on('connection', function(socket) {
 
   socket.on('connected', function(user) {
-    if (user.room < 1 || user.room > settings['amount_of_room'] || user.name === '' || user.name == null)  {
-      socket.disconnect();
-    }
+    console.log('connected');
+    // if (user.room < 1 || user.room > settings['amount_of_room'] || user.name === '' || user.name == null)  {
+    //   socket.disconnect();
+    // }
     var msg = user.name + 'が入室しました';
     user_hash[socket.id] = user.name;
     socket.name = user.name;

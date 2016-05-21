@@ -18,7 +18,7 @@ var room_number;
 var input_memo_title = document.getElementById('memo-title');
 var input_memo_body = document.getElementById('memo-body');
 
-socketio = io.connect(document.URL);
+socketio = io.connect(window.location.host);
 
 socketio.on("connected",  function(name) {});
 // socketio.on("publish",    function(data) { addMessage(data.value); });
@@ -133,5 +133,5 @@ $(function () {
   $('[data-toggle="popover"]').popover();
 })
 
-
-joinRoom({name: 'sakasin', room: '1'});
+var room_id = window.location.pathname;
+joinRoom({name: 'sakasin', room: room_id});
