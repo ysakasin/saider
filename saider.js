@@ -97,6 +97,10 @@ io.sockets.on('connection', function(socket) {
     io.sockets.to(socket.room).emit('memo', request);
   });
 
+  socket.on('map', function(request) {
+    io.sockets.to(socket.room).emit('map', request);
+  });
+
   socket.on('leave', function() {
     var room = socket.room;
     socket.leave(socket.room);

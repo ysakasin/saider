@@ -17,6 +17,7 @@ var room_number;
 
 var input_memo_title = document.getElementById('memo-title');
 var input_memo_body = document.getElementById('memo-body');
+var input_map_url = document.getElementById('map-url');
 
 socketio = io.connect(window.location.host);
 
@@ -24,6 +25,7 @@ socketio.on("connected",  function(name) {});
 // socketio.on("publish",    function(data) { addMessage(data.value); });
 socketio.on("roll",       function(data) { addNumber(data); });
 socketio.on("memo",       function(data) { addMemo(data); });
+socketio.on("map",       function(data) { changeMap(data); });
 socketio.on("disconnect", function() { addMessage('通信が切断されました') });
 
 function joinRoom(name) {
@@ -96,6 +98,12 @@ function addMemo(memo) {
   memo_area.appendChild(div);
 }
 
+function changeMap(map) {
+  console.log("changeMap");
+  var img = document.getElementById('map-img');
+  img.src = map.url;
+}
+
 function sendMemo() {
   socketio.emit("memo", {title: input_memo_title.value, body: input_memo_body.value});
 
@@ -106,6 +114,19 @@ function showMemoModal() {
   input_memo_title.value = "";
   input_memo_body.value = "";
   $('#modal-join').modal('show');
+}
+
+function sendMapUrl() {
+  console.log("sendMapUrl");
+  socketio.emit("map", {url: input_map_url.value});
+  $('#modal-map').modal('hide');
+  return false;
+}
+
+function showMapModal() {
+  console.log("sendMapModal");
+  input_map_url.value = "";
+  $('#modal-map').modal('show');
 }
 
 function login() {

@@ -18,7 +18,7 @@
     <div id="memo-area">
     </div>
     <div class="map-area">
-      <img class="map-img" src="./image/tsukuba.jpg">
+      <img id="map-img" class="map-img" src="./image/tsukuba.jpg">
     </div>
   </div>
 
@@ -30,6 +30,9 @@
     </div>
     <div class="memo-tool">
       <button class="add-memo btn btn-default" onclick="showMemoModal();">+</button>
+    </div>
+    <div class="map-tool">
+      <button class="change-map pull-right btn btn-default" onclick="showMapModal();">マップを変更</button>
     </div>
   </div>
 
@@ -56,6 +59,28 @@
           <button class="btn btn-default" data-dismiss="modal">キャンセル</button>
           <button class="btn btn-primary" onclick="sendMemo();">変更</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-map" tabindex="-1" role="dialog" aria-labelledby="modal-map-label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-map-label">マップ変更</h4>
+        </div>
+        <form onsubmit="return (sendMapUrl());">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="map-url">マップ画像画像URL</label>
+              <input type="text" class="form-control" id="map-url" name="map-url">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default" data-dismiss="modal">キャンセル</button>
+            <button class="btn btn-primary" type="submit">変更</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

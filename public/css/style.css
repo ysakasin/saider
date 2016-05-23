@@ -101,6 +101,16 @@ body {
   color: #555459;
 }
 
+.change-map {
+  height: 40px;
+  margin: 5px;
+}
+
+.map-tool {
+  height: 50px;
+  margin-left: 360px;
+}
+
 .add-memo:hover, .add-memo:focus, .add-memo:active, .add-memo:active:focus {
   background-color: #00bcd4;
   border-color: #00bcd4;
