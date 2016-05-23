@@ -1,7 +1,7 @@
 var socketio = io.connect(window.location.host);
 
-function joinRoom(name) {
-  socketio.emit("connected", name);
+function joinRoom(user) {
+  socketio.emit("connected", user);
 }
 
 /* Dice */
