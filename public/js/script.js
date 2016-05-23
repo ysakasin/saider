@@ -37,7 +37,7 @@ function leaveRoom() {
 }
 
 function publishMessage() {
-  var textInput = document.getElementById('msg-input');
+  var textInput = document.getElementById('dice-input');
   var msg = textInput.value;
 
   if (isOrderDiceRoll(msg)) {
@@ -48,8 +48,6 @@ function publishMessage() {
   }
 
   textInput.value = '';
-
-  return false; // form submitのキャンセル用
 }
 
 function addMessage(msg) {
@@ -106,14 +104,13 @@ function changeMap(map) {
 
 function sendMemo() {
   socketio.emit("memo", {title: input_memo_title.value, body: input_memo_body.value});
-
-  $('#modal-join').modal('hide');
+  $('#modal-memo').modal('hide');
 }
 
 function showMemoModal() {
   input_memo_title.value = "";
   input_memo_body.value = "";
-  $('#modal-join').modal('show');
+  $('#modal-memo').modal('show');
 }
 
 function sendMapUrl() {
@@ -127,27 +124,6 @@ function showMapModal() {
   console.log("sendMapModal");
   input_map_url.value = "";
   $('#modal-map').modal('show');
-}
-
-function login() {
-  if (room_number != null) {
-    leaveRoom();
-  }
-
-  user_name   = document.getElementById('user-name').value;
-  room_number = document.getElementById('room-number').value;
-
-  if (user_name == '') {
-    return false;
-  }
-
-  document.getElementById('room-id').innerText = 'Room ' + room_number;
-  addMessage("貴方は" + user_name + "として入室しました");
-  joinRoom({name: user_name, room: room_number});
-
-  $('#modal-join').modal('hide');
-
-  return false; // form submitのキャンセル用
 }
 
 $(function () {

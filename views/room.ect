@@ -13,37 +13,37 @@
     </span>
   </div>
   <div class="contents">
-    <div id="result-area" class="result-area">
+    <div id="result-area">
     </div>
     <div id="memo-area">
     </div>
-    <div class="map-area">
-      <img id="map-img" class="map-img" src="./image/tsukuba.jpg">
+    <div id="map-area">
+      <img id="map-img" src="./image/tsukuba.jpg">
     </div>
   </div>
 
   <div class="toolbar">
-    <div class="dice-tool">
-      <form onsubmit="return(publishMessage());">
-        <input id="msg-input" class="dice-input" placeholder="Dice roll">
+    <div id="dice-tool">
+      <form onsubmit="publishMessage(); return false;">
+        <input id="dice-input" placeholder="Dice roll">
       </form>
     </div>
-    <div class="memo-tool">
-      <button class="add-memo btn btn-default" onclick="showMemoModal();">+</button>
+    <div id="memo-tool">
+      <button id="add-memo" class="btn btn-default" onclick="showMemoModal();">+</button>
     </div>
-    <div class="map-tool">
-      <button class="change-map pull-right btn btn-default" onclick="showMapModal();">マップを変更</button>
+    <div id="map-tool">
+      <button id="change-map" class="btn btn-default" onclick="showMapModal();">マップを変更</button>
     </div>
   </div>
 
-  <div class="modal fade" id="modal-join" tabindex="-1" role="dialog" aria-labelledby="modal-join-label">
+  <div class="modal fade" id="modal-memo" tabindex="-1" role="dialog" aria-labelledby="modal-memo-label">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-join-label">共有メモ</h4>
+          <h4 class="modal-title" id="modal-memo-label">共有メモ</h4>
         </div>
-        <div class="modal-body">
-          <form onsubmit="return sendMemo();">
+        <form onsubmit="sendMemo(); return false;">
+          <div class="modal-body">
             <div class="form-group">
               <label for="memo-title">タイトル</label>
               <input id="memo-title" class="form-control" type="text">
@@ -52,13 +52,13 @@
               <label for="memo-body">本文</label>
               <textarea id="memo-body" class="form-control" rows="8"></textarea>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <!-- <button class="btn btn-danger pull-left" data-dismiss="modal">削除</button> -->
-          <button class="btn btn-default" data-dismiss="modal">キャンセル</button>
-          <button class="btn btn-primary" onclick="sendMemo();">変更</button>
-        </div>
+          </div>
+          <div class="modal-footer">
+            <!-- <button class="btn btn-danger pull-left" data-dismiss="modal">削除</button> -->
+            <button class="btn btn-default" data-dismiss="modal">キャンセル</button>
+            <button class="btn btn-primary" type="submit">変更</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@
         <div class="modal-header">
           <h4 class="modal-title" id="modal-map-label">マップ変更</h4>
         </div>
-        <form onsubmit="return (sendMapUrl());">
+        <form onsubmit="sendMapUrl(); return false;">
           <div class="modal-body">
             <div class="form-group">
               <label for="map-url">マップ画像画像URL</label>

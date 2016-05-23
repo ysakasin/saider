@@ -16,19 +16,19 @@
     </button>
   </div>
   <div class="room-list">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div>
-          <div class="list-group">
-            <% for room_id of @rooms : %>
-              <a class="list-group-item" href="./<%- room_id %>"><%- @rooms[room_id] %></a>
-            <% end %>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div>
+            <div class="list-group">
+              <% for room_id of @rooms : %>
+                <a class="list-group-item" href="./<%- room_id %>"><%- @rooms[room_id] %></a>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
 
   <div class="modal fade" id="modal-join" tabindex="-1" role="dialog" aria-labelledby="modal-join-label">
