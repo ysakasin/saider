@@ -4,6 +4,15 @@ function joinRoom(user) {
   socketio.emit("connected", user);
 }
 
+function escapeHTML(str) {
+    str = str.replace(/&/g, '&amp;')
+             .replace(/</g, '&lt;')
+             .replace(/>/g, '&gt;')
+             .replace(/"/g, '&quot;')
+             .replace(/'/g, '&#39;');
+    return str;
+}
+
 /* Dice */
 
 function rollDice() {
@@ -47,11 +56,14 @@ function addMemo(memo) {
   var memo_area = document.getElementById('memo-area');
   var div = document.createElement('div');
 
+  var body = escapeHTML(memo.body).replace(/\n/g, '<br>');
+
   div.className = 'memo';
   div.setAttribute('data-container', 'body');
   div.setAttribute('data-toggle', 'popover');
   div.setAttribute('data-trigger', 'hover');
-  div.setAttribute('data-content', memo.body);
+  div.setAttribute('data-html', true);
+  div.setAttribute('data-content', body);
   div.innerText = memo.title;
 
   // div.onclick = function() {
