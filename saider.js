@@ -28,7 +28,7 @@ var settings = JSON.parse(fs.readFileSync('./settings.json'));
 var room_names = {'asdsad' : 'テストルーム'};
 
 app.get('/', function(req, res) {
-  res.render('list', { rooms: room_names });
+  res.render('index', { rooms: room_names });
 });
 
 app.post('/create-room', function (req, res) {
@@ -42,7 +42,7 @@ app.post('/create-room', function (req, res) {
 
 app.get('/:room_id', function(req, res) {
   var room_id = req.params.room_id;
-  res.render('index');
+  res.render('room');
 });
 
 app.get('/licenses', function(req, res) {

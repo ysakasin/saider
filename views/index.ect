@@ -11,84 +11,49 @@
     <span class="room">
       Saider
     </span>
+    <button class="btn btn-default btn-header pull-right" onclick="$('#modal-join').modal('show');">
+      ルームを作成
+    </button>
   </div>
-  <div class="contents">
-    <div id="result-area" class="result-area">
-    </div>
-    <div id="memo-area">
-    </div>
-    <div class="map-area">
-      <img id="map-img" class="map-img" src="./image/tsukuba.jpg">
+  <div class="room-list">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <div class="list-group">
+            <% for room_id of @rooms : %>
+              <a class="list-group-item" href="./<%- room_id %>"><%- @rooms[room_id] %></a>
+            <% end %>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="toolbar">
-    <div class="dice-tool">
-      <form onsubmit="return(publishMessage());">
-        <input id="msg-input" class="dice-input" placeholder="Dice roll">
-      </form>
-    </div>
-    <div class="memo-tool">
-      <button class="add-memo btn btn-default" onclick="showMemoModal();">+</button>
-    </div>
-    <div class="map-tool">
-      <button class="change-map pull-right btn btn-default" onclick="showMapModal();">マップを変更</button>
-    </div>
   </div>
 
   <div class="modal fade" id="modal-join" tabindex="-1" role="dialog" aria-labelledby="modal-join-label">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="modal-join-label">共有メモ</h4>
+          <h4 class="modal-title" id="modal-join-label">ルームを作成</h4>
         </div>
         <div class="modal-body">
-          <form onsubmit="return sendMemo();">
+          <form action="./create-room" method="post">
             <div class="form-group">
-              <label for="memo-title">タイトル</label>
-              <input id="memo-title" class="form-control" type="text">
-            </div>
-            <div class="form-group">
-              <label for="memo-body">本文</label>
-              <textarea id="memo-body" class="form-control" rows="8"></textarea>
+              <label for="room-name">ルーム名</label>
+              <input type="text" class="form-control" name="room-name">
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <!-- <button class="btn btn-danger pull-left" data-dismiss="modal">削除</button> -->
           <button class="btn btn-default" data-dismiss="modal">キャンセル</button>
-          <button class="btn btn-primary" onclick="sendMemo();">変更</button>
+          <button class="btn btn-primary" type="submit">作成</button>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="modal-map" tabindex="-1" role="dialog" aria-labelledby="modal-map-label">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="modal-map-label">マップ変更</h4>
-        </div>
-        <form onsubmit="return (sendMapUrl());">
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="map-url">マップ画像画像URL</label>
-              <input type="text" class="form-control" id="map-url" name="map-url">
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-default" data-dismiss="modal">キャンセル</button>
-            <button class="btn btn-primary" type="submit">変更</button>
-          </div>
-        </form>
       </div>
     </div>
   </div>
 
   <script src="/js/jquery-2.1.1.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/dice.js"></script>
-  <script src="/js/script.js"></script>
 </body>
 </html>
