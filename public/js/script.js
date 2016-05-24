@@ -5,12 +5,12 @@ function joinRoom(user) {
 }
 
 function escapeHTML(str) {
-    str = str.replace(/&/g, '&amp;')
-             .replace(/</g, '&lt;')
-             .replace(/>/g, '&gt;')
-             .replace(/"/g, '&quot;')
-             .replace(/'/g, '&#39;');
-    return str;
+  str = str.replace(/&/g, '&amp;')
+           .replace(/</g, '&lt;')
+           .replace(/>/g, '&gt;')
+           .replace(/"/g, '&quot;')
+           .replace(/'/g, '&#39;');
+  return str;
 }
 
 /* Dice */
