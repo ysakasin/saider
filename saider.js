@@ -119,6 +119,15 @@ io.sockets.on('connection', function(socket) {
     });
   });
 
+  socket.on('update-memo', function(request) {
+    request.body_org = request.body;
+    request.body = helper.escapeHTML(request.body).replace(/\n/g, '<br>');
+    io.sockets.to(socket.room).emit('update-memo', request);
+
+    var key = 'memos.' + socket.room;
+    client.hset(key, request.memo_id, JSON.stringify(request));
+  });
+
   socket.on('map', function(request) {
     io.sockets.to(socket.room).emit('map', request);
 

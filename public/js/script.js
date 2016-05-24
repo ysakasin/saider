@@ -72,6 +72,7 @@ function addMemo(memo) {
   var memo_area = document.getElementById('memo-area');
   var div = document.createElement('div');
 
+  div.id = 'memo-' + memo.memo_id;
   div.className = 'memo';
   div.setAttribute('memo-id', memo.memo_id);
   div.setAttribute('data-container', 'body');
@@ -79,32 +80,60 @@ function addMemo(memo) {
   div.setAttribute('data-trigger', 'hover');
   div.setAttribute('data-html', true);
   div.setAttribute('data-content', memo.body);
+  div.setAttribute('body-org', memo.body_org);
+  div.setAttribute('memo-title', memo.title);
   div.innerText = memo.title;
 
-  // div.onclick = function() {
-  //   $('.popover').popover('hide');
-  //   $('#modal-join').modal('show');
-  // };
+  div.onclick = function() {
+    showMemoModal(this);
+  };
 
   $(div).popover();
 
   memo_area.appendChild(div);
 }
 
-function showMemoModal() {
+function updateMemo(memo) {
+  var div = document.getElementById('memo-' + memo.memo_id);
+
+  div.setAttribute('data-content', memo.body);
+  div.setAttribute('body-org', memo.body_org);
+  div.setAttribute('memo-title', memo.title);
+  div.innerText = memo.title;
+}
+
+function showMemoModal(memo_div) {
+  $('.popover').popover('hide');
+  var memo_modal = document.getElementById('modal-memo');
   var input_memo_title = document.getElementById('memo-title');
   var input_memo_body = document.getElementById('memo-body');
 
-  input_memo_title.value = "";
-  input_memo_body.value = "";
+  if (memo_div === undefined) {
+    memo_modal.setAttribute('memo-id', 0);
+    input_memo_title.value = "";
+    input_memo_body.value = "";
+  }
+  else {
+    var memo_id = memo_div.getAttribute('memo-id');
+    memo_modal.setAttribute('memo-id', memo_id);
+    input_memo_title.value = memo_div.getAttribute('memo-title');
+    input_memo_body.value = memo_div.getAttribute('body-org');
+  }
   $('#modal-memo').modal('show');
 }
 
 function sendMemo() {
+  var modal = document.getElementById('modal-memo');
   var input_memo_title = document.getElementById('memo-title');
   var input_memo_body = document.getElementById('memo-body');
 
-  socketio.emit("memo", {title: input_memo_title.value, body: input_memo_body.value});
+  var memo_id = modal.getAttribute('memo-id');
+  if (memo_id == 0) {
+    socketio.emit("memo", {title: input_memo_title.value, body: input_memo_body.value});
+  }
+  else {
+    socketio.emit("update-memo", {memo_id: memo_id, title: input_memo_title.value, body: input_memo_body.value});
+  }
   $('#modal-memo').modal('hide');
 }
 
@@ -136,9 +165,10 @@ function sendMapUrl() {
 /* socketio listener */
 
 // socketio.on("connected",  function() {});
-socketio.on("roll",       addDice);
-socketio.on("memo",       addMemo);
-socketio.on("map",        changeMap);
+socketio.on("roll",        addDice);
+socketio.on("memo",        addMemo);
+socketio.on("update-memo", updateMemo);
+socketio.on("map",         changeMap);
 // socketio.on("disconnect", function() {});
 
 /* init */

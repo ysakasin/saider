@@ -27,7 +27,7 @@
     </div>
     <div id="memo-area">
       <% for memo_id of @memos : %>
-        <div class="memo"  memo-id="<%- memo_id %>" data-container="body" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<%- @memos[memo_id].body %>"><%- @memos[memo_id].title %></div>
+        <div id="memo-<%- memo_id %>" class="memo" memo-id="<%- memo_id %>" data-container="body" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<%- @memos[memo_id].body %>" body-org="<%- @memos[memo_id].body_org %>" memo-title="<%- @memos[memo_id].title %>" onclick="showMemoModal(this);"><%- @memos[memo_id].title %></div>
       <% end %>
     </div>
     <div id="map-area">
@@ -49,7 +49,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="modal-memo" tabindex="-1" role="dialog" aria-labelledby="modal-memo-label">
+  <div class="modal fade" id="modal-memo" memo-id="0" tabindex="-1" role="dialog" aria-labelledby="modal-memo-label">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
