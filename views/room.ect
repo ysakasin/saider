@@ -11,6 +11,10 @@
     <span class="room">
       Saider
     </span>
+    <form onsubmit="$('#user-name').blur(); return false;">
+      <input id="user-name" type="text" value="ななし" onblur="changeUserName();">
+    </form>
+    <div id="changed">変更完了</div>
   </div>
   <div class="contents">
     <div id="result-area">

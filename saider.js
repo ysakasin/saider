@@ -85,6 +85,10 @@ io.sockets.on('connection', function(socket) {
     socket.join(user.room);
   });
 
+  socket.on('user-name', function (user_name) {
+    user_hash[socket.id] = user_name;
+  });
+
   socket.on('roll', function(request) {
     if (!dicebot.isDiceRequest(request)) {
       return;

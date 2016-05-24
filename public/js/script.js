@@ -1,4 +1,5 @@
 var socketio = io.connect(window.location.host);
+var user_name = 'ななし';
 
 function joinRoom(user) {
   socketio.emit("connected", user);
@@ -11,6 +12,21 @@ function escapeHTML(str) {
            .replace(/"/g, '&quot;')
            .replace(/'/g, '&#39;');
   return str;
+}
+
+/* User Name */
+
+function changeUserName() {
+  var input = document.getElementById('user-name');
+  if (user_name == input.value) {
+    return;
+  }
+
+  user_name = input.value;
+  // $('#changed').css('visibility', 'visible');
+  $('#changed').show();
+  $('#changed').delay(1500).fadeOut();
+  socketio.emit("user-name", input.value);
 }
 
 /* Dice */
@@ -127,4 +143,4 @@ socketio.on("map",        changeMap);
 
 /* init */
 
-joinRoom({name: 'sakasin', room: room_id});
+joinRoom({name: 'ななし', room: room_id});

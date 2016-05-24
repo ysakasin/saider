@@ -17,6 +17,10 @@ body {
   right: 0;
 }
 
+.header form {
+  display: inline;
+}
+
 .room {
   height: 50px;
   line-height: 50px;
@@ -42,7 +46,6 @@ body {
   height: 40px;
   border-radius: 0;
   border: none;
-  color: #000000;
 }
 
 .btn-header:hover, .btn-header:focus, .btn-header:hover:focus{
@@ -53,6 +56,38 @@ body {
 }
 
 /* room */
+
+#changed {
+  display: none;
+  float: right;
+  margin: 10px 5px;
+  padding: 0 0.5em;
+  height: 30px;
+  line-height: 27px;
+  color: #ffffff;
+  border: solid 1.5px #ffffff;
+  border-radius: 5px;
+}
+
+#user-name {
+  margin: 5px;
+  margin-right: 20px;
+  height: 40px;
+  padding: 0 0 2px 0;
+  line-height: 40px;
+  font-size: 20px;
+  color: #ffffff;
+  text-align: right;
+  float: right;
+  background-color: transparent;
+  border: none;
+}
+
+#user-name:focus {
+  padding: 0px;
+  border-bottom: solid 2px #ffffff;
+  outline: none
+}
 
 .contents {
   background-color: #fafafa;
