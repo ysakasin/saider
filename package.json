@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "body-parser": "^1.15.1",
-    "ect": "^0.5.9"
+    "ect": "^0.5.9",
+    "redis": "^2.6.0-2"
   }
 }

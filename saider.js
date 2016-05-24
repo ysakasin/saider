@@ -1,3 +1,7 @@
+var helper = require('./lib/helper');
+var redis = require('redis');
+var client = redis.createClient();
+
 /* express */
 
 var express = require('express');
@@ -14,19 +18,21 @@ var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' })
 app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
 
-var next_room_id = 0;
-var room_names = {};
-
 app.get('/', function(req, res) {
-  res.render('index', { rooms: room_names });
+  client.hgetall('rooms', function(err, rooms) {
+    res.render('index', { rooms: rooms });
+  });
 });
 
 app.post('/create-room', function (req, res) {
-  var room_id = next_room_id.toString();
-  next_room_id++;
+  client.incr('room_id', function(err, room_id){
+    room_id = room_id.toString();
+    var room_name = req.param('room-name');
 
-  room_names[room_id] = req.param('room-name');
-  res.redirect('./' + room_id);
+    res.redirect('./' + room_id);
+
+    client.hset('rooms', room_id, room_name, redis.print);
+  });
 });
 
 app.get('/licenses', function(req, res) {
@@ -35,7 +41,27 @@ app.get('/licenses', function(req, res) {
 
 app.get('/:room_id', function(req, res) {
   var room_id = req.params.room_id;
-  res.render('room');
+  client.hexists('rooms', room_id, function(err, is_exist) {
+    if (is_exist) {
+      client.hgetall('memos.' + room_id, function (err, memos) {
+        client.lrange('results.' + room_id, 0, -1, function (err, results) {
+          client.get('map.' + room_id, function (err, map) {
+            if (map == null) {
+              map = './image/tsukuba.jpg';
+            }
+            for (memo_id in memos) {
+              memos[memo_id] = JSON.parse(memos[memo_id]);
+            }
+            results = results.map(JSON.parse);
+            res.render('room', {room_id: room_id, map:map, memos: memos, results: results});
+          });
+        });
+      });
+    }
+    else {
+      res.redirect('./');
+    }
+  })
 });
 
 app.use(express.static('public'));
@@ -70,14 +96,30 @@ io.sockets.on('connection', function(socket) {
     res['request'] = request;
 
     io.sockets.to(socket.room).emit('roll', res);
+
+    var result_text = request + '→' + res.total;
+    var json = JSON.stringify({name: user_hash[socket.id], text: result_text});
+    var key = 'results.' + socket.room;
+    client.rpush(key, json, redis.print);
   });
 
   socket.on('memo', function(request) {
-    io.sockets.to(socket.room).emit('memo', request);
+    client.incr('memo_id.' + socket.room, function(err, memo_id){
+      request.memo_id = memo_id.toString();
+      request.body_org = request.body;
+      request.body = helper.escapeHTML(request.body).replace(/\n/g, '<br>');
+      io.sockets.to(socket.room).emit('memo', request);
+
+      var key = 'memos.' + socket.room;
+      client.hset(key, memo_id, JSON.stringify(request));
+    });
   });
 
   socket.on('map', function(request) {
     io.sockets.to(socket.room).emit('map', request);
+
+    var key = 'map.' + socket.room;
+    client.set(key, request.url);
   });
 
   socket.on('disconnect', function() {

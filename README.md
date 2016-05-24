@@ -7,10 +7,18 @@ A interactive dice bot
 
 Node.jsをインストールする
 
+Redisをインストールする
+
 関係パッケージをインストールする
 
 ```
 $ npm install
+```
+
+Redisを起動する
+
+```
+$ redis-server
 ```
 
 サーバーを起動させる

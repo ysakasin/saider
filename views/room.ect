@@ -14,11 +14,20 @@
   </div>
   <div class="contents">
     <div id="result-area">
+      <% for result in @results : %>
+        <div class="result">
+          <label><%- result.name %></label>
+          <p><%- result.text %></p>
+        </div>
+      <% end %>
     </div>
     <div id="memo-area">
+      <% for memo_id of @memos : %>
+        <div class="memo"  memo-id="<%- memo_id %>" data-container="body" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<%- @memos[memo_id].body %>"><%- @memos[memo_id].title %></div>
+      <% end %>
     </div>
     <div id="map-area">
-      <img id="map-img" src="./image/tsukuba.jpg">
+      <img id="map-img" src="<%- @map %>">
     </div>
   </div>
 
@@ -85,6 +94,9 @@
     </div>
   </div>
 
+  <script>
+    room_id = "<%- @room_id %>";
+  </script>
   <script src="/js/jquery-2.2.4.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>

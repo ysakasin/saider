@@ -56,14 +56,13 @@ function addMemo(memo) {
   var memo_area = document.getElementById('memo-area');
   var div = document.createElement('div');
 
-  var body = escapeHTML(memo.body).replace(/\n/g, '<br>');
-
   div.className = 'memo';
+  div.setAttribute('memo-id', memo.memo_id);
   div.setAttribute('data-container', 'body');
   div.setAttribute('data-toggle', 'popover');
   div.setAttribute('data-trigger', 'hover');
   div.setAttribute('data-html', true);
-  div.setAttribute('data-content', body);
+  div.setAttribute('data-content', memo.body);
   div.innerText = memo.title;
 
   // div.onclick = function() {
@@ -128,5 +127,4 @@ socketio.on("map",        changeMap);
 
 /* init */
 
-var room_id = window.location.pathname;
 joinRoom({name: 'sakasin', room: room_id});
