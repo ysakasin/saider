@@ -55,6 +55,22 @@ body {
   outline: none;
 }
 
+.btn-primary {
+  background-color: #00bcd4;
+  border-color: #00acc1;
+}
+
+.btn-primary:hover {
+  background-color: #00acc1;
+  border-color: #0097a7;
+}
+
+.btn-primary:focus, .btn-primary:hover:focus {
+  background-color: #0097a7;
+  border-color: #00838f;
+}
+
+
 /* room */
 
 #changed {
