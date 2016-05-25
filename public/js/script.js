@@ -102,6 +102,10 @@ function updateMemo(memo) {
   div.innerText = memo.title;
 }
 
+function removeMemo(memo_id) {
+  $('#memo-' + memo_id).remove();
+}
+
 function showMemoModal(memo_div) {
   $('.popover').popover('hide');
   var memo_modal = document.getElementById('modal-memo');
@@ -112,12 +116,14 @@ function showMemoModal(memo_div) {
     memo_modal.setAttribute('memo-id', 0);
     input_memo_title.value = "";
     input_memo_body.value = "";
+    $('#btn-memo-delete').hide();
   }
   else {
     var memo_id = memo_div.getAttribute('memo-id');
     memo_modal.setAttribute('memo-id', memo_id);
     input_memo_title.value = memo_div.getAttribute('memo-title');
     input_memo_body.value = memo_div.getAttribute('body-org');
+    $('#btn-memo-delete').show();
   }
   $('#modal-memo').modal('show');
 }
@@ -134,6 +140,13 @@ function sendMemo() {
   else {
     socketio.emit("update-memo", {memo_id: memo_id, title: input_memo_title.value, body: input_memo_body.value});
   }
+  $('#modal-memo').modal('hide');
+}
+
+function deleteMemo() {
+  var modal = document.getElementById('modal-memo');
+  var memo_id = modal.getAttribute('memo-id');
+  socketio.emit("delete-memo", memo_id);
   $('#modal-memo').modal('hide');
 }
 
@@ -168,6 +181,7 @@ function sendMapUrl() {
 socketio.on("roll",        addDice);
 socketio.on("memo",        addMemo);
 socketio.on("update-memo", updateMemo);
+socketio.on("remove-memo", removeMemo);
 socketio.on("map",         changeMap);
 // socketio.on("disconnect", function() {});
 

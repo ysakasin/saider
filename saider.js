@@ -128,6 +128,13 @@ io.sockets.on('connection', function(socket) {
     client.hset(key, request.memo_id, JSON.stringify(request));
   });
 
+  socket.on('delete-memo', function(memo_id) {
+    io.sockets.to(socket.room).emit('remove-memo', memo_id);
+
+    var key = 'memos.' + socket.room;
+    client.hdel(key, memo_id);
+  });
+
   socket.on('map', function(request) {
     io.sockets.to(socket.room).emit('map', request);
 

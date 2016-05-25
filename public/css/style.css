@@ -70,6 +70,21 @@ body {
   border-color: #00838f;
 }
 
+.btn-danger {
+  background-color: #f44336;
+  border-color: #e53935;
+}
+
+.btn-primary:hover {
+  background-color: #e53935;
+  border-color: #d32f2f;
+}
+
+.btn-primary:focus, .btn-primary:hover:focus {
+  background-color: #d32f2f;
+  border-color: #c62828;
+}
+
 
 /* room */
 
