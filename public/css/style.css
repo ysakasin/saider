@@ -75,12 +75,12 @@ body {
   border-color: #e53935;
 }
 
-.btn-primary:hover {
+.btn-danger:hover {
   background-color: #e53935;
   border-color: #d32f2f;
 }
 
-.btn-primary:focus, .btn-primary:hover:focus {
+.btn-danger:focus, .btn-danger:hover:focus {
   background-color: #d32f2f;
   border-color: #c62828;
 }
