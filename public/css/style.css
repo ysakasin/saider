@@ -45,7 +45,7 @@ body {
   margin: 5px;
   height: 40px;
   border-radius: 0;
-  border: none;
+  border: solid 1px #ffffff;
 }
 
 .btn-header:hover, .btn-header:focus, .btn-header:hover:focus{
