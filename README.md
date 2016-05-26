@@ -1,4 +1,7 @@
 # Saider
+
+![Saider](./public/image/saider.svg)
+
 A interactive dice bot
 
 [Demo](http://saider.sinjis-view.mydns.jp)
