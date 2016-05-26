@@ -35,6 +35,6 @@ localhost:31102
 
 ## License
 
-Apache License Version 2.0
+MIT License
 
-&copy; 2015 SAKATA Sinji
+&copy; 2015-2016 SAKATA Sinji
