@@ -1,6 +1,6 @@
 # Saider
 
-![Saider](./public/image/saider.svg)
+![Saider](public/image/saider.png)
 
 A interactive dice bot
 
