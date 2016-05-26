@@ -79,10 +79,17 @@ var user_hash = {};
 io.sockets.on('connection', function(socket) {
 
   socket.on('connected', function(user) {
-    user_hash[socket.id] = user.name
-    socket.name = user.name;
-    socket.room = user.room;
-    socket.join(user.room);
+    client.hexists('rooms', user.room, function(err, is_exist) {
+      if (is_exist) {
+        user_hash[socket.id] = user.name
+        socket.name = user.name;
+        socket.room = user.room;
+        socket.join(user.room);
+      }
+      else {
+        socket.disconnect();
+      }
+    });
   });
 
   socket.on('user-name', function (user_name) {
@@ -140,6 +147,11 @@ io.sockets.on('connection', function(socket) {
 
     var key = 'map.' + socket.room;
     client.set(key, request.url);
+  });
+
+  socket.on('delete-room', function() {
+    io.sockets.to(socket.room).emit('room-deleted');
+    helper.deleteRoom(client, socket.room);
   });
 
   socket.on('disconnect', function() {

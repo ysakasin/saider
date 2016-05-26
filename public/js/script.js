@@ -5,6 +5,15 @@ function joinRoom(user) {
   socketio.emit("connected", user);
 }
 
+function deleteRoom() {
+  socketio.emit("delete-room");
+}
+
+function roomDeleted() {
+  socketio.disconnect();
+  $('#modal-deleted').modal('show');
+}
+
 function escapeHTML(str) {
   str = str.replace(/&/g, '&amp;')
            .replace(/</g, '&lt;')
@@ -178,11 +187,12 @@ function sendMapUrl() {
 /* socketio listener */
 
 // socketio.on("connected",  function() {});
-socketio.on("roll",        addDice);
-socketio.on("memo",        addMemo);
-socketio.on("update-memo", updateMemo);
-socketio.on("remove-memo", removeMemo);
-socketio.on("map",         changeMap);
+socketio.on("roll",         addDice);
+socketio.on("memo",         addMemo);
+socketio.on("update-memo",  updateMemo);
+socketio.on("remove-memo",  removeMemo);
+socketio.on("map",          changeMap);
+socketio.on("room-deleted", roomDeleted);
 // socketio.on("disconnect", function() {});
 
 /* init */

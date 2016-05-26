@@ -12,6 +12,9 @@
       Saider
     </span>
     <form onsubmit="$('#user-name').blur(); return false;">
+      <button class="btn btn-default btn-header pull-right" onclick="$('#modal-settings').modal('show');">
+        設定
+      </button>
       <input id="user-name" type="text" value="ななし" onblur="changeUserName();">
     </form>
     <div id="changed">変更完了</div>
@@ -94,6 +97,36 @@
             <button class="btn btn-primary" type="submit">変更</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-settings" tabindex="-1" role="dialog" aria-labelledby="modal-map-label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">ルームの設定</h4>
+        </div>
+        <div class="modal-body">
+          <button class="btn btn-danger" onclick="deleteRoom();" data-dismiss="modal">ルームを削除</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal-deleted" tabindex="-1" role="dialog" aria-labelledby="modal-map-label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">ルームが削除されました</h4>
+        </div>
+        <div class="modal-body">
+          <p>ルームが削除されました。</p>
+          <p>利用を続ける場合はTOPページから別のルームへログインしてください。</p>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-primary" href="./">TOPページへ</a>
+        </div>
       </div>
     </div>
   </div>
