@@ -31,7 +31,7 @@ app.post('/create-room', function (req, res) {
 
     res.redirect('./' + room_id);
 
-    client.hset('rooms', room_id, room_name, redis.print);
+    client.hset('rooms', room_id, room_name);
   });
 });
 
@@ -111,7 +111,7 @@ io.sockets.on('connection', function(socket) {
     var result_text = request + '→' + res.total;
     var json = JSON.stringify({name: user_hash[socket.id], text: result_text});
     var key = 'results.' + socket.room;
-    client.rpush(key, json, redis.print);
+    client.rpush(key, json);
   });
 
   socket.on('memo', function(request) {
