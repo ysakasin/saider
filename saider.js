@@ -49,13 +49,8 @@ app.get('/:room_id', function(req, res) {
   client.hexists('rooms', room_id, function(err, is_exist) {
     if (is_exist) {
       client.lrange('results.' + room_id, 0, -1, function (err, results) {
-        client.get('map.' + room_id, function (err, map) {
-          if (map == null) {
-            map = './image/tsukuba.jpg';
-          }
-          results = results.map(JSON.parse);
-          res.render('room', {room_id: room_id, map:map, results: results, escape: helper.escapeHTML});
-        });
+        results = results.map(JSON.parse);
+        res.render('room', {room_id: room_id, results: results, escape: helper.escapeHTML});
       });
     }
     else {
@@ -86,6 +81,12 @@ io.sockets.on('connection', function(socket) {
             memos[memo_id] = JSON.parse(memos[memo_id]);
           }
           socket.emit('init-memo', memos);
+        });
+        client.get('map.' + user.room, function (err, url) {
+          if (url == null) {
+            url = './image/tsukuba.jpg';
+          }
+          socket.emit('map', {url: url});
         });
         user_hash[socket.id] = user.name
         socket.name = user.name;
