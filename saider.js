@@ -18,6 +18,11 @@ var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' })
 app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
 
+app.get('/*', function(req,res,next) {
+  res.header('X-XSS-Protection', '1; mode=block');
+  next();
+});
+
 app.get('/', function(req, res) {
   client.hgetall('rooms', function(err, rooms) {
     res.render('index', { rooms: rooms });
