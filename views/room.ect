@@ -29,9 +29,6 @@
       <% end %>
     </div>
     <div id="memo-area">
-      <% for memo_id of @memos : %>
-        <div id="memo-<%- memo_id %>" class="memo" memo-id="<%- memo_id %>" data-container="body" data-toggle="popover" data-trigger="hover" data-html="true" data-content="<%- @memos[memo_id].body %>" body-org="<%- @memos[memo_id].body_org %>" memo-title="<%- @memos[memo_id].title %>" onclick="showMemoModal(this);"><%- @memos[memo_id].title %></div>
-      <% end %>
     </div>
     <div id="map-area">
       <img id="map-img" src="<%- @map %>">

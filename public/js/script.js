@@ -1,5 +1,6 @@
 var socketio = io.connect(window.location.host);
 var user_name = 'ななし';
+var memo_data = {};
 
 function joinRoom(user) {
   socketio.emit("connected", user);
@@ -87,32 +88,34 @@ function addMemo(memo) {
   div.setAttribute('data-container', 'body');
   div.setAttribute('data-toggle', 'popover');
   div.setAttribute('data-trigger', 'hover');
-  div.setAttribute('data-html', true);
-  div.setAttribute('data-content', memo.body);
-  div.setAttribute('body-org', memo.body_org);
-  div.setAttribute('memo-title', memo.title);
   div.innerText = memo.title;
 
   div.onclick = function() {
     showMemoModal(this);
   };
-
   $(div).popover();
 
   memo_area.appendChild(div);
+
+  memo_data[memo.memo_id] = memo;
+}
+
+function initMemo(memos) {
+  for (id in memos) {
+    addMemo(memos[id]);
+  }
 }
 
 function updateMemo(memo) {
   var div = document.getElementById('memo-' + memo.memo_id);
-
-  div.setAttribute('data-content', memo.body);
-  div.setAttribute('body-org', memo.body_org);
-  div.setAttribute('memo-title', memo.title);
   div.innerText = memo.title;
+
+  memo_data[memo.memo_id] = memo;
 }
 
 function removeMemo(memo_id) {
   $('#memo-' + memo_id).remove();
+  delete memo_data[memo_id];
 }
 
 function showMemoModal(memo_div) {
@@ -130,8 +133,8 @@ function showMemoModal(memo_div) {
   else {
     var memo_id = memo_div.getAttribute('memo-id');
     memo_modal.setAttribute('memo-id', memo_id);
-    input_memo_title.value = memo_div.getAttribute('memo-title');
-    input_memo_body.value = memo_div.getAttribute('body-org');
+    input_memo_title.value = memo_data[memo_id].title;
+    input_memo_body.value = memo_data[memo_id].body;
     $('#btn-memo-delete').show();
   }
   $('#modal-memo').modal('show');
@@ -188,12 +191,38 @@ function sendMapUrl() {
 
 // socketio.on("connected",  function() {});
 socketio.on("roll",         addDice);
+socketio.on("init-memo",    initMemo);
 socketio.on("memo",         addMemo);
 socketio.on("update-memo",  updateMemo);
 socketio.on("remove-memo",  removeMemo);
 socketio.on("map",          changeMap);
 socketio.on("room-deleted", roomDeleted);
 // socketio.on("disconnect", function() {});
+
+/* Override Bootstrap */
+
+$.fn.popover.Constructor.prototype.getContent = function () {
+  var $e = this.$element
+  var o  = this.options
+
+  var content = memo_data[$e.attr('memo-id')].body
+  return escapeHTML(content).replace(/\n/g, '<br />')
+}
+
+$.fn.popover.Constructor.prototype.setContent = function () {
+  var $tip    = this.tip()
+  var content = this.getContent()
+
+  $tip.find('.popover-content').children().detach().end()[
+    'html'
+  ](content)
+
+  $tip.removeClass('fade top bottom left right in')
+
+  // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
+  // this manually by checking the contents.
+  if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
+}
 
 /* init */
 

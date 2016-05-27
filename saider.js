@@ -48,18 +48,13 @@ app.get('/:room_id', function(req, res) {
   var room_id = req.params.room_id;
   client.hexists('rooms', room_id, function(err, is_exist) {
     if (is_exist) {
-      client.hgetall('memos.' + room_id, function (err, memos) {
-        client.lrange('results.' + room_id, 0, -1, function (err, results) {
-          client.get('map.' + room_id, function (err, map) {
-            if (map == null) {
-              map = './image/tsukuba.jpg';
-            }
-            for (memo_id in memos) {
-              memos[memo_id] = JSON.parse(memos[memo_id]);
-            }
-            results = results.map(JSON.parse);
-            res.render('room', {room_id: room_id, map:map, memos: memos, results: results});
-          });
+      client.lrange('results.' + room_id, 0, -1, function (err, results) {
+        client.get('map.' + room_id, function (err, map) {
+          if (map == null) {
+            map = './image/tsukuba.jpg';
+          }
+          results = results.map(JSON.parse);
+          res.render('room', {room_id: room_id, map:map, results: results, escape: helper.escapeHTML});
         });
       });
     }
@@ -86,6 +81,12 @@ io.sockets.on('connection', function(socket) {
   socket.on('connected', function(user) {
     client.hexists('rooms', user.room, function(err, is_exist) {
       if (is_exist) {
+        client.hgetall('memos.' + user.room, function (err, memos) {
+          for (memo_id in memos) {
+            memos[memo_id] = JSON.parse(memos[memo_id]);
+          }
+          socket.emit('init-memo', memos);
+        });
         user_hash[socket.id] = user.name
         socket.name = user.name;
         socket.room = user.room;
@@ -121,23 +122,28 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('memo', function(request) {
     client.incr('memo_id.' + socket.room, function(err, memo_id){
-      request.memo_id = memo_id.toString();
-      request.body_org = request.body;
-      request.body = helper.escapeHTML(request.body).replace(/\n/g, '<br>');
-      io.sockets.to(socket.room).emit('memo', request);
+      var data = {
+        memo_id: memo_id.toString(),
+        title: request.title,
+        body: request.body
+      };
+      io.sockets.to(socket.room).emit('memo', data);
 
       var key = 'memos.' + socket.room;
-      client.hset(key, memo_id, JSON.stringify(request));
+      client.hset(key, memo_id, JSON.stringify(data));
     });
   });
 
   socket.on('update-memo', function(request) {
-    request.body_org = request.body;
-    request.body = helper.escapeHTML(request.body).replace(/\n/g, '<br>');
-    io.sockets.to(socket.room).emit('update-memo', request);
+    var data = {
+      memo_id: request.memo_id,
+      title: request.title,
+      body: request.body
+    };
+    io.sockets.to(socket.room).emit('update-memo', data);
 
     var key = 'memos.' + socket.room;
-    client.hset(key, request.memo_id, JSON.stringify(request));
+    client.hset(key, request.memo_id, JSON.stringify(data));
   });
 
   socket.on('delete-memo', function(memo_id) {
