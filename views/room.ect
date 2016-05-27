@@ -23,8 +23,8 @@
     <div id="result-area">
       <% for result in @results : %>
         <div class="result">
-          <label><%- result.name %></label>
-          <p><%- result.text %></p>
+          <label><%-  @escape(result.name) %></label>
+          <p><%- @escape(result.text) %></p>
         </div>
       <% end %>
     </div>
