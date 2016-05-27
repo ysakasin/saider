@@ -22,7 +22,7 @@
           <div>
             <div class="list-group">
               <% for room_id of @rooms : %>
-                <a class="list-group-item" href="./<%- room_id %>"><%- @rooms[room_id] %></a>
+                <a class="list-group-item" href="./<%- room_id %>"><%- @escape(@rooms[room_id]) %></a>
               <% end %>
             </div>
           </div>

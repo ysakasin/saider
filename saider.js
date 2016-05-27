@@ -25,7 +25,7 @@ app.get('/*', function(req,res,next) {
 
 app.get('/', function(req, res) {
   client.hgetall('rooms', function(err, rooms) {
-    res.render('index', { rooms: rooms });
+    res.render('index', { rooms: rooms, escape: helper.escapeHTML });
   });
 });
 
