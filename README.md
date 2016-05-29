@@ -71,6 +71,11 @@ $ npm start
 |------------|----------|-----------|-------------|
 | host       | string   |           | サーバーのホストネーム。CSPによるXSS対策のために用いている。production実行時には必ず付与すること。 |
 
+## Special thanks
+
+* [kosen10s](https://github.com/kosen10s) designチャンネルのメンバー : アイコンアドバイス
+* [Ryosuke SATO (jtwp470)](https://github.com/jtwp470) : XSSアタック。XSS対策アドバイス
+
 ## License
 
 MIT License
