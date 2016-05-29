@@ -1,4 +1,8 @@
 var helper = require('./lib/helper');
+var config = require('./config.json');
+
+/* redis */
+
 var redis = require('redis');
 var client = redis.createClient();
 
@@ -18,8 +22,13 @@ var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' })
 app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
 
+var headerCSP = (process.env.NODE_ENV === 'production')
+                  ? 'default-src "self"; img-src "self" *; connect-src "self" ws://' + config.host
+                  : 'default-src "self" localhost:31102; img-src "self" *; connect-src "self" localhost:31102  ws://localhost:31102';
+
 app.get('/*', function(req,res,next) {
   res.header('X-XSS-Protection', '1; mode=block');
+  res.header('Content-Security-Policy', headerCSP);
   next();
 });
 

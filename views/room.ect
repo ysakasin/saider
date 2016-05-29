@@ -6,16 +6,16 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body id="room" room-id="<%- @room_id %>">
   <div class="header">
     <span class="room">
       Saider
     </span>
-    <form onsubmit="$('#user-name').blur(); return false;">
-      <button class="btn btn-default btn-header pull-right" onclick="$('#modal-settings').modal('show');">
-        設定
-      </button>
-      <input id="user-name" type="text" value="ななし" onblur="changeUserName();">
+    <button class="btn btn-default btn-header pull-right" data-toggle="modal" data-target="#modal-settings">
+      設定
+    </button>
+    <form id="form-user-name">
+      <input id="user-name" type="text" value="ななし">
     </form>
     <div id="changed">変更完了</div>
   </div>
@@ -37,15 +37,15 @@
 
   <div class="toolbar">
     <div id="dice-tool">
-      <form onsubmit="rollDice(); return false;">
+      <form id="form-dice">
         <input id="dice-input" placeholder="Dice roll">
       </form>
     </div>
     <div id="memo-tool">
-      <button id="add-memo" class="btn btn-default" onclick="showMemoModal();">+</button>
+      <button id="add-memo" class="btn btn-default">+</button>
     </div>
     <div id="map-tool">
-      <button id="change-map" class="btn btn-default" onclick="showMapModal();">マップを変更</button>
+      <button id="change-map" class="btn btn-default">マップを変更</button>
     </div>
   </div>
 
@@ -55,7 +55,7 @@
         <div class="modal-header">
           <h4 class="modal-title" id="modal-memo-label">共有メモ</h4>
         </div>
-        <form onsubmit="sendMemo(); return false;">
+        <form id="form-memo">
           <div class="modal-body">
             <div class="form-group">
               <label for="memo-title">タイトル</label>
@@ -67,7 +67,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button id="btn-memo-delete" class="btn btn-danger pull-left" type="button" onclick="deleteMemo();">削除</button>
+            <button id="btn-memo-delete" class="btn btn-danger pull-left" type="button">削除</button>
             <a class="btn btn-default" data-dismiss="modal">キャンセル</a>
             <button class="btn btn-primary" type="submit">変更</button>
           </div>
@@ -82,7 +82,7 @@
         <div class="modal-header">
           <h4 class="modal-title" id="modal-map-label">マップ変更</h4>
         </div>
-        <form onsubmit="sendMapUrl(); return false;">
+        <form id="form-map">
           <div class="modal-body">
             <div class="form-group">
               <label for="map-url">マップ画像画像URL</label>
@@ -105,7 +105,7 @@
           <h4 class="modal-title">ルームの設定</h4>
         </div>
         <div class="modal-body">
-          <button class="btn btn-danger" onclick="deleteRoom();" data-dismiss="modal">ルームを削除</button>
+          <button id="btn-delete-room" class="btn btn-danger" data-dismiss="modal">ルームを削除</button>
         </div>
       </div>
     </div>
@@ -128,9 +128,6 @@
     </div>
   </div>
 
-  <script>
-    room_id = "<%- @room_id %>";
-  </script>
   <script src="/js/jquery-2.2.4.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>

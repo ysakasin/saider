@@ -4,7 +4,8 @@
   "description": "A interactive dice bot",
   "main": "saider.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production node saider.js",
+    "dev": "node saider.js"
   },
   "repository": {
     "type": "git",

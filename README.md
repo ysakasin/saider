@@ -13,7 +13,7 @@ A interactive dice bot
 * メモの共有
 * マップの共有
   * 画像を表示するだけでコマ機能はありません
-  
+
 ## これから実現したいこと
 
 * コマ機能
@@ -42,7 +42,7 @@ $ redis-server
 サーバーを起動させる
 
 ```
-$ node saider.js
+$ npm run dev
 ```
 
 ブラウザ以下のURLにアクセスする
@@ -50,6 +50,26 @@ $ node saider.js
 ```
 localhost:31102
 ```
+
+## 実環境で動かす
+
+Node.js, Redisをインストールする
+
+`config.json.example` をもとに `config.json` を編集する
+
+Redisを起動しておく
+
+サーバーを起動する
+
+```
+$ npm start
+```
+
+## Configuration
+
+| Key        | Type     | Default   | Description |
+|------------|----------|-----------|-------------|
+| host       | string   |           | サーバーのホストネーム。CSPによるXSS対策のために用いている。production実行時には必ず付与すること。 |
 
 ## License
 

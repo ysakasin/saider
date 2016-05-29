@@ -1,6 +1,7 @@
 var socketio = io.connect(window.location.host);
 var user_name = 'ななし';
 var memo_data = {};
+var room_id = document.getElementById('room').getAttribute('room-id');
 
 function joinRoom(user) {
   socketio.emit("connected", user);
@@ -225,5 +226,34 @@ $.fn.popover.Constructor.prototype.setContent = function () {
 }
 
 /* init */
+
+document.getElementById('form-user-name').onsubmit = function () {
+  $('#user-name').blur();
+  return false;
+};
+
+document.getElementById('form-dice').onsubmit = function () {
+  rollDice();
+  return false;
+};
+
+document.getElementById('add-memo').onclick = function () {
+  showMemoModal();
+};
+
+document.getElementById('form-memo').onsubmit = function () {
+  sendMemo();
+  return false;
+};
+
+document.getElementById('form-map').onsubmit = function () {
+  sendMapUrl();
+  return false;
+};
+
+document.getElementById('user-name').onblur = changeUserName;
+document.getElementById('change-map').onclick = showMapModal;
+document.getElementById('btn-memo-delete').onclick = deleteMemo;
+document.getElementById('btn-delete-room').onclick = deleteRoom;
 
 joinRoom({name: 'ななし', room: room_id});
