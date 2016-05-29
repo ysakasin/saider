@@ -11,7 +11,7 @@
     <span class="room">
       Saider
     </span>
-    <button class="btn btn-default btn-header pull-right" onclick="$('#modal-join').modal('show');">
+    <button class="btn btn-default btn-header pull-right" data-toggle="modal" data-target="#modal-create-room">
       ルームを作成
     </button>
   </div>
@@ -22,7 +22,7 @@
           <div>
             <div class="list-group">
               <% for room_id of @rooms : %>
-                <a class="list-group-item" href="./<%- room_id %>"><%- @rooms[room_id] %></a>
+                <a class="list-group-item" href="./<%- room_id %>"><%- @escape(@rooms[room_id]) %></a>
               <% end %>
             </div>
           </div>
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div class="modal fade" id="modal-join" tabindex="-1" role="dialog" aria-labelledby="modal-join-label">
+  <div class="modal fade" id="modal-create-room" tabindex="-1" role="dialog" aria-labelledby="modal-join-label">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
