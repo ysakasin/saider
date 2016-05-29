@@ -86,10 +86,11 @@ io.sockets.on('connection', function(socket) {
     client.hexists('rooms', user.room, function(err, is_exist) {
       if (is_exist) {
         client.hgetall('memos.' + user.room, function (err, memos) {
+          var res = {};
           for (memo_id in memos) {
-            memos[memo_id] = JSON.parse(memos[memo_id]);
+            res[memo_id] = JSON.parse(memos[memo_id]);
           }
-          socket.emit('init-memo', memos);
+          socket.emit('init-memo', res);
         });
         client.get('map.' + user.room, function (err, url) {
           if (url == null) {
