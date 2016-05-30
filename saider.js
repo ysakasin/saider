@@ -6,7 +6,7 @@ var config = (process.env.NODE_ENV === 'production')
 /* redis */
 
 var redis = require('redis');
-var client = redis.createClient();
+var client = redis.createClient(config.redis);
 
 /* express */
 
