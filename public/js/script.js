@@ -176,8 +176,9 @@ function changeMap(map) {
 
 function showMapModal() {
   var input_map_url = document.getElementById('map-url');
+  var map_img = document.getElementById('map-img');
 
-  input_map_url.value = "";
+  input_map_url.value = map_img.src;
   $('#modal-map').modal('show');
 }
 
