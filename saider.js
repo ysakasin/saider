@@ -39,14 +39,12 @@ app.get('/', function(req, res) {
 });
 
 app.post('/create-room', function (req, res) {
-  client.incr('room_id', function(err, room_id){
-    room_id = room_id.toString();
-    var room_name = req.param('room-name');
+  var room_id = helper.generateId();
+  var room_name = req.param('room-name');
 
-    res.redirect('./' + room_id);
+  res.redirect('./' + room_id);
 
-    client.hset('rooms', room_id, room_name);
-  });
+  client.hset('rooms', room_id, room_name);
 });
 
 app.get('/licenses', function(req, res) {
