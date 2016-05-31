@@ -20,7 +20,6 @@
   "devDependencies": {},
   "dependencies": {
     "body-parser": "^1.15.1",
-    "crypto": "0.0.3",
     "ect": "^0.5.9",
     "express": "^4.10.2",
     "redis": "^2.6.0-2",
