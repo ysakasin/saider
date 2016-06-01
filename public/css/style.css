@@ -37,6 +37,10 @@ body {
   box-shadow: none;
 }
 
+.modal-title {
+  display: inline;
+}
+
 .modal-dialog {
   margin: 60px auto;
 }
@@ -250,6 +254,11 @@ body {
   float: right;
   height: 40px;
   margin: 5px;
+}
+
+#error-password {
+  display: none;
+  margin-left: 10px;
 }
 
 .dice {

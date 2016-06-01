@@ -22,7 +22,11 @@
           <div>
             <div class="list-group">
               <% for room_id of @rooms : %>
-                <a class="list-group-item" href="./<%- room_id %>"><%- @escape(@rooms[room_id]) %></a>
+                <% if @passwords[room_id] : %>
+                  <a class="list-group-item" href="./<%- room_id %>"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> <%- @escape(@rooms[room_id]) %></a>
+                <% else: %>
+                  <a class="list-group-item" href="./<%- room_id %>"><%- @escape(@rooms[room_id]) %></a>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -42,6 +46,10 @@
             <div class="form-group">
               <label for="room-name">ルーム名</label>
               <input type="text" class="form-control" name="room-name">
+            </div>
+            <div class="form-group">
+              <label for="room-password">パスワード <small>空欄の場合には公開ルームとなります</small></label>
+              <input type="password" class="form-control" name="room-password">
             </div>
           </div>
           <div class="modal-footer">

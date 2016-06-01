@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
-<body id="room" room-id="<%- @room_id %>">
+<body id="room" room-id="<%- @room_id %>" is-need-password="<%- @is_need_password %>">
   <div class="header">
     <span class="room">
       Saider
@@ -21,12 +21,6 @@
   </div>
   <div class="contents">
     <div id="result-area">
-      <% for result in @results : %>
-        <div class="result">
-          <label><%-  @escape(result.name) %></label>
-          <p><%- @escape(result.text) %></p>
-        </div>
-      <% end %>
     </div>
     <div id="memo-area">
     </div>
@@ -127,6 +121,28 @@
         <div class="modal-footer">
           <a class="btn btn-primary" href="./">TOPページへ</a>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade in" id="modal-login" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modal-login-label">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">パスワード</h4>
+          <span id="error-password" class="label label-danger">パスワードが違います</span>
+        </div>
+        <form id="form-login">
+          <div class="modal-body">
+            <div class="form-group" id="password-input-group">
+              <input type="password" class="form-control" id="password">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-default" href="./">戻る</a>
+            <button class="btn btn-primary" type="submit">変更</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
