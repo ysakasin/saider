@@ -35,6 +35,7 @@ app.get('/*', function(req,res,next) {
 app.get('/', function(req, res) {
   client.hgetall('rooms', function(err, rooms) {
     client.hgetall('passwords', function(err, passwords) {
+      if (passwords == null) { passwords = {}; }
       res.render('index', { rooms: rooms, passwords: passwords, escape: helper.escapeHTML });
     });
   });
