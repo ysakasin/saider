@@ -2,9 +2,14 @@
 
 ![Saider](public/image/saider.png)
 
-A interactive dice bot
+ボイセ勢のためのオンセ支援ツール
 
-[Demo](http://saider.sinjis-view.mydns.jp)
+[公式デモサーバー](http://saider.sinjis-view.mydns.jp)
+
+## 有志による公開サーバー
+
+* [どどんとふ公式鯖](https://www.taruki.com/dodontof.html)
+* [Saider こかげサーバー](https://cokage.works/saider/)
 
 ## Saiderでできること
 
