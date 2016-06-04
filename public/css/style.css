@@ -3,9 +3,14 @@
 }
 
 body {
-  padding: 50px 0 60px 0;
+  background-color: #fafafa;
+  padding: 50px 0 0 0;
   overflow-x: hidden;
   overflow-y: hidden;
+}
+
+body#room {
+  padding: 50px 0 60px 0;
 }
 
 .header {
@@ -25,8 +30,8 @@ body {
   height: 50px;
   line-height: 50px;
   color: white;
-  font-size: 28px;
-  margin-left: 5px;
+  font-size: 24px;
+  margin-left: 12px;
 }
 
 .btn:hover, .btn:focus, .btn:active, .btn:active:focus {
@@ -290,4 +295,29 @@ body {
   overflow-y: scroll;
   height: 100%;
   padding-top: 20px;
+}
+
+.room-list .panel-heading {
+  background-color: #ffffff;
+  padding: 24px;
+}
+
+.room-list .panel-heading h2{
+  font-size: 24px;
+  margin: 0;
+}
+
+.room-list .list-group-item {
+  font-size: 20px;
+  line-height: 24px;
+  padding: 12px 24px;
+}
+
+.list-group-item .glyphicon {
+  font-size: 20px;
+}
+
+.glyphicon-dummy {
+  display: inline-block;
+  width: 20px;
 }

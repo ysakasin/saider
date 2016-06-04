@@ -19,13 +19,22 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12">
-          <div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h2>ルーム</h2>
+            </div>
             <div class="list-group">
               <% for room_id of @rooms : %>
                 <% if @passwords[room_id] : %>
-                  <a class="list-group-item" href="./<%- room_id %>"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span> <%- @escape(@rooms[room_id]) %></a>
+                  <a class="list-group-item" href="./<%- room_id %>">
+                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+                    <span><%- @escape(@rooms[room_id]) %></span>
+                  </a>
                 <% else: %>
-                  <a class="list-group-item" href="./<%- room_id %>"><%- @escape(@rooms[room_id]) %></a>
+                  <a class="list-group-item" href="./<%- room_id %>">
+                    <span class="glyphicon-dummy"></span>
+                    <span><%- @escape(@rooms[room_id]) %></span>
+                  </a>
                 <% end %>
               <% end %>
             </div>
