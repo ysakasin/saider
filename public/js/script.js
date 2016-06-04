@@ -278,6 +278,7 @@ document.getElementById('btn-delete-room').onclick = deleteRoom;
 
 if (is_need_password == 1) {
   $('#modal-login').modal('show');
+  document.getElementById('password').focus();
 }
 else {
   joinRoom({name: 'ななし', room: room_id});
