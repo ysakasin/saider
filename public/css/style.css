@@ -308,16 +308,16 @@ body#room {
 }
 
 .room-list .list-group-item {
-  font-size: 20px;
-  line-height: 24px;
-  padding: 12px 24px;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 18px 24px;
 }
 
 .list-group-item .glyphicon {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .glyphicon-dummy {
   display: inline-block;
-  width: 20px;
+  width: 18px;
 }
