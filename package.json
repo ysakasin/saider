@@ -1,6 +1,6 @@
 {
   "name": "Saider",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A interactive dice bot",
   "main": "saider.js",
   "scripts": {
