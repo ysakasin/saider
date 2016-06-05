@@ -166,7 +166,8 @@ var DiceRoll = (function() {
   };
 
   DiceRoll.prototype.showResultToLog = function() {
-    addResult({name: this.name, request: this.request, total: this.total});
+    var text = this.request + '→' + this.total;
+    addResult({name: this.name, text: text});
   };
 
   var erase = function() {

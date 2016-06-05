@@ -34,19 +34,27 @@ app.get('/*', function(req,res,next) {
 
 app.get('/', function(req, res) {
   client.hgetall('rooms', function(err, rooms) {
-    res.render('index', { rooms: rooms, escape: helper.escapeHTML });
+    client.hgetall('passwords', function(err, passwords) {
+      if (passwords == null) { passwords = {}; }
+      res.render('index', { rooms: rooms, passwords: passwords, escape: helper.escapeHTML });
+    });
   });
 });
 
 app.post('/create-room', function (req, res) {
-  client.incr('room_id', function(err, room_id){
-    room_id = room_id.toString();
-    var room_name = req.param('room-name');
+  var room_id = helper.generateId();
+  var room_name = req.param('room-name');
+  var use_password = req.param('use-password');
+  var room_password = req.param('room-password');
 
-    res.redirect('./' + room_id);
+  if (room_password != '') {
+    var hash = helper.passwordToHash(room_password);
+    client.hset('passwords', room_id, hash);
+  }
 
-    client.hset('rooms', room_id, room_name);
-  });
+  res.redirect('./' + room_id);
+
+  client.hset('rooms', room_id, room_name);
 });
 
 app.get('/licenses', function(req, res) {
@@ -57,9 +65,12 @@ app.get('/:room_id', function(req, res) {
   var room_id = req.params.room_id;
   client.hexists('rooms', room_id, function(err, is_exist) {
     if (is_exist) {
-      client.lrange('results.' + room_id, 0, -1, function (err, results) {
-        results = results.map(JSON.parse);
-        res.render('room', {room_id: room_id, results: results, escape: helper.escapeHTML});
+      client.hexists('passwords', room_id, function (err, is_need_password) {
+        res.render('room', {
+          room_id: room_id,
+          is_need_password: is_need_password,
+          escape: helper.escapeHTML
+        });
       });
     }
     else {
@@ -84,28 +95,44 @@ io.sockets.on('connection', function(socket) {
 
   socket.on('connected', function(user) {
     client.hexists('rooms', user.room, function(err, is_exist) {
-      if (is_exist) {
-        client.hgetall('memos.' + user.room, function (err, memos) {
-          var res = {};
-          for (memo_id in memos) {
-            res[memo_id] = JSON.parse(memos[memo_id]);
-          }
-          socket.emit('init-memo', res);
-        });
-        client.get('map.' + user.room, function (err, url) {
-          if (url == null) {
-            url = './image/tsukuba.jpg';
-          }
-          socket.emit('map', {url: url});
-        });
-        user_hash[socket.id] = user.name
-        socket.name = user.name;
-        socket.room = user.room;
-        socket.join(user.room);
-      }
-      else {
+      if (!is_exist) {
         socket.disconnect();
+        return;
       }
+
+      client.hget('passwords', user.room, function (err, pass) {
+        if (pass == null || pass == helper.passwordToHash(user.password)) {
+          socket.emit('accepted');
+
+          client.lrange('results.' + user.room, 0, -1, function (err, results) {
+            results = results.map(JSON.parse);
+            socket.emit('init-result', results);
+          });
+
+          client.hgetall('memos.' + user.room, function (err, memos) {
+            var res = {};
+            for (memo_id in memos) {
+              res[memo_id] = JSON.parse(memos[memo_id]);
+            }
+            socket.emit('init-memo', res);
+          });
+
+          client.get('map.' + user.room, function (err, url) {
+            if (url == null) {
+              url = './image/tsukuba.jpg';
+            }
+            socket.emit('map', {url: url});
+          });
+
+          user_hash[socket.id] = user.name
+          socket.name = user.name;
+          socket.room = user.room;
+          socket.join(user.room);
+        }
+        else {
+          socket.emit('rejected');
+        }
+      });
     });
   });
 

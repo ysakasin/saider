@@ -2,6 +2,7 @@ var socketio = io.connect(window.location.host);
 var user_name = 'ななし';
 var memo_data = {};
 var room_id = document.getElementById('room').getAttribute('room-id');
+var is_need_password = document.getElementById('room').getAttribute('is-need-password');
 
 function joinRoom(user) {
   socketio.emit("connected", user);
@@ -34,7 +35,6 @@ function changeUserName() {
   }
 
   user_name = input.value;
-  // $('#changed').css('visibility', 'visible');
   $('#changed').show();
   $('#changed').delay(1500).fadeOut();
   socketio.emit("user-name", input.value);
@@ -65,7 +65,7 @@ function addResult(result) {
   var p = document.createElement('p');
 
   label.innerText = result.name;
-  p.innerText = result.request + '→' + result.total;
+  p.innerText = result.text;
 
   div.className = "result";
   div.appendChild(label);
@@ -75,6 +75,12 @@ function addResult(result) {
 
 function addDice(data) {
   var dice_roll = new DiceRoll(data);
+}
+
+function initResult(results) {
+  for (var result of results) {
+    addResult(result);
+  }
 }
 
 /* Memo */
@@ -192,6 +198,7 @@ function sendMapUrl() {
 /* socketio listener */
 
 // socketio.on("connected",  function() {});
+socketio.on("init-result",  initResult);
 socketio.on("roll",         addDice);
 socketio.on("init-memo",    initMemo);
 socketio.on("memo",         addMemo);
@@ -199,6 +206,12 @@ socketio.on("update-memo",  updateMemo);
 socketio.on("remove-memo",  removeMemo);
 socketio.on("map",          changeMap);
 socketio.on("room-deleted", roomDeleted);
+socketio.on("accepted", function () {$('#modal-login').modal('hide');});
+socketio.on("rejected", function () {
+  $('#password-input-group').addClass('has-error');
+  $('#error-password').show();
+  $('#error-password').delay(1500).fadeOut();
+});
 // socketio.on("disconnect", function() {});
 
 /* Override Bootstrap */
@@ -252,9 +265,21 @@ document.getElementById('form-map').onsubmit = function () {
   return false;
 };
 
+document.getElementById('form-login').onsubmit = function () {
+  var password = document.getElementById('password').value;
+  joinRoom({name: 'ななし', room: room_id, password: password});
+  return false;
+}
+
 document.getElementById('user-name').onblur = changeUserName;
 document.getElementById('change-map').onclick = showMapModal;
 document.getElementById('btn-memo-delete').onclick = deleteMemo;
 document.getElementById('btn-delete-room').onclick = deleteRoom;
 
-joinRoom({name: 'ななし', room: room_id});
+if (is_need_password == 1) {
+  $('#modal-login').modal('show');
+  document.getElementById('password').focus();
+}
+else {
+  joinRoom({name: 'ななし', room: room_id});
+}
