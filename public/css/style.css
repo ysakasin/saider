@@ -3,7 +3,6 @@
 }
 
 body {
-  background-color: #fafafa;
   padding: 50px 0 0 0;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -26,7 +25,7 @@ body#room {
   display: inline;
 }
 
-.room {
+.logo {
   height: 50px;
   line-height: 50px;
   color: white;
@@ -291,33 +290,39 @@ body#room {
 
 /* room list */
 
+.header-room-list {
+  padding: 34px 16px 16px 16px;
+  font-size: 28px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
 .room-list {
   overflow-y: scroll;
+  max-width: 700px;
   height: 100%;
-  padding-top: 20px;
+  margin: 0 auto;
+  padding-bottom: 118px;
 }
 
-.room-list .panel-heading {
-  background-color: #ffffff;
-  padding: 24px;
+.room {
+  color: #333;
+  display: block;
+  font-size: 16px;
+  padding: 16px 32px 16px 16px;
+  border-top: solid 1px #e7e7e7;
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.room-list .panel-heading h2{
-  font-size: 24px;
-  margin: 0;
-}
-
-.room-list .list-group-item {
-  font-size: 18px;
-  line-height: 18px;
-  padding: 18px 24px;
-}
-
-.list-group-item .glyphicon {
-  font-size: 18px;
+.room:hover, .room:focus, .room:hover:focus {
+  color: #333;
+  text-decoration: none;
+  background-color: #f8f8f8;
 }
 
 .glyphicon-dummy {
   display: inline-block;
-  width: 18px;
+  width: 16px;
 }

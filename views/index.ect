@@ -8,40 +8,25 @@
 </head>
 <body>
   <div class="header">
-    <span class="room">
+    <span class="logo">
       Saider
     </span>
     <button class="btn btn-default btn-header pull-right" data-toggle="modal" data-target="#modal-create-room">
       ルームを作成
     </button>
   </div>
+  <h2 class="header-room-list">ルーム</h2>
   <div class="room-list">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h2>ルーム</h2>
-            </div>
-            <div class="list-group">
-              <% for room_id of @rooms : %>
-                <% if @passwords[room_id] : %>
-                  <a class="list-group-item" href="./<%- room_id %>">
-                    <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
-                    <span><%- @escape(@rooms[room_id]) %></span>
-                  </a>
-                <% else: %>
-                  <a class="list-group-item" href="./<%- room_id %>">
-                    <span class="glyphicon-dummy"></span>
-                    <span><%- @escape(@rooms[room_id]) %></span>
-                  </a>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <% for room_id of @rooms : %>
+      <a class="room" href="./<%- room_id %>">
+        <% if @passwords[room_id] : %>
+          <span class="glyphicon glyphicon-lock" aria-hidden="true"></span>
+        <% else: %>
+          <span class="glyphicon-dummy" aria-hidden="true"></span>
+        <% end %>
+        <span><%- @escape(@rooms[room_id]) %></span>
+      </a>
+    <% end %>
   </div>
 
   <div class="modal fade" id="modal-create-room" tabindex="-1" role="dialog" aria-labelledby="modal-join-label">
