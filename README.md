@@ -4,7 +4,7 @@
 
 ボイセ勢のためのオンセ支援ツール
 
-[公式デモサーバー](http://saider.sinjis-view.mydns.jp)
+[公式デモサーバー](https://saider.sakasin.net)
 
 ## 有志による公開サーバー
 
