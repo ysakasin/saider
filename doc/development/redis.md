@@ -2,11 +2,11 @@
 
 | Key           | Type     | Description |
 |---------------|----------|-------------|
-| rooms         | Hash     | key:ルームID, value:ルーム名 |
-| passwords     | Hash     | key:ルームID, value:Hash化したパスワード |
-| results.`id`  | List     | JSON形式のダイスロール結果 |
+| room          | Hash     | key:ルームID, value:ルーム名 |
+| password      | Hash     | key:ルームID, value:Hash化したパスワード |
+| result.`id`   | List     | JSON形式のダイスロール結果 |
 | memo_id       | Hash     | key:ルームID, value:最後に発行したメモのID |
-| memos.`id`    | Hash     | key:メモID, value:JSON形式のメモ情報 |
+| memo.`id`     | Hash     | key:メモID, value:JSON形式のメモ情報 |
 | map           | Hash     | key:ルームID, value:URL |
 
 ## JSONのスキーマ
