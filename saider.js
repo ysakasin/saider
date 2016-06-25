@@ -3,10 +3,10 @@ var config = (process.env.NODE_ENV === 'production')
               ? require('./config.json')
               : require('./config.dev.json');
 
-/* redis */
+/* datastore */
 
-var redis = require('redis');
-var client = redis.createClient(config.redis);
+var DataStore = require('./lib/datastore');
+var datastore = new DataStore(config);
 
 /* express */
 
@@ -33,11 +33,8 @@ app.get('/*', function(req,res,next) {
 });
 
 app.get('/', function(req, res) {
-  client.hgetall('rooms', function(err, rooms) {
-    client.hgetall('passwords', function(err, passwords) {
-      if (passwords == null) { passwords = {}; }
-      res.render('index', { rooms: rooms, passwords: passwords, escape: helper.escapeHTML });
-    });
+  datastore.getRooms(function(rooms, passwords) {
+    res.render('index', { rooms: rooms, passwords: passwords, escape: helper.escapeHTML });
   });
 });
 
@@ -49,12 +46,12 @@ app.post('/create-room', function (req, res) {
 
   if (room_password != '') {
     var hash = helper.passwordToHash(room_password);
-    client.hset('passwords', room_id, hash);
+    datastore.setPassword(room_id, hash);
   }
 
   res.redirect('./' + room_id);
 
-  client.hset('rooms', room_id, room_name);
+  datastore.setRoom(room_id, room_name);
 });
 
 app.get('/licenses', function(req, res) {
@@ -63,9 +60,9 @@ app.get('/licenses', function(req, res) {
 
 app.get('/:room_id', function(req, res) {
   var room_id = req.params.room_id;
-  client.hexists('rooms', room_id, function(err, is_exist) {
+  datastore.isExistRoom(room_id, function(err, is_exist) {
     if (is_exist) {
-      client.hexists('passwords', room_id, function (err, is_need_password) {
+      datastore.isExistPassword(room_id, function (err, is_need_password) {
         res.render('room', {
           room_id: room_id,
           is_need_password: is_need_password,
@@ -76,7 +73,7 @@ app.get('/:room_id', function(req, res) {
     else {
       res.redirect('./');
     }
-  })
+  });
 });
 
 app.use(express.static('public'));
@@ -94,22 +91,22 @@ var user_hash = {};
 io.sockets.on('connection', function(socket) {
 
   socket.on('connected', function(user) {
-    client.hexists('rooms', user.room, function(err, is_exist) {
+    datastore.isExistRoom(user.room, function(err, is_exist) {
       if (!is_exist) {
         socket.disconnect();
         return;
       }
 
-      client.hget('passwords', user.room, function (err, pass) {
+      datastore.getPassword(user.room, function (err, pass) {
         if (pass == null || pass == helper.passwordToHash(user.password)) {
           socket.emit('accepted');
 
-          client.lrange('results.' + user.room, 0, -1, function (err, results) {
+          datastore.getAllResult(user.room, function (err, results) {
             results = results.map(JSON.parse);
             socket.emit('init-result', results);
           });
 
-          client.hgetall('memos.' + user.room, function (err, memos) {
+          datastore.getAllMemo(user.room, function (err, memos) {
             var res = {};
             for (memo_id in memos) {
               res[memo_id] = JSON.parse(memos[memo_id]);
@@ -117,7 +114,7 @@ io.sockets.on('connection', function(socket) {
             socket.emit('init-memo', res);
           });
 
-          client.get('map.' + user.room, function (err, url) {
+          datastore.getMap(user.room, function (err, url) {
             if (url == null) {
               url = './image/tsukuba.jpg';
             }
@@ -154,21 +151,12 @@ io.sockets.on('connection', function(socket) {
 
     var result_text = request + '→' + res.total;
     var json = JSON.stringify({name: user_hash[socket.id], text: result_text});
-    var key = 'results.' + socket.room;
-    client.rpush(key, json);
+    datastore.setResult(socket.room, json);
   });
 
   socket.on('memo', function(request) {
-    client.incr('memo_id.' + socket.room, function(err, memo_id){
-      var data = {
-        memo_id: memo_id.toString(),
-        title: request.title,
-        body: request.body
-      };
+    datastore.createMemo(socket.room, request.title, request.body, function(data) {
       io.sockets.to(socket.room).emit('memo', data);
-
-      var key = 'memos.' + socket.room;
-      client.hset(key, memo_id, JSON.stringify(data));
     });
   });
 
@@ -180,27 +168,24 @@ io.sockets.on('connection', function(socket) {
     };
     io.sockets.to(socket.room).emit('update-memo', data);
 
-    var key = 'memos.' + socket.room;
-    client.hset(key, request.memo_id, JSON.stringify(data));
+    datastore.setMemo(socket.room, request.memo_id, JSON.stringify(data));
   });
 
   socket.on('delete-memo', function(memo_id) {
     io.sockets.to(socket.room).emit('remove-memo', memo_id);
 
-    var key = 'memos.' + socket.room;
-    client.hdel(key, memo_id);
+    datastore.deleteMemo(socket.room, memo_id);
   });
 
   socket.on('map', function(request) {
     io.sockets.to(socket.room).emit('map', request);
 
-    var key = 'map.' + socket.room;
-    client.set(key, request.url);
+    datastore.setMap(socket.room, request.url);
   });
 
   socket.on('delete-room', function() {
     io.sockets.to(socket.room).emit('room-deleted');
-    helper.deleteRoom(client, socket.room);
+    datastore.deleteRoom(socket.room);
   });
 
   socket.on('disconnect', function() {
