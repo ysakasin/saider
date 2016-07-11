@@ -85,7 +85,8 @@ server.listen(31102, function() {
 /* socketio */
 
 var io = require('socket.io')(server);
-var dicebot = require ('./lib/dicebot/dicebot.js');
+var DiceBot = require('./lib/dicebot/dicebot');
+var dicebot = new DiceBot();
 var user_hash = {};
 
 io.sockets.on('connection', function(socket) {
