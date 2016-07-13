@@ -46,15 +46,8 @@ function rollDice() {
   var diceInput = document.getElementById('dice-input');
   var expr = diceInput.value;
 
-  if (isOrderDiceRoll(expr)) {
-    diceInput.value = '';
-    expr = expr.replace(/d/g, 'D');
-    socketio.emit("roll", expr);
-  }
-}
-
-function isOrderDiceRoll(msg) {
-  return /^\d+[dD]\d+(([+-]\d+[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/.test(msg);
+  diceInput.value = '';
+  socketio.emit("roll", expr);
 }
 
 function addResult(result) {

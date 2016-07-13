@@ -139,18 +139,17 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('roll', function(request) {
-    if (!dicebot.isDiceRequest(request)) {
+    var res = dicebot.roll(request);
+    if (res == null) {
       return;
     }
-
-    var res = dicebot.roll(request)
 
     res['name'] = user_hash[socket.id];
     res['request'] = request;
 
     io.sockets.to(socket.room).emit('roll', res);
 
-    var result_text = request + '→' + res.total;
+    var result_text = request + '→' + (res.total || res.result);
     var json = JSON.stringify({name: user_hash[socket.id], text: result_text});
     datastore.setResult(socket.room, json);
   });

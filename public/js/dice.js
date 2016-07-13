@@ -79,7 +79,7 @@ var DiceRoll = (function() {
     for (var i = 0; i < this.dices.length; i++) {
       is_drawable &= drawing_dice.indexOf(this.dices[i].d) != -1;
     }
-    if (!is_drawable) {
+    if (!is_drawable || this.dices.length == 0) {
       this.showResultToLog();
       return;
     }
@@ -166,7 +166,7 @@ var DiceRoll = (function() {
   };
 
   DiceRoll.prototype.showResultToLog = function() {
-    var text = this.request + '→' + this.total;
+    var text = this.request + '→' + (this.total || this.result);
     addResult({name: this.name, text: text});
   };
 
