@@ -31,3 +31,5 @@ public/m.html
 public/i.html
 *.rdb
 config.json
+
+test.js
