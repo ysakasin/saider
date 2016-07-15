@@ -76,6 +76,15 @@ function initResult(results) {
   }
 }
 
+function changeDicebot(dicebot_id) {
+  $('#changed-dicebot').show();
+  $('#changed-dicebot').delay(1500).fadeOut();
+  socketio.emit('dicebot', dicebot_id);
+}
+
+function setDicebot(dicebot_id) {
+  document.getElementById('select-room-dicebot').value = dicebot_id;
+}
 /* Memo */
 
 function addMemo(memo) {
@@ -193,6 +202,7 @@ function sendMapUrl() {
 // socketio.on("connected",  function() {});
 socketio.on("init-result",  initResult);
 socketio.on("roll",         addDice);
+socketio.on("dicebot",      setDicebot);
 socketio.on("init-memo",    initMemo);
 socketio.on("memo",         addMemo);
 socketio.on("update-memo",  updateMemo);
@@ -262,6 +272,10 @@ document.getElementById('form-login').onsubmit = function () {
   var password = document.getElementById('password').value;
   joinRoom({name: 'ななし', room: room_id, password: password});
   return false;
+}
+
+document.getElementById('select-room-dicebot').onchange = function() {
+  changeDicebot(this.value);
 }
 
 document.getElementById('user-name').onblur = changeUserName;

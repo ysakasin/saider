@@ -7,6 +7,22 @@ var config = (process.env.NODE_ENV === 'production')
 
 var DataStore = require('./lib/datastore');
 var datastore = new DataStore(config);
+var room_dicebot = {};
+datastore.getAllDicebot(function(dicebots) {
+  room_dicebot = dicebots;
+});
+
+/* dicebot */
+
+var dicebotList = {
+  'dicebot': '標準ダイスボット',
+  'cthulhu': 'クトゥルフ神話TRPG'
+};
+var dicebots = {};
+for (id in dicebotList) {
+  var c = require('./lib/dicebot/' + id);
+  dicebots[id] = new c();
+}
 
 /* express */
 
@@ -34,7 +50,12 @@ app.get('/*', function(req,res,next) {
 
 app.get('/', function(req, res) {
   datastore.getRooms(function(rooms, passwords) {
-    res.render('index', { rooms: rooms, passwords: passwords, escape: helper.escapeHTML });
+    res.render('index', {
+      rooms: rooms,
+      passwords: passwords,
+      dicebot: dicebotList,
+      escape: helper.escapeHTML
+    });
   });
 });
 
@@ -43,11 +64,18 @@ app.post('/create-room', function (req, res) {
   var room_name = req.param('room-name');
   var use_password = req.param('use-password');
   var room_password = req.param('room-password');
+  var dicebot_id = req.param('dicebot');
 
   if (room_password != '') {
     var hash = helper.passwordToHash(room_password);
     datastore.setPassword(room_id, hash);
   }
+
+  if (!(dicebot_id in dicebotList)) {
+    dicebot_id = 'dicebot';
+  }
+  room_dicebot[room_id] = dicebot_id;
+  datastore.setDicebot(room_id, dicebot_id);
 
   res.redirect('./' + room_id);
 
@@ -66,6 +94,8 @@ app.get('/:room_id', function(req, res) {
         res.render('room', {
           room_id: room_id,
           is_need_password: is_need_password,
+          dicebots: dicebotList,
+          dicebot: room_dicebot[room_id],
           escape: helper.escapeHTML
         });
       });
@@ -85,8 +115,6 @@ server.listen(31102, function() {
 /* socketio */
 
 var io = require('socket.io')(server);
-var DiceBot = require('./lib/dicebot/dicebot');
-var dicebot = new DiceBot();
 var user_hash = {};
 
 io.sockets.on('connection', function(socket) {
@@ -139,6 +167,8 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('roll', function(request) {
+    var dicebot_id = room_dicebot[socket.room];
+    var dicebot = dicebots[dicebot_id];
     var res = dicebot.roll(request);
     if (res == null) {
       return;
@@ -152,6 +182,15 @@ io.sockets.on('connection', function(socket) {
     var result_text = request + '→' + (res.total || res.result);
     var json = JSON.stringify({name: user_hash[socket.id], text: result_text});
     datastore.setResult(socket.room, json);
+  });
+
+  socket.on('dicebot', function(dicebot_id) {
+    if (!(dicebot_id in dicebotList)) {
+      return;
+    }
+
+    room_dicebot[socket.room] = dicebot_id;
+    io.sockets.to(socket.room).emit('dicebot', dicebot_id);
   });
 
   socket.on('memo', function(request) {
