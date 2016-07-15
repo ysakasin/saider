@@ -82,8 +82,11 @@ function changeDicebot(dicebot_id) {
   socketio.emit('dicebot', dicebot_id);
 }
 
-function setDicebot(dicebot_id) {
-  document.getElementById('select-room-dicebot').value = dicebot_id;
+function setDicebot(dicebot) {
+  document.getElementById('select-room-dicebot').value = dicebot.id;
+
+  var memo = {memo_id: 'dicebot', title: dicebot.name, body: dicebot.description};
+  memo_data['dicebot'] = memo;
 }
 /* Memo */
 
@@ -290,3 +293,5 @@ if (is_need_password == 1) {
 else {
   joinRoom({name: 'ななし', room: room_id});
 }
+
+$('#dice-input').popover();

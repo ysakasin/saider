@@ -195,6 +195,7 @@ body#room {
 
 .popover {
   box-shadow: none;
+  max-width: 100%;
 }
 
 #map-area {

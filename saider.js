@@ -150,6 +150,11 @@ io.sockets.on('connection', function(socket) {
             socket.emit('map', {url: url});
           });
 
+          var dicebot_id = room_dicebot[user.room];
+          var bot = dicebots[dicebot_id];
+          var res = {id: dicebot_id, name: bot.name, description: bot.description};
+          socket.emit('dicebot', res);
+
           user_hash[socket.id] = user.name
           socket.name = user.name;
           socket.room = user.room;
@@ -190,7 +195,10 @@ io.sockets.on('connection', function(socket) {
     }
 
     room_dicebot[socket.room] = dicebot_id;
-    io.sockets.to(socket.room).emit('dicebot', dicebot_id);
+
+    var bot = dicebots[dicebot_id];
+    var res = {id: dicebot_id, name: bot.name, description: bot.description};
+    io.sockets.to(socket.room).emit('dicebot', res);
   });
 
   socket.on('memo', function(request) {
