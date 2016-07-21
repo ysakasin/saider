@@ -108,6 +108,10 @@ body#room {
   border-radius: 5px;
 }
 
+#changed-dicebot {
+  display: none;
+}
+
 #user-name {
   margin: 5px;
   margin-right: 20px;
@@ -191,6 +195,7 @@ body#room {
 
 .popover {
   box-shadow: none;
+  max-width: 100%;
 }
 
 #map-area {

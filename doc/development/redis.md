@@ -4,6 +4,7 @@
 |---------------|----------|-------------|
 | room          | Hash     | key:ルームID, value:ルーム名 |
 | password      | Hash     | key:ルームID, value:Hash化したパスワード |
+| dicebot       | Hash     | key:ルームID, value:ダイスボットのID |
 | result.`id`   | List     | JSON形式のダイスロール結果 |
 | memo_id       | Hash     | key:ルームID, value:最後に発行したメモのID |
 | memo.`id`     | Hash     | key:メモID, value:JSON形式のメモ情報 |

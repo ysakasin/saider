@@ -46,15 +46,8 @@ function rollDice() {
   var diceInput = document.getElementById('dice-input');
   var expr = diceInput.value;
 
-  if (isOrderDiceRoll(expr)) {
-    diceInput.value = '';
-    expr = expr.replace(/d/g, 'D');
-    socketio.emit("roll", expr);
-  }
-}
-
-function isOrderDiceRoll(msg) {
-  return /^\d+[dD]\d+(([+-]\d+[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/.test(msg);
+  diceInput.value = '';
+  socketio.emit("roll", expr);
 }
 
 function addResult(result) {
@@ -83,6 +76,18 @@ function initResult(results) {
   }
 }
 
+function changeDicebot(dicebot_id) {
+  $('#changed-dicebot').show();
+  $('#changed-dicebot').delay(1500).fadeOut();
+  socketio.emit('dicebot', dicebot_id);
+}
+
+function setDicebot(dicebot) {
+  document.getElementById('select-room-dicebot').value = dicebot.id;
+
+  var memo = {memo_id: 'dicebot', title: dicebot.name, body: dicebot.description};
+  memo_data['dicebot'] = memo;
+}
 /* Memo */
 
 function addMemo(memo) {
@@ -200,6 +205,7 @@ function sendMapUrl() {
 // socketio.on("connected",  function() {});
 socketio.on("init-result",  initResult);
 socketio.on("roll",         addDice);
+socketio.on("dicebot",      setDicebot);
 socketio.on("init-memo",    initMemo);
 socketio.on("memo",         addMemo);
 socketio.on("update-memo",  updateMemo);
@@ -271,6 +277,10 @@ document.getElementById('form-login').onsubmit = function () {
   return false;
 }
 
+document.getElementById('select-room-dicebot').onchange = function() {
+  changeDicebot(this.value);
+}
+
 document.getElementById('user-name').onblur = changeUserName;
 document.getElementById('change-map').onclick = showMapModal;
 document.getElementById('btn-memo-delete').onclick = deleteMemo;
@@ -283,3 +293,5 @@ if (is_need_password == 1) {
 else {
   joinRoom({name: 'ななし', room: room_id});
 }
+
+$('#dice-input').popover();

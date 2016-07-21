@@ -32,7 +32,7 @@
   <div class="toolbar">
     <div id="dice-tool">
       <form id="form-dice">
-        <input id="dice-input" placeholder="Dice roll">
+        <input id="dice-input" placeholder="Dice roll"  memo-id="dicebot" data-container="body" data-toggle="popover" data-trigger="hover">
       </form>
     </div>
     <div id="memo-tool">
@@ -99,7 +99,21 @@
           <h4 class="modal-title">ルームの設定</h4>
         </div>
         <div class="modal-body">
-          <button id="btn-delete-room" class="btn btn-danger" data-dismiss="modal">ルームを削除</button>
+          <div class="form-group">
+            <button id="btn-delete-room" class="btn btn-danger" data-dismiss="modal">ルームを削除</button>
+          </div>
+          <div class="form-group">
+            <label for="dicebot">ダイスボット <small id="changed-dicebot">変更しました</small></label>
+            <select id="select-room-dicebot" class="form-control" name="dicebot">
+              <% for bot_id of @dicebots : %>
+                <% if bot_id == @dicebot : %>
+                  <option value="<%- bot_id %>" selected><%- @dicebots[bot_id] %></option>
+                <% else: %>
+                  <option value="<%- bot_id %>"><%- @dicebots[bot_id] %></option>
+                <% end %>
+              <% end %>
+            </select>
+          </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-default" type="button" data-dismiss="modal">閉じる</button>
