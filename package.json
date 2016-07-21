@@ -5,7 +5,8 @@
   "main": "saider.js",
   "scripts": {
     "start": "NODE_ENV=production node saider.js",
-    "dev": "node saider.js"
+    "dev": "node saider.js",
+    "cleanroom" : "node scripts/clean.js"
   },
   "repository": {
     "type": "git",

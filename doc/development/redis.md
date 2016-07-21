@@ -9,6 +9,7 @@
 | memo_id       | Hash     | key:ルームID, value:最後に発行したメモのID |
 | memo.`id`     | Hash     | key:メモID, value:JSON形式のメモ情報 |
 | map           | Hash     | key:ルームID, value:URL |
+| time          | Hash     | key:ルームID, value:協定世界時から経過したミリ秒 ルームが作成されたときおよびルームにログイン/ログアウトした時に更新される |
 
 ## JSONのスキーマ
 

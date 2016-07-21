@@ -80,6 +80,7 @@ app.post('/create-room', function (req, res) {
   res.redirect('./' + room_id);
 
   datastore.setRoom(room_id, room_name);
+  datastore.updateTime(room_id);
 });
 
 app.get('/licenses', function(req, res) {
@@ -149,6 +150,8 @@ io.sockets.on('connection', function(socket) {
             }
             socket.emit('map', {url: url});
           });
+
+          datastore.updateTime(user.room);
 
           var dicebot_id = room_dicebot[user.room];
           var bot = dicebots[dicebot_id];
@@ -239,5 +242,6 @@ io.sockets.on('connection', function(socket) {
     if (user_hash[socket.id]) {
       delete user_hash[socket.id];
     }
+    datastore.updateTime(socket.room);
   });
 });

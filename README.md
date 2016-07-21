@@ -78,6 +78,18 @@ Redisを起動しておく
 $ npm start
 ```
 
+## サーバー管理者向けのコマンド
+
+### cleanroom
+
+一定時間アクセスアクセスされていないルームをまとめて削除する
+
+```
+npm run cleanroom
+```
+
+* LIMIT_DAY : 期限となる日数 (初期値 7)
+
 ## Configuration
 
 | Key        | Default   | Description |
