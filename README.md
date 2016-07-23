@@ -1,6 +1,6 @@
 # Saider
 
-![Saider](public/image/saider.png)
+![Saider](public/image/logo.png)
 
 ボイセ勢のためのオンセ支援ツール
 
