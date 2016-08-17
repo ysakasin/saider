@@ -205,13 +205,50 @@ body#room {
   height: 100%;
 }
 
+#piece-area {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.piece {
+  width: 50px;
+  height: 50px;
+  background-color: black;
+  position: absolute;
+}
+
+/*.piece img {
+    max-width: 50px;
+    max-height: 50px;
+}*/
+
+.piece-list {
+    list-style: none;
+}
+
+.piece-list li {
+    margin: 15px auto;
+}
+
+.piece-list img {
+    max-width: 75px;
+    max-height: 75px;
+}
+
+.piece-list .glyphicon {
+    cursor: pointer;
+    vertical-align: bottom;
+    font-size: 20px;
+}
+
 #map-img {
   padding: 5px;
   padding-bottom: 0px;
   display: block;
   max-width: 100%;
   max-height: 100%;
-  margin: auto;
+  /*margin: auto;*/
 }
 
 #dice-tool, #memo-tool{
@@ -259,7 +296,7 @@ body#room {
   margin-left: 360px;
 }
 
-#change-map {
+.btn-map-tool {
   float: right;
   height: 40px;
   margin: 5px;

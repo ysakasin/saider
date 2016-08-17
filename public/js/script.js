@@ -182,6 +182,10 @@ $(function () {
 
 function changeMap(map) {
   var img = document.getElementById('map-img');
+  img.onload = function() {
+    initDragArea(img.width, img.height);
+    repositionAllPieces();
+  }
   img.src = map.url;
 }
 
@@ -200,6 +204,147 @@ function sendMapUrl() {
   $('#modal-map').modal('hide');
 }
 
+/* piece */
+
+function initPiece(pieces) {
+  for (id in pieces) {
+    // console.log(pieces[id])
+    addPiece(pieces[id], true);
+  }
+}
+
+function initDragArea(width, height) {
+  var drag_area = document.getElementById('piece-area');
+  drag_area.style.width = width;
+  drag_area.style.height = height;
+}
+
+function addPiece(request, isInit) {
+  // console.log(request);
+  var piece = document.createElement('img');
+  piece.className = 'piece';
+
+  piece.addEventListener('dragstart', function(event) {
+    event.dataTransfer.setData('Text', event.target.id);
+    console.log('Drag start');
+  }, true);
+  var img = document.getElementById('map-img');
+  piece.id = request.piece_id;
+  piece.dataset.x = request.x;
+  piece.dataset.y = request.y;
+  // console.log(img.width);
+  if (isInit) {
+    piece.style.left = '-100px';
+    piece.style.top = '-100px';
+  }
+  else {
+    piece.style.left = (piece.dataset.x * img.width - 25)+'px';
+    piece.style.top = (piece.dataset.y * img.height - 25)+'px';
+  }
+  piece.src = request.url;
+  // console.log('piece');
+  // console.log(request.url);
+
+  var map = document.getElementById('piece-area');
+  map.appendChild(piece);
+
+
+  var li = document.createElement('li');
+  var simg = document.createElement('img');
+  var span = document.createElement('span');
+  li.id = 'list-' + request.piece_id;
+  simg.src = request.url;
+  span.className = 'glyphicon glyphicon-trash';
+  span.setAttribute('aria-hidden', true);
+  span.onclick = function() {
+    socketio.emit('delete-piece', request.piece_id);
+  };
+  li.appendChild(simg);
+  li.appendChild(span);
+
+  var list = document.getElementById('piece-list');
+  list.appendChild(li);
+}
+
+function deletePiece(id) {
+  var piece = document.getElementById(id);
+  var element = document.getElementById('list-' + id);
+  piece.parentNode.removeChild(piece);
+  element.parentNode.removeChild(element);
+}
+
+function movePiece(request) {
+  var piece = document.getElementById(request.piece_id);
+  // console.log(request.piece_id);
+  var img = document.getElementById('map-img');
+
+  piece.dataset.x = request.x;
+  piece.dataset.y = request.y;
+  reposition(piece, img.width, img.height);
+}
+
+function reposition(piece, img_width, img_height) {
+  piece.style.left = (piece.dataset.x * img_width - 25)+'px';
+  piece.style.top = (piece.dataset.y * img_height - 25)+'px';
+}
+
+function sendPiece() {
+  var input_piece_url = document.getElementById('piece-url');
+  // console.log(input_piece_url.value);
+
+  socketio.emit("add-piece", input_piece_url.value);
+  $('#modal-piece').modal('hide');
+}
+
+function showPieceModal() {
+  $('#modal-piece').modal('show');
+}
+
+var droparea = document.getElementById('piece-area');
+// var droparea = document.getElementById('map-area');
+
+  // var droparea = document.getElementById('droparea');
+  // dragoverイベントのリスナーを設定
+droparea.addEventListener('dragover', function(evt) {
+  evt.preventDefault();
+}, true);
+
+function repositionAllPieces() {
+  var img = document.getElementById('map-img');
+  initDragArea(img.width, img.height);
+  var pieces = $('.piece');
+  $.each(pieces, function(index, piece) {
+    reposition(piece, img.width, img.height);
+  });
+}
+
+// document.getElementById('map-img').onload = repositionAllPieces;
+window.onresize = repositionAllPieces;
+// window.onload = repositionAllPieces;
+// $(window).load(function(){
+//   repositionAllPieces();
+// });
+
+// dropイベントのリスナーを設定
+droparea.addEventListener('drop', function(evt) {
+  // console.log(evt);
+  var id = evt.dataTransfer.getData('Text');
+  var target = document.getElementById(id);
+  // dropイベントが発生したクライアント上のX、Y座標に、ドロップ要素を配置
+  target.style.left = (evt.layerX - 25)+'px';
+  target.style.top = (evt.layerY - 25)+'px';
+
+  var img = document.getElementById('map-img');
+  // console.log(evt.layerX / img.width);
+  // console.log(evt.layerY / img.height);
+
+  target.dataset.x = evt.layerX / img.width;
+  target.dataset.y = evt.layerY / img.height;
+  socketio.emit('move-piece', {piece_id: target.id, url: target.src, x: target.dataset.x, y: target.dataset.y})
+  droparea.appendChild(target);
+  evt.preventDefault();
+}, true);
+
 /* socketio listener */
 
 // socketio.on("connected",  function() {});
@@ -211,6 +356,10 @@ socketio.on("memo",         addMemo);
 socketio.on("update-memo",  updateMemo);
 socketio.on("remove-memo",  removeMemo);
 socketio.on("map",          changeMap);
+socketio.on("init-piece",   initPiece);
+socketio.on("add-piece",    addPiece);
+socketio.on("delete-piece", deletePiece);
+socketio.on("move-piece",   movePiece);
 socketio.on("room-deleted", roomDeleted);
 socketio.on("accepted", function () {$('#modal-login').modal('hide');});
 socketio.on("rejected", function () {
@@ -271,6 +420,11 @@ document.getElementById('form-map').onsubmit = function () {
   return false;
 };
 
+document.getElementById('new-piece').onsubmit = function () {
+  sendPiece();
+  return false;
+};
+
 document.getElementById('form-login').onsubmit = function () {
   var password = document.getElementById('password').value;
   joinRoom({name: 'ななし', room: room_id, password: password});
@@ -283,6 +437,7 @@ document.getElementById('select-room-dicebot').onchange = function() {
 
 document.getElementById('user-name').onblur = changeUserName;
 document.getElementById('change-map').onclick = showMapModal;
+document.getElementById('edit-piece').onclick = showPieceModal;
 document.getElementById('btn-memo-delete').onclick = deleteMemo;
 document.getElementById('btn-delete-room').onclick = deleteRoom;
 

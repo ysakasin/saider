@@ -144,6 +144,15 @@ io.sockets.on('connection', function(socket) {
             socket.emit('init-memo', res);
           });
 
+          datastore.getAllPiece(user.room, function (err, pieces) {
+            var res = {};
+            for (piece_id in pieces) {
+              res[piece_id] = JSON.parse(pieces[piece_id]);
+            }
+            console.log(res);
+            socket.emit('init-piece', res);
+          });
+
           datastore.getMap(user.room, function (err, url) {
             if (url == null) {
               url = './image/tsukuba.jpg';
@@ -232,6 +241,22 @@ io.sockets.on('connection', function(socket) {
 
     datastore.setMap(socket.room, request.url);
   });
+
+  socket.on('add-piece', function(request) {
+    datastore.createPiece(socket.room, request, 0.5, 0.5, function(data) {
+      io.sockets.to(socket.room).emit('add-piece', data);
+    });
+  });
+
+  socket.on('move-piece', function(request) {
+    datastore.updatePiece(socket.room, request.piece_id, request.url, request.x, request.y)
+    io.sockets.to(socket.room).emit('move-piece', request);
+  });
+
+  socket.on('delete-piece', function(request) {
+    datastore.deletePiece(socket.room, request);
+    io.sockets.to(socket.room).emit('delete-piece', request);
+  })
 
   socket.on('delete-room', function() {
     io.sockets.to(socket.room).emit('room-deleted');
