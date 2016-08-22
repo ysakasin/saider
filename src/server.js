@@ -1,11 +1,11 @@
-var helper = require('./lib/helper');
+var helper = require('./helper');
 var config = (process.env.NODE_ENV === 'production')
-              ? require('./config.json')
-              : require('./config.dev.json');
+              ? require('../config.json')
+              : require('../config.dev.json');
 
 /* datastore */
 
-var DataStore = require('./lib/datastore');
+var DataStore = require('./datastore');
 var datastore = new DataStore(config);
 var room_dicebot = {};
 datastore.getAllDicebot(function(dicebots) {
@@ -20,7 +20,7 @@ var dicebotList = {
 };
 var dicebots = {};
 for (id in dicebotList) {
-  var c = require('./lib/dicebot/' + id);
+  var c = require('./dicebot/' + id);
   dicebots[id] = new c();
 }
 
