@@ -4,9 +4,10 @@
   "description": "A interactive dice bot",
   "main": "saider.js",
   "scripts": {
-    "start": "NODE_ENV=production node saider.js",
-    "dev": "node saider.js",
-    "cleanroom" : "node scripts/clean.js"
+    "start": "npm run build; NODE_ENV=production node saider.js",
+    "dev": "npm run build; node saider.js",
+    "build": "babel src -d lib",
+    "cleanroom": "node scripts/clean.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,10 @@
     "url": "https://github.com/NKMR6194/saider/issues"
   },
   "homepage": "https://github.com/NKMR6194/saider",
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.13.2"
+  },
   "dependencies": {
     "body-parser": "^1.15.1",
     "ect": "^0.5.9",
