@@ -1,4 +1,4 @@
-exports.escapeHTML = function (str) {
+function escapeHTML(str) {
   str = str.replace(/&/g, '&amp;')
            .replace(/</g, '&lt;')
            .replace(/>/g, '&gt;')
@@ -7,24 +7,33 @@ exports.escapeHTML = function (str) {
   return str;
 };
 
-exports.cspParams = function (host) {
+function cspParams(host) {
   'default-src "self" ' + host + ' ws://' + host + '; img-src "self" *';
 }
 
-var crypto =  require('crypto');
-var seed = Date.now() * Math.random();
-var serial = 1;
+import crypto from 'crypto';
+const seed = Date.now() * Math.random();
+let serial = 1;
 
-exports.generateId = function () {
-  var data = seed + ':' + serial++;
+function generateId() {
+  const data = seed + ':' + serial++;
   return crypto
     .createHash('sha1')
     .update(data)
     .digest('hex');
 };
 
-exports.passwordToHash = function (password) {
-  var sha512 = crypto.createHash('sha512');
+function passwordToHash(password) {
+  let sha512 = crypto.createHash('sha512');
   sha512.update(password);
   return sha512.digest('hex');
 }
+
+let helper = {
+    escapeHTML,
+    cspParams,
+    generateId,
+    passwordToHash
+};
+
+export default helper;

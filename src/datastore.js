@@ -1,6 +1,4 @@
-"use strict"
-
-const redis = require('redis');
+import redis from 'redis';
 let client;
 
 const key = (target, id) => {
@@ -172,4 +170,4 @@ class DataStore {
   }
 }
 
-module.exports = DataStore;
+export { DataStore };

@@ -1,7 +1,5 @@
-"use strict"
-
-const util = require('./module/util.js');
-const DiceBot = require('./dicebot.js');
+import util from './module/util.js';
+import DiceBot from './dicebot.js';
 
 class Cthulhu extends DiceBot {
   constructor(){
@@ -187,4 +185,4 @@ x=故障ナンバー。出目x以上が出た場合、判定の成否と故障�
   }
 }
 
-module.exports = Cthulhu;
+export default Cthulhu;

@@ -1,11 +1,12 @@
-var helper = require('./helper');
+// var helper = require('./helper');
+import helper from './helper';
 var config = (process.env.NODE_ENV === 'production')
               ? require('../config.json')
               : require('../config.dev.json');
 
 /* datastore */
 
-var DataStore = require('./datastore');
+import { DataStore } from './datastore';
 var datastore = new DataStore(config);
 var room_dicebot = {};
 datastore.getAllDicebot(function(dicebots) {
@@ -19,8 +20,8 @@ var dicebotList = {
   'cthulhu': 'クトゥルフ神話TRPG'
 };
 var dicebots = {};
-for (id in dicebotList) {
-  var c = require('./dicebot/' + id);
+for (const id in dicebotList) {
+  var c = require('./dicebot/' + id).default;
   dicebots[id] = new c();
 }
 
@@ -138,7 +139,7 @@ io.sockets.on('connection', function(socket) {
 
           datastore.getAllMemo(user.room, function (err, memos) {
             var res = {};
-            for (memo_id in memos) {
+            for (const memo_id in memos) {
               res[memo_id] = JSON.parse(memos[memo_id]);
             }
             socket.emit('init-memo', res);
@@ -146,7 +147,7 @@ io.sockets.on('connection', function(socket) {
 
           datastore.getAllPiece(user.room, function (err, pieces) {
             var res = {};
-            for (piece_id in pieces) {
+            for (const piece_id in pieces) {
               res[piece_id] = JSON.parse(pieces[piece_id]);
             }
             console.log(res);

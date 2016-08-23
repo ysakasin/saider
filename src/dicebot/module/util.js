@@ -1,6 +1,6 @@
-var fs = require('fs');
+import fs from 'fs';
 
-exports.getDicebotPaths = function () {
+function getDicebotPaths() {
   var fileList = [];
   fs.readdir('./lib/dicebot', function(err, files){
       if (err) throw err;
@@ -14,7 +14,7 @@ exports.getDicebotPaths = function () {
   return fileList
 }
 
-exports.rollDice = function(n, d) {
+function rollDice(n, d) {
   var numbers = [];
   var total = 0;
 
@@ -51,4 +51,12 @@ exports.rollDice = function(n, d) {
   return result;
 };
 
-exports.basic_request_reg = /^\d*[dD]\d+(([+-]\d*[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/;
+const basic_request_reg = /^\d*[dD]\d+(([+-]\d*[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/;
+
+let util = {
+    getDicebotPaths,
+    rollDice,
+    basic_request_reg
+};
+
+export default util;

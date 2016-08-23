@@ -1,6 +1,4 @@
-"use strict"
-
-const util = require('./module/util.js')
+import util from './module/util.js';
 
 class DiceBot {
   constructor(){
@@ -151,4 +149,4 @@ class DiceBot {
   }
 }
 
-module.exports = DiceBot;
+export default DiceBot;
