@@ -16,7 +16,7 @@ datastore.getAllDicebot(function(dicebots) {
 
 var dicebotList = {
     'dicebot': '標準ダイスボット',
-    'cthulhu': 'クトゥルフ神話TRPG'
+    'cthulhu': 'クトゥルフ神話TRPG',
 };
 var dicebots = {};
 for (const id in dicebotList) {
@@ -53,7 +53,7 @@ app.get('/', function(req, res) {
             rooms: rooms,
             passwords: passwords,
             dicebot: dicebotList,
-            escape: helper.escapeHTML
+            escape: helper.escapeHTML,
         });
     });
 });
@@ -95,7 +95,7 @@ app.get('/:room_id', function(req, res) {
                     is_need_password: is_need_password,
                     dicebots: dicebotList,
                     dicebot: room_dicebot[room_id],
-                    escape: helper.escapeHTML
+                    escape: helper.escapeHTML,
                 });
             });
         }
@@ -220,7 +220,7 @@ io.sockets.on('connection', function(socket) {
         var data = {
             memo_id: request.memo_id,
             title: request.title,
-            body: request.body
+            body: request.body,
         };
         io.sockets.to(socket.room).emit('update-memo', data);
 

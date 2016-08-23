@@ -56,7 +56,7 @@ class DiceBot {
             args: args,
             offset: offset,
             comp: comp,
-            lhs: lhs
+            lhs: lhs,
         };
         return res;
     }
@@ -99,7 +99,7 @@ class DiceBot {
             tail: tail,
             offset: offset,
             comp: comp,
-            lhs: lhs
+            lhs: lhs,
         };
         return res;
     }

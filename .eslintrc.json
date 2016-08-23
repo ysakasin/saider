@@ -26,6 +26,15 @@
             "error",
             "always"
         ],
-        "no-console": 0
+        "array-bracket-spacing": ["error", "never"],
+        "block-spacing": "error",
+        "brace-style": ["error", "stroustrup"],
+        "comma-dangle": ["error", "always-multiline"],
+        "comma-style": ["error", "last"],
+        "eol-last": ["error", "unix"],
+        "func-call-spacing": ["error", "never"],
+        "no-console": 0,
+        "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+        "no-nested-ternary": "error"
     }
 }

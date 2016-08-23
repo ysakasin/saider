@@ -30,7 +30,7 @@ let helper = {
     escapeHTML,
     cspParams,
     generateId,
-    passwordToHash
+    passwordToHash,
 };
 
 export default helper;

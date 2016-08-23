@@ -82,7 +82,7 @@ class DataStore {
             var data = {
                 memo_id: memo_id.toString(),
                 title: title,
-                body: body
+                body: body,
             };
 
             client.hset(key('memo', id), memo_id, JSON.stringify(data));
@@ -114,7 +114,7 @@ class DataStore {
                 piece_id: piece_id,
                 url: url,
                 x: x,
-                y: y
+                y: y,
             };
 
             client.hset(key('piece', id), piece_id, JSON.stringify(data));
@@ -127,7 +127,7 @@ class DataStore {
             piece_id: piece_id,
             url: url,
             x: x,
-            y: y
+            y: y,
         };
 
         client.hset(key('piece', id), piece_id, JSON.stringify(data));

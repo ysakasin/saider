@@ -45,7 +45,7 @@ function rollDice(n, d) {
         n: n,
         d: d,
         numbers: numbers,
-        total: total
+        total: total,
     };
     return result;
 }
@@ -55,7 +55,7 @@ const basic_request_reg = /^\d*[dD]\d+(([+-]\d*[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$
 let util = {
     getDicebotPaths,
     rollDice,
-    basic_request_reg
+    basic_request_reg,
 };
 
 export default util;
