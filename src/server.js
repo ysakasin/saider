@@ -1,4 +1,3 @@
-// var helper = require('./helper');
 import helper from './helper';
 var config = (process.env.NODE_ENV === 'production')
               ? require('../config.json')
@@ -30,9 +29,8 @@ for (const id in dicebotList) {
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-var fs = require('fs');
 
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -63,7 +61,6 @@ app.get('/', function(req, res) {
 app.post('/create-room', function (req, res) {
   var room_id = helper.generateId();
   var room_name = req.param('room-name');
-  var use_password = req.param('use-password');
   var room_password = req.param('room-password');
   var dicebot_id = req.param('dicebot');
 
@@ -150,7 +147,6 @@ io.sockets.on('connection', function(socket) {
             for (const piece_id in pieces) {
               res[piece_id] = JSON.parse(pieces[piece_id]);
             }
-            console.log(res);
             socket.emit('init-piece', res);
           });
 
@@ -168,7 +164,7 @@ io.sockets.on('connection', function(socket) {
           var res = {id: dicebot_id, name: bot.name, description: bot.description};
           socket.emit('dicebot', res);
 
-          user_hash[socket.id] = user.name
+          user_hash[socket.id] = user.name;
           socket.name = user.name;
           socket.room = user.room;
           socket.join(user.room);
@@ -250,14 +246,14 @@ io.sockets.on('connection', function(socket) {
   });
 
   socket.on('move-piece', function(request) {
-    datastore.updatePiece(socket.room, request.piece_id, request.url, request.x, request.y)
+    datastore.updatePiece(socket.room, request.piece_id, request.url, request.x, request.y);
     io.sockets.to(socket.room).emit('move-piece', request);
   });
 
   socket.on('delete-piece', function(request) {
     datastore.deletePiece(socket.room, request);
     io.sockets.to(socket.room).emit('delete-piece', request);
-  })
+  });
 
   socket.on('delete-room', function() {
     io.sockets.to(socket.room).emit('room-deleted');

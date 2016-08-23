@@ -5,7 +5,7 @@ function escapeHTML(str) {
            .replace(/"/g, '&quot;')
            .replace(/'/g, '&#39;');
   return str;
-};
+}
 
 function cspParams(host) {
   'default-src "self" ' + host + ' ws://' + host + '; img-src "self" *';
@@ -21,7 +21,7 @@ function generateId() {
     .createHash('sha1')
     .update(data)
     .digest('hex');
-};
+}
 
 function passwordToHash(password) {
   let sha512 = crypto.createHash('sha512');

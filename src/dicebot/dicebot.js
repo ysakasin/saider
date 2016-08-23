@@ -19,7 +19,7 @@ class DiceBot {
 
   getPrefix(request) {
     let prefix = this.prefix.join('|');
-    let regtext = '^(' + prefix + ')(\\(.*\\))?(\\+\\d+|-\\d+)?(<|>|<=|>=)?(\\d*)?$'
+    let regtext = '^(' + prefix + ')(\\(.*\\))?(\\+\\d+|-\\d+)?(<|>|<=|>=)?(\\d*)?$';
     let reg = new RegExp(regtext);
     let match = request.match(reg);
 
@@ -63,7 +63,7 @@ class DiceBot {
 
   getInfix(request) {
     if (this.infix.length == 0) {
-      return null
+      return null;
     }
 
     let infix = this.infix.join('|');
@@ -76,10 +76,10 @@ class DiceBot {
     }
 
     let formated = this.fotmatInfix(match);
-    return this.getInfixResult(match);
+    return this.getInfixResult(formated);
   }
 
-  getInfixResult(request) {
+  getInfixResult() {
     return null;
   }
 
@@ -87,7 +87,7 @@ class DiceBot {
     let body = match[0];
     let head = Number(match[1]);
     let infix = match[2];
-    let tail = Numbet(match[3]);
+    let tail = Number(match[3]);
     let offset = Number(match[4]) || 0;
     let comp = match[5];
     let lhs = Number(match[6]);
@@ -117,7 +117,7 @@ class DiceBot {
             || this.basicRoll(request);
   }
 
-  specialCase(request) {
+  specialCase() {
     return null;
   }
 

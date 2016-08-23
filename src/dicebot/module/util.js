@@ -11,7 +11,7 @@ function getDicebotPaths() {
           fileList.push(file);
       });
   });
-  return fileList
+  return fileList;
 }
 
 function rollDice(n, d) {
@@ -49,7 +49,7 @@ function rollDice(n, d) {
     total: total
   };
   return result;
-};
+}
 
 const basic_request_reg = /^\d*[dD]\d+(([+-]\d*[dD]\d+)|([+-]\d+))*([<>]=?\d+)?$/;
 

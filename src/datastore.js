@@ -109,7 +109,7 @@ class DataStore {
 
   createPiece(id, url, x, y, callback) {
     client.hincrby('piece_id', id, 1, (err, piece_id) => {
-      piece_id = "piece-" + piece_id;
+      piece_id = 'piece-' + piece_id;
       var data = {
         piece_id: piece_id,
         url: url,
