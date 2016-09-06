@@ -69,14 +69,14 @@ Prefixコマンドを実装する
 
 引数requestは以下のメンバを持つ
 
-| Name   | Type          | Description |
-| ------ | ------------- | ----------- |
-| body   | String        | リクエスト文全体 |
-| prefix | String        | Prefixの文字列 |
-| args   | Array[String] | Prefixコマンドへの引数 |
-| offset | Number        | Prefixコマンドのオフセット |
-| comp   | String        | 比較記号 |
-| lhs    | Number        | 比較記号の右辺 |
+| Name   | Type          | Example               | Description |
+| ------ | ------------- | --------------------- | ----------- |
+| body   | String        | `"CMD(99,29)-10<=90"` | リクエスト文全体 |
+| prefix | String        | `"CMD"`               | Prefixの文字列 |
+| args   | Array[String] | `[ "99", "29" ]`      | Prefixコマンドへの引数 |
+| offset | Number        | `-10`                 | Prefixコマンドのオフセット |
+| comp   | String        | `"<="`                | 比較記号 |
+| lhs    | Number        | `90`                  | 比較記号の右辺 |
 
 ### 戻り値
 
@@ -90,19 +90,28 @@ Infixコマンドを実装する
 
 引数requestは以下のメンバを持つ
 
-| Name   | Type          | Description |
-| ------ | ------------- | ----------- |
-| body   | String        | リクエスト文全体 |
-| infix  | String        | Infixの文字列 |
-| head   | Number        | Infixの左辺にある数値 |
-| tail   | Number        | Infixの右辺にある数値 |
-| offset | Number        | Prefixコマンドのオフセット |
-| comp   | String        | 比較記号 |
-| lhs    | Number        | 比較記号の右辺 |
+| Name   | Type          | Example          | Description |
+| ------ | ------------- | ---------------- | ----------- |
+| body   | String        | `"1PL23+10<=90"` | リクエスト文全体 |
+| infix  | String        | `"PL"`           | Infixの文字列 |
+| head   | Number        | `1`              | Infixの左辺にある数値 |
+| tail   | Number        | `23`             | Infixの右辺にある数値 |
+| offset | Number        | `10`             | Prefixコマンドのオフセット |
+| comp   | String        | `"<="`           | 比較記号 |
+| lhs    | Number        | `90`             | 比較記号の右辺 |
 
 ### 戻り値
 
 `specialCase`と同様である
+
+## 比較記号
+
+現在、PrefixおよびInfixで比較記号として認識するのは以下の記号である。
+
+* `<`
+* `>`
+* `<=`
+* `>=`
 
 ## 実際に使うために
 
