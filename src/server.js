@@ -20,7 +20,7 @@ var dicebotList = {
 };
 var dicebots = {};
 for (const id in dicebotList) {
-    var c = require('./dicebot/' + id).default;
+    var c = require(`./dicebot/${id}`);
     dicebots[id] = new c();
 }
 
