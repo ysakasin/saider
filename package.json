@@ -7,7 +7,7 @@
     "saider": "./lib/saider"
   },
   "scripts": {
-    "start": "npm run build; NODE_ENV=production node .",
+    "start": "npm run build; NODE_ENV=production node lib/server.js",
     "dev": "npm run build; node .",
     "build": "babel src -d lib",
     "lint": "eslint src",
