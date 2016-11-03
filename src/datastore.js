@@ -5,7 +5,7 @@ const key = (target, id) => {
     return target + '.' + id;
 };
 
-class DataStore {
+export default class DataStore {
     constructor(config) {
         client = redis.createClient(config.redis);
     }
@@ -169,5 +169,3 @@ class DataStore {
         });
     }
 }
-
-export { DataStore };

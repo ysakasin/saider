@@ -1,7 +1,7 @@
 import util from './module/util.js';
 import DiceBot from './dicebot.js';
 
-class Cthulhu extends DiceBot {
+export default class Cthulhu extends DiceBot {
     constructor(){
         super();
         this.name = 'クトゥフル神話TRPG';
@@ -184,5 +184,3 @@ x=故障ナンバー。出目x以上が出た場合、判定の成否と故障�
         return {dices: [dice], total: total, result: result};
     }
 }
-
-export default Cthulhu;
