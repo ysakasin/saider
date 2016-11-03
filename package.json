@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "npm run build; NODE_ENV=production node lib/server.js",
-    "dev": "npm run build; node .",
+    "dev": "npm run build; node lib/server.js",
     "build": "babel src -d lib",
     "lint": "eslint src",
     "cleanroom": "node scripts/clean.js"
