@@ -1,11 +1,14 @@
 {
   "name": "Saider",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A interactive dice bot",
-  "main": "index.js",
+  "main": "src/server.js",
+  "bin": {
+    "saider": "./lib/saider"
+  },
   "scripts": {
-    "start": "npm run build; NODE_ENV=production node .",
-    "dev": "npm run build; node .",
+    "start": "npm run build; NODE_ENV=production node lib/server.js",
+    "dev": "npm run build; node lib/server.js",
     "build": "babel src -d lib",
     "lint": "eslint src",
     "cleanroom": "node scripts/clean.js"
