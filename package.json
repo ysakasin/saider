@@ -21,6 +21,9 @@
     "url": "https://github.com/NKMR6194/saider/issues"
   },
   "homepage": "https://github.com/NKMR6194/saider",
+  "engines": {
+    "node": "^6.9.1"
+  },
   "devDependencies": {
     "babel-cli": "6.18.0",
     "babel-plugin-add-module-exports": "0.2.1",
