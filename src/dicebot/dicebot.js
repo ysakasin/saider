@@ -1,6 +1,6 @@
 import util from './module/util.js';
 
-class DiceBot {
+export default class DiceBot {
     constructor(){
         /* name : ダイスボット名 */
         this.name = '標準ダイスボット';
@@ -148,5 +148,3 @@ class DiceBot {
         return res;
     }
 }
-
-export default DiceBot;

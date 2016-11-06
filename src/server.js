@@ -1,11 +1,11 @@
-import helper from './helper';
+import {cspParams, escapeHTML, generateId, passwordToHash} from './helper';
 var config = (process.env.NODE_ENV === 'production')
         ? require('../config.json')
         : require('../config.dev.json');
 
 /* datastore */
 
-import { DataStore } from './datastore';
+import DataStore from './datastore';
 var datastore = new DataStore(config);
 var room_dicebot = {};
 datastore.getAllDicebot(function(dicebots) {
@@ -39,7 +39,7 @@ var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' })
 app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
 
-var headerCSP = helper.cspParams(config.host);
+var headerCSP = cspParams(config.host);
 
 app.get('/*', function(req,res,next) {
     res.header('X-XSS-Protection', '1; mode=block');
@@ -53,19 +53,19 @@ app.get('/', function(req, res) {
             rooms: rooms,
             passwords: passwords,
             dicebot: dicebotList,
-            escape: helper.escapeHTML,
+            escape: escapeHTML,
         });
     });
 });
 
 app.post('/create-room', function (req, res) {
-    var room_id = helper.generateId();
+    var room_id = generateId();
     var room_name = req.param('room-name');
     var room_password = req.param('room-password');
     var dicebot_id = req.param('dicebot');
 
     if (room_password != '') {
-        var hash = helper.passwordToHash(room_password);
+        var hash = passwordToHash(room_password);
         datastore.setPassword(room_id, hash);
     }
 
@@ -95,7 +95,7 @@ app.get('/:room_id', function(req, res) {
                     is_need_password: is_need_password,
                     dicebots: dicebotList,
                     dicebot: room_dicebot[room_id],
-                    escape: helper.escapeHTML,
+                    escape: escapeHTML,
                 });
             });
         }
@@ -126,7 +126,7 @@ io.sockets.on('connection', function(socket) {
             }
 
             datastore.getPassword(user.room, function (err, pass) {
-                if (pass == null || pass == helper.passwordToHash(user.password)) {
+                if (pass == null || pass == passwordToHash(user.password)) {
                     socket.emit('accepted');
 
                     datastore.getAllResult(user.room, function (err, results) {
