@@ -1,6 +1,7 @@
 {
   "host" : "example.net",
   "redis" : {
+    "host": "saider_redis_1",
     "path" : "/path/to/redis.sock"
   }
 }
