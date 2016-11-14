@@ -6,7 +6,7 @@
     },
     "ON_HEROKU": "true"
   },
-  "addons": {
+  "addons": [
     "redistogo"
-  }
+  ]
 }
