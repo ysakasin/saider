@@ -5,5 +5,8 @@
       "required": true
     },
     "ON_HEROKU": "true"
+  },
+  "addons": {
+    "redistogo"
   }
 }
