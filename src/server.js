@@ -1,7 +1,18 @@
 import {cspParams, escapeHTML, generateId, passwordToHash} from './helper';
-var config = (process.env.NODE_ENV === 'production')
+var config;
+var port = 31102;
+
+if (process.env.ON_HEROKU === 'true') {
+    config = {
+        "host": process.env.HEROKU_APP_NAME + ".herokuapp.com"
+    }
+    port = process.env.PORT;
+}
+else {
+    config = (process.env.NODE_ENV === 'production')
         ? require('../config.json')
         : require('../config.dev.json');
+}
 
 /* datastore */
 
@@ -107,7 +118,7 @@ app.get('/:room_id', function(req, res) {
 
 app.use(express.static('public'));
 
-server.listen(31102, function() {
+server.listen(port, function() {
     console.log('listening on *:31102');
 });
 

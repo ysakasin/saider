@@ -1,0 +1,9 @@
+{
+  "name":"Saider",
+  "env":{
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "ON_HEROKU": "true"
+  }
+}

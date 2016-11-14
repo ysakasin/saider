@@ -1,4 +1,5 @@
 import redis from 'redis';
+import url from 'url';
 let client;
 
 const key = (target, id) => {
@@ -7,7 +8,16 @@ const key = (target, id) => {
 
 export default class DataStore {
     constructor(config) {
-        client = redis.createClient(config.redis);
+        if (process.env.REDISTOGO_URL) {
+            // For Heroku
+            let rtg = url.parse(process.env.REDISTOGO_URL);
+            client = redis.createClient(rtg.port, rtg.hostname);
+
+            client.auth(rtg.auth.split(":")[1]);
+        }
+        else {
+            client = redis.createClient(config.redis);
+        }
     }
 
     quit() {
