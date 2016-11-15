@@ -1,0 +1,15 @@
+version: '2'
+services:
+  app:
+    build: .
+    command: npm start
+    depends_on:
+      - redis
+    volumes:
+      - .:/home/app/saider
+    ports:
+      - "31102:31102"
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
