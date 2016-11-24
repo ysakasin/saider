@@ -1,3 +1,4 @@
+import {stripIndent} from 'common-tags';
 import util from './module/util.js';
 import DiceBot from './dicebot.js';
 
@@ -6,36 +7,36 @@ export default class Cthulhu extends DiceBot {
         super();
         this.name = 'クトゥフル神話TRPG';
 
-        this.description = `
-c=クリティカル値 ／ f=ファンブル値 ／ s=スペシャル
-
-1d100<=n  1d100ロールを行う c=1、f=100
-
-・cfs判定付き判定コマンド
-
-CC   1d100ロールを行う c=1、f=100
-CCB  同上、c=5、f=96
-
-例：CC<=80  （技能値80で行為判定。1%ルールでcf適用）
-例：CCB<=55 （技能値55で行為判定。5%ルールでcf適用）
-
-・組み合わせロールについて
-
-CBR(x,y)  c=1、f=100
-CBRB(x,y) c=5、f=96
-
-・抵抗表ロールについて
-RES(x-y)  c=1、f=100
-RESB(x-y) c=5、f=96
-
-※故障ナンバー判定
-
-・CC(x) c=1、f=100
-x=故障ナンバー。出目x以上が出た場合、判定の成否と故障を共に出力する。("成功/故障", "失敗/故障")
-故障した場合にはcfs判定は行わない。
-
-・CCB(x) c=5、f=96
-同上`;
+        this.description = stripIndent`
+            c=クリティカル値 ／ f=ファンブル値 ／ s=スペシャル
+            
+            1d100<=n  1d100ロールを行う c=1、f=100
+            
+            ・cfs判定付き判定コマンド
+            
+            CC   1d100ロールを行う c=1、f=100
+            CCB  同上、c=5、f=96
+            
+            例：CC<=80  （技能値80で行為判定。1%ルールでcf適用）
+            例：CCB<=55 （技能値55で行為判定。5%ルールでcf適用）
+            
+            ・組み合わせロールについて
+            
+            CBR(x,y)  c=1、f=100
+            CBRB(x,y) c=5、f=96
+            
+            ・抵抗表ロールについて
+            RES(x-y)  c=1、f=100
+            RESB(x-y) c=5、f=96
+            
+            ※故障ナンバー判定
+            
+            ・CC(x) c=1、f=100
+            x=故障ナンバー。出目x以上が出た場合、判定の成否と故障を共に出力する。("成功/故障", "失敗/故障")
+            故障した場合にはcfs判定は行わない。
+            
+            ・CCB(x) c=5、f=96
+            同上`;
 
         this.prefix = ['choice', 'cc', 'ccb', 'res', 'resb', 'cbr', 'cbrb'];
         this.infix = [];
