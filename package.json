@@ -34,6 +34,7 @@
     "babel-preset-es2015-node6": "0.3.0",
     "body-parser": "1.15.2",
     "ect": "0.5.9",
+    "escape-html": "1.0.3",
     "express": "4.14.0",
     "redis": "2.6.2",
     "socket.io": "1.5.1"
