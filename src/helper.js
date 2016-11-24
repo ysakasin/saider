@@ -9,10 +9,6 @@ export function escapeHTML(str) {
     return str;
 }
 
-export function cspParams(host) {
-    'default-src "self" ' + host + ' ws://' + host + '; img-src "self" *';
-}
-
 const seed = Date.now() * Math.random();
 let serial = 1;
 
@@ -29,7 +25,6 @@ export function passwordToHash(password) {
 
 export default {
     escapeHTML,
-    cspParams,
     generateId,
     passwordToHash
 };
