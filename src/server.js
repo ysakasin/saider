@@ -1,4 +1,5 @@
-import {escapeHTML, generateId, passwordToHash} from './helper';
+import {generateId, passwordToHash} from './helper';
+const escapeHTML = require('escape-html');
 var config;
 var port = 31102;
 

@@ -1,14 +1,5 @@
 import crypto from 'crypto';
 
-export function escapeHTML(str) {
-    str = str.replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    return str;
-}
-
 const seed = Date.now() * Math.random();
 let serial = 1;
 
@@ -24,7 +15,6 @@ export function passwordToHash(password) {
 }
 
 export default {
-    escapeHTML,
     generateId,
     passwordToHash
 };
