@@ -1,13 +1,10 @@
+const url = require('url');
 import {cspParams, generateId, passwordToHash} from './helper';
 const escapeHTML = require('escape-html');
-var config;
-var port = 31102;
+let config;
 
 if (process.env.ON_HEROKU === 'true') {
-    config = {
-        "host": process.env.HEROKU_APP_NAME + ".herokuapp.com"
-    }
-    port = process.env.PORT;
+    config = { host: `${process.env.HEROKU_APP_NAME}.herokuapp.com:${process.env.PORT || 31102}` };
 }
 else {
     config = (process.env.NODE_ENV === 'production')
@@ -119,8 +116,8 @@ app.get('/:room_id', function(req, res) {
 
 app.use(express.static('public'));
 
-server.listen(port, function() {
-    console.log('listening on *:31102');
+server.listen(parseInt(url.parse(config.host).port || 31102), function() {
+    console.log(`listening on ${config.host}`);
 });
 
 /* socketio */
