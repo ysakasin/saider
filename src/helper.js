@@ -1,14 +1,5 @@
 import crypto from 'crypto';
 
-export function escapeHTML(str) {
-    str = str.replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    return str;
-}
-
 export function cspParams(host) {
     'default-src "self" ' + host + ' ws://' + host + '; img-src "self" *';
 }
@@ -28,7 +19,6 @@ export function passwordToHash(password) {
 }
 
 export default {
-    escapeHTML,
     cspParams,
     generateId,
     passwordToHash
