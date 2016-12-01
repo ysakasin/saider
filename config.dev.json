@@ -1,3 +1,4 @@
 {
-  "host" : "localhost:31102"
+  "hostname" : "localhost",
+  "port": 31102
 }
