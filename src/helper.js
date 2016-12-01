@@ -1,9 +1,5 @@
 import crypto from 'crypto';
 
-export function cspParams(host) {
-    'default-src "self" ' + host + ' ws://' + host + '; img-src "self" *';
-}
-
 const seed = Date.now() * Math.random();
 let serial = 1;
 
@@ -19,7 +15,6 @@ export function passwordToHash(password) {
 }
 
 export default {
-    cspParams,
     generateId,
     passwordToHash
 };

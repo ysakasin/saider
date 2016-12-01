@@ -1,4 +1,4 @@
-import {cspParams, generateId, passwordToHash} from './helper';
+import {generateId, passwordToHash} from './helper';
 const escapeHTML = require('escape-html');
 var config;
 var port = 31102;
@@ -38,11 +38,21 @@ for (const id in dicebotList) {
 
 /* express */
 
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
+const express = require('express');
+const helmet = require('helmet');
+const bodyParser = require('body-parser');
 
-var bodyParser = require('body-parser');
+const app = express();
+const server = require('http').Server(app);
+
+app.use(helmet({
+  contentSecurityPolicy: {
+      directives: {
+          defaultSrc: ["'self'", `${config.host}`, `ws://${config.host}`],
+          imgSrc: ["'self'", "*"]
+      }
+  }
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -50,14 +60,6 @@ var ECT = require('ect');
 var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' });
 app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
-
-var headerCSP = cspParams(config.host);
-
-app.get('/*', function(req,res,next) {
-    res.header('X-XSS-Protection', '1; mode=block');
-    res.header('Content-Security-Policy', headerCSP);
-    next();
-});
 
 app.get('/', function(req, res) {
     datastore.getRooms(function(rooms, passwords) {
