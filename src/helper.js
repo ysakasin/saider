@@ -14,7 +14,12 @@ export function passwordToHash(password) {
     return sha512.digest('hex');
 }
 
+export function either(value) {
+    return (option) => value ? value : option
+}
+
 export default {
+    either,
     generateId,
     passwordToHash
 };

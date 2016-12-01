@@ -1,19 +1,22 @@
-import {generateId, passwordToHash} from './helper';
+const url = require('url');
+import {either, generateId, passwordToHash} from './helper';
 const escapeHTML = require('escape-html');
-var config;
-var port = 31102;
+
+const DEFAULT_HOSTNAME = '0.0.0.0';
+const DEFAULT_PORT = 80;
+let config;
 
 if (process.env.ON_HEROKU === 'true') {
-    config = {
-        "host": `${process.env.HEROKU_APP_NAME}.herokuapp.com`
-    };
-    port = process.env.PORT;
+    const {env: {HEROKU_APP_NAME, PORT}} = process;
+    config = { host: `${HEROKU_APP_NAME}.herokuapp.com:${PORT || DEFAULT_PORT}` };
 }
 else {
     config = (process.env.NODE_ENV === 'production')
         ? require('../config.json')
         : require('../config.dev.json');
 }
+
+if(!config.host) config.host = `${either(config.hostname)(DEFAULT_HOSTNAME)}:${either(config.port)(DEFAULT_PORT)}`;
 
 /* datastore */
 
@@ -121,8 +124,8 @@ app.get('/:room_id', function(req, res) {
 
 app.use(express.static('public'));
 
-server.listen(port, function() {
-    console.log('listening on *:31102');
+server.listen(either(config.port)(DEFAULT_PORT), function() {
+    console.log(`listening on ${config.host}`);
 });
 
 /* socketio */
