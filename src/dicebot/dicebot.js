@@ -1,3 +1,4 @@
+import {stripIndent} from 'common-tags';
 import util from './module/util.js';
 
 export default class DiceBot {
@@ -6,12 +7,12 @@ export default class DiceBot {
         this.name = '標準ダイスボット';
 
         /* description : ダイスボットの説明や使用例 */
-        this.description = `
-例：
-3d6
-1D100 <= 50
-3d6 + 1d4
-1d6 + 3`;
+        this.description = stripIndent`
+            例：
+            3d6
+            1D100 <= 50
+            3d6 + 1d4
+            1d6 + 3`;
 
         this.prefix = ['choice'];
         this.infix = [];

@@ -1,5 +1,5 @@
 const url = require('url');
-import {cspParams, generateId, passwordToHash} from './helper';
+import {generateId, passwordToHash} from './helper';
 const escapeHTML = require('escape-html');
 let config;
 
@@ -35,26 +35,28 @@ for (const id in dicebotList) {
 
 /* express */
 
-var express = require('express');
-var app = express();
-var server = require('http').Server(app);
+const express = require('express');
+const helmet = require('helmet');
+const bodyParser = require('body-parser');
 
-var bodyParser = require('body-parser');
+const app = express();
+const server = require('http').Server(app);
+
+app.use(helmet({
+  contentSecurityPolicy: {
+      directives: {
+          defaultSrc: ["'self'", `${config.host}`, `ws://${config.host}`],
+          imgSrc: ["'self'", "*"]
+      }
+  }
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 var ECT = require('ect');
-var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' });
+var ectRenderer = ECT({ watch: true, root: `${__dirname}/views`, ext : '.ect' });
 app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
-
-var headerCSP = cspParams(config.host);
-
-app.get('/*', function(req,res,next) {
-    res.header('X-XSS-Protection', '1; mode=block');
-    res.header('Content-Security-Policy', headerCSP);
-    next();
-});
 
 app.get('/', function(req, res) {
     datastore.getRooms(function(rooms, passwords) {
@@ -91,7 +93,7 @@ app.post('/create-room', function (req, res) {
 });
 
 app.get('/licenses', function(req, res) {
-    res.sendFile(__dirname + '/licenses.html');
+    res.sendFile(`${__dirname }/licenses.html`);
 });
 
 app.get('/:room_id', function(req, res) {
@@ -202,7 +204,7 @@ io.sockets.on('connection', function(socket) {
 
         io.sockets.to(socket.room).emit('roll', res);
 
-        var result_text = request + '→' + (res.total || res.result);
+        var result_text = `${request}→${(res.total || res.result)}`;
         var json = JSON.stringify({name: user_hash[socket.id], text: result_text});
         datastore.setResult(socket.room, json);
     });
