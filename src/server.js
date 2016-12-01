@@ -5,8 +5,8 @@ var port = 31102;
 
 if (process.env.ON_HEROKU === 'true') {
     config = {
-        "host": process.env.HEROKU_APP_NAME + ".herokuapp.com"
-    }
+        "host": `${process.env.HEROKU_APP_NAME}.herokuapp.com`
+    };
     port = process.env.PORT;
 }
 else {
@@ -57,7 +57,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 var ECT = require('ect');
-var ectRenderer = ECT({ watch: true, root: __dirname + '/views', ext : '.ect' });
+var ectRenderer = ECT({ watch: true, root: `${__dirname}/views`, ext : '.ect' });
 app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
 
@@ -96,7 +96,7 @@ app.post('/create-room', function (req, res) {
 });
 
 app.get('/licenses', function(req, res) {
-    res.sendFile(__dirname + '/licenses.html');
+    res.sendFile(`${__dirname }/licenses.html`);
 });
 
 app.get('/:room_id', function(req, res) {
@@ -207,7 +207,7 @@ io.sockets.on('connection', function(socket) {
 
         io.sockets.to(socket.room).emit('roll', res);
 
-        var result_text = request + '→' + (res.total || res.result);
+        var result_text = `${request}→${(res.total || res.result)}`;
         var json = JSON.stringify({name: user_hash[socket.id], text: result_text});
         datastore.setResult(socket.room, json);
     });
