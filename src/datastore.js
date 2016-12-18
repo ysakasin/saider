@@ -3,179 +3,179 @@ import url from 'url';
 let client;
 
 const key = (target, id) => {
-    return target + '.' + id;
+  return target + '.' + id;
 };
 
 export default class DataStore {
-    constructor(config) {
-        if (process.env.REDISTOGO_URL) {
-            // For Heroku
-            let rtg = url.parse(process.env.REDISTOGO_URL);
-            client = redis.createClient(rtg.port, rtg.hostname);
+  constructor(config) {
+    if (process.env.REDISTOGO_URL) {
+      // For Heroku
+      let rtg = url.parse(process.env.REDISTOGO_URL);
+      client = redis.createClient(rtg.port, rtg.hostname);
 
-            client.auth(rtg.auth.split(":")[1]);
-        }
-        else {
-            client = redis.createClient(config.redis);
-        }
+      client.auth(rtg.auth.split(":")[1]);
     }
-
-    quit() {
-        client.quit();
+    else {
+      client = redis.createClient(config.redis);
     }
+  }
 
-    /* room */
-    getRooms(callback) {
-        client.hgetall('room', function(err, rooms) {
-            client.hgetall('password', function(err, passwords) {
-                if (rooms == null) rooms = {};
-                if (passwords == null) passwords = {};
-                callback(rooms, passwords);
-            });
-        });
-    }
+  quit() {
+    client.quit();
+  }
 
-    setRoom(id, name) {
-        client.hset('room', id, name);
-    }
+  /* room */
+  getRooms(callback) {
+    client.hgetall('room', function(err, rooms) {
+      client.hgetall('password', function(err, passwords) {
+        if (rooms == null) rooms = {};
+        if (passwords == null) passwords = {};
+        callback(rooms, passwords);
+      });
+    });
+  }
 
-    isExistRoom(id, callback) {
-        client.hexists('room', id, callback);
-    }
+  setRoom(id, name) {
+    client.hset('room', id, name);
+  }
 
-    /* password */
-    getPassword(id, callback) {
-        client.hget('password', id, callback);
-    }
+  isExistRoom(id, callback) {
+    client.hexists('room', id, callback);
+  }
 
-    setPassword(id, hash) {
-        client.hset('password', id, hash);
-    }
+  /* password */
+  getPassword(id, callback) {
+    client.hget('password', id, callback);
+  }
 
-    isExistPassword(id, callback) {
-        client.hexists('password', id, callback);
-    }
+  setPassword(id, hash) {
+    client.hset('password', id, hash);
+  }
 
-    /* dicebot */
+  isExistPassword(id, callback) {
+    client.hexists('password', id, callback);
+  }
 
-    getDicebot(id, callback) {
-        client.hget('dicebot', id, callback);
-    }
+  /* dicebot */
 
-    getAllDicebot(callback) {
-        client.hgetall('dicebot', function(err, dicebots) {
-            if (dicebots == null) dicebots = {};
-            callback(dicebots);
-        });
-    }
+  getDicebot(id, callback) {
+    client.hget('dicebot', id, callback);
+  }
 
-    setDicebot(id, hash) {
-        client.hset('dicebot', id, hash);
-    }
+  getAllDicebot(callback) {
+    client.hgetall('dicebot', function(err, dicebots) {
+      if (dicebots == null) dicebots = {};
+      callback(dicebots);
+    });
+  }
 
-    /* result */
-    getAllResult(id, callback) {
-        client.lrange(key('result', id), 0, -1, callback);
-    }
+  setDicebot(id, hash) {
+    client.hset('dicebot', id, hash);
+  }
 
-    setResult(id, json) {
-        client.rpush(key('result', id), json);
-    }
+  /* result */
+  getAllResult(id, callback) {
+    client.lrange(key('result', id), 0, -1, callback);
+  }
 
-    /* memo */
-    getAllMemo(id, callback) {
-        client.hgetall(key('memo', id), callback);
-    }
+  setResult(id, json) {
+    client.rpush(key('result', id), json);
+  }
 
-    createMemo(id, title, body, callback) {
-        client.hincrby('memo_id', id, 1, function(err, memo_id){
-            var data = {
-                memo_id: memo_id.toString(),
-                title: title,
-                body: body,
-            };
+  /* memo */
+  getAllMemo(id, callback) {
+    client.hgetall(key('memo', id), callback);
+  }
 
-            client.hset(key('memo', id), memo_id, JSON.stringify(data));
-            callback(data);
-        });
-    }
+  createMemo(id, title, body, callback) {
+    client.hincrby('memo_id', id, 1, function(err, memo_id){
+      var data = {
+        memo_id: memo_id.toString(),
+        title: title,
+        body: body,
+      };
 
-    setMemo(id, memo_id, json) {
-        client.hset(key('memo', id), memo_id, json);
-    }
+      client.hset(key('memo', id), memo_id, JSON.stringify(data));
+      callback(data);
+    });
+  }
 
-    deleteMemo(id, memo_id) {
-        client.hdel(key('memo', id), memo_id);
-    }
+  setMemo(id, memo_id, json) {
+    client.hset(key('memo', id), memo_id, json);
+  }
 
-    /* map */
-    getMap(id, callback) {
-        client.hget('map', id, callback);
-    }
+  deleteMemo(id, memo_id) {
+    client.hdel(key('memo', id), memo_id);
+  }
 
-    setMap(id, url) {
-        client.hset('map', id, url);
-    }
+  /* map */
+  getMap(id, callback) {
+    client.hget('map', id, callback);
+  }
 
-    createPiece(id, url, x, y, callback) {
-        client.hincrby('piece_id', id, 1, (err, piece_id) => {
-            piece_id = 'piece-' + piece_id;
-            var data = {
-                piece_id: piece_id,
-                url: url,
-                x: x,
-                y: y,
-            };
+  setMap(id, url) {
+    client.hset('map', id, url);
+  }
 
-            client.hset(key('piece', id), piece_id, JSON.stringify(data));
-            callback(data);
-        });
-    }
+  createPiece(id, url, x, y, callback) {
+    client.hincrby('piece_id', id, 1, (err, piece_id) => {
+      piece_id = 'piece-' + piece_id;
+      var data = {
+        piece_id: piece_id,
+        url: url,
+        x: x,
+        y: y,
+      };
 
-    updatePiece(id, piece_id, url, x, y) {
-        var data = {
-            piece_id: piece_id,
-            url: url,
-            x: x,
-            y: y,
-        };
+      client.hset(key('piece', id), piece_id, JSON.stringify(data));
+      callback(data);
+    });
+  }
 
-        client.hset(key('piece', id), piece_id, JSON.stringify(data));
-    }
+  updatePiece(id, piece_id, url, x, y) {
+    var data = {
+      piece_id: piece_id,
+      url: url,
+      x: x,
+      y: y,
+    };
 
-    getAllPiece(id, callback) {
-        client.hgetall(key('piece', id), callback);
-    }
+    client.hset(key('piece', id), piece_id, JSON.stringify(data));
+  }
 
-    deletePiece(id, piece_id) {
-        client.hdel(key('piece', id), piece_id);
-    }
+  getAllPiece(id, callback) {
+    client.hgetall(key('piece', id), callback);
+  }
 
-    deleteRoom(id) {
-        client.hdel('map', id);
-        client.del(key('memo', id));
-        client.hdel('memo_id', id);
-        client.del(key('result', id));
-        client.hdel('room', id);
-        client.hdel('password', id);
-        client.hdel('dicebot', id);
-        client.hdel('time', id);
-        client.hdel('piece_id', id);
-        client.del(key('piece', id));
-    }
+  deletePiece(id, piece_id) {
+    client.hdel(key('piece', id), piece_id);
+  }
 
-    /* time */
+  deleteRoom(id) {
+    client.hdel('map', id);
+    client.del(key('memo', id));
+    client.hdel('memo_id', id);
+    client.del(key('result', id));
+    client.hdel('room', id);
+    client.hdel('password', id);
+    client.hdel('dicebot', id);
+    client.hdel('time', id);
+    client.hdel('piece_id', id);
+    client.del(key('piece', id));
+  }
 
-    updateTime(id) {
-        const date = new Date;
-        const time = date.getTime();
+  /* time */
 
-        client.hset('time', id, time);
-    }
+  updateTime(id) {
+    const date = new Date;
+    const time = date.getTime();
 
-    getTimes(callback) {
-        client.hgetall('time', function(err, times) {
-            callback(times);
-        });
-    }
+    client.hset('time', id, time);
+  }
+
+  getTimes(callback) {
+    client.hgetall('time', function(err, times) {
+      callback(times);
+    });
+  }
 }
