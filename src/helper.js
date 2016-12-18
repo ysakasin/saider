@@ -15,11 +15,11 @@ export function passwordToHash(password) {
 }
 
 export function either(value) {
-  return (option) => value ? value : option
+  return (option) => value ? value : option;
 }
 
 export default {
   either,
   generateId,
-  passwordToHash
+  passwordToHash,
 };

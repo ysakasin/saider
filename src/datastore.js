@@ -2,9 +2,7 @@ import redis from 'redis';
 import url from 'url';
 let client;
 
-const key = (target, id) => {
-  return target + '.' + id;
-};
+const key = (target, id) => target + '.' + id;
 
 export default class DataStore {
   constructor(config) {
@@ -13,7 +11,7 @@ export default class DataStore {
       let rtg = url.parse(process.env.REDISTOGO_URL);
       client = redis.createClient(rtg.port, rtg.hostname);
 
-      client.auth(rtg.auth.split(":")[1]);
+      client.auth(rtg.auth.split(':')[1]);
     }
     else {
       client = redis.createClient(config.redis);

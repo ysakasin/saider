@@ -1,4 +1,3 @@
-const url = require('url');
 import {either, generateId, passwordToHash} from './helper';
 const escapeHTML = require('escape-html');
 
@@ -52,9 +51,9 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'", `${config.host}`, `ws://${config.host}`],
-      imgSrc: ["'self'", "*"]
-    }
-  }
+      imgSrc: ["'self'", '*'],
+    },
+  },
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
