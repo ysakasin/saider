@@ -37,7 +37,7 @@
         "no-console": 0,
         "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
         "no-nested-ternary": "error",
-        "arrow-body-style": ["error", "always"],
+        "arrow-body-style": ["error", "as-needed"],
         "arrow-parens": ["error", "always"],
         "no-duplicate-imports": "error"
     }
