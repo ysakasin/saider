@@ -38,7 +38,7 @@ const server = require('http').Server(app);
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      defaultSrc: ["'self'", `${config.host}`, `ws://${config.host}`],
+      defaultSrc: ["'self'", `${config.hostname}`, `ws://${config.hostname}`],
       imgSrc: ["'self'", '*'],
     },
   },
