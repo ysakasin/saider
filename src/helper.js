@@ -29,7 +29,10 @@ export function loadConfig() {
 
   if (process.env.ON_HEROKU === 'true') {
     const {env: {HEROKU_APP_NAME, PORT}} = process;
-    config = { host: `${HEROKU_APP_NAME}.herokuapp.com:${PORT || DEFAULT_PORT}` };
+    config = {
+      hostname: `${HEROKU_APP_NAME}.herokuapp.com`,
+      port: PORT || DEFAULT_PORT,
+    };
   }
   else {
     config = (process.env.NODE_ENV === 'production')
@@ -37,9 +40,15 @@ export function loadConfig() {
       : require('../config.dev.json');
   }
 
-  if (!config.host) {
-    config.host = `${either(config.hostname)(DEFAULT_HOSTNAME)}:${either(config.port)(DEFAULT_PORT)}`;
+  if (!config.hostname) {
+    config.hostname = DEFAULT_HOSTNAME;
   }
+
+  if (!config.port) {
+    config.port = DEFAULT_PORT;
+  }
+
+  config.host = `${config.hostname}:${config.port}`;
 
   return config;
 }

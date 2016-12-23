@@ -1,8 +1,6 @@
-import {either, generateId, passwordToHash, loadConfig} from './helper';
+import {generateId, passwordToHash, loadConfig} from './helper';
 const escapeHTML = require('escape-html');
 
-const DEFAULT_HOSTNAME = '0.0.0.0';
-const DEFAULT_PORT = 80;
 let config = loadConfig();
 
 /* datastore */
@@ -111,7 +109,7 @@ app.get('/:room_id', function(req, res) {
 
 app.use(express.static('public'));
 
-server.listen(either(config.port)(DEFAULT_PORT), function() {
+server.listen(config.port, function() {
   console.log(`listening on ${config.host}`);
 });
 
