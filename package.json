@@ -5,10 +5,10 @@
   "description": "A interactive dice bot",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build; NODE_ENV=production node .",
+    "start": "npm run build && NODE_ENV=production node .",
     "postinstall": "babel src -d lib",
-    "dev": "npm run build; node .",
-    "test": "npm run lint; npm run build",
+    "dev": "npm run build && node .",
+    "test": "npm run lint && npm run build",
     "build": "babel src -d lib",
     "lint": "eslint src",
     "cleanroom": "node scripts/clean.js"
