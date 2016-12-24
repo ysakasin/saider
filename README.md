@@ -97,7 +97,8 @@ npm run cleanroom
 
 | Key        | Default   | Description |
 |------------|-----------|-------------|
-| host       |           | サーバーのホストネーム。CSPによるXSS対策のために用いている。production実行時には必ず付与すること。 |
+| hostname   | "0.0.0.0" | サーバーのホストネーム。CSPによるXSS対策のために用いている。production実行時には必ず付与すること。 |
+| port       | 80        | Listenするポート番号 |
 | redis      | undefined | Redisのクライアント作成時に指定するオプション。詳細は node_redis の [README.md](https://github.com/NodeRedis/node_redis#options-object-properties) を参照すること。 |
 
 ## Special thanks
