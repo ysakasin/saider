@@ -31,7 +31,7 @@
 
 ## Requirements
 
-* Node.js (=> v4.0.0)
+* Node.js => v6.9.1 (LTS)
 * npm
 * Redis
 
@@ -64,7 +64,7 @@ $ npm run dev
 ブラウザ以下のURLにアクセスする
 
 ```
-localhost:31102
+localhost:8000
 ```
 
 ## 実環境で動かす
