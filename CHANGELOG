@@ -1,3 +1,13 @@
+v0.6.0
+  - コマの基本機能を実装。マス目に合わせたコマの移動などは今後実装予定。
+  - 部屋削除コマンドcleanroomが動かなかったバグ修正 (thanks @FaviusTy)
+  - ListenするPort番号を指定できるように
+  - Node.js v6.9.1 LTSヘ移行
+  - Herokuへのデプロイに対応
+  - Babelを導入 [for Developer]
+  - ESLintを導入 [for Developer]
+  - Helmetを導入 (thanks @FaviusTy) [for Developer]
+
 v 0.5.0
   - ダイスボットプラグインを実装
   - 一定期間アクセスのないルームをまとめて削除するコマンド
