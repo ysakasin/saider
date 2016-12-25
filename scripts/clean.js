@@ -10,11 +10,9 @@ const time = date.getTime();
 
 const limit_day = Number(process.env.LIMIT_DAY) || 7;
 
-// const limit = limit_day * 24 * 60 * 60 * 1000;
-const limit = 0;
+const limit = limit_day * 24 * 60 * 60 * 1000;
 
 datastore.getTimes((times) => {
-  datastore.quit();
   for (let room in times) {
     if (time - times[room] >= limit) {
       datastore.deleteRoom(room);
@@ -22,4 +20,5 @@ datastore.getTimes((times) => {
     }
   }
   console.log("Compleated clean rooms.");
+  datastore.quit();
 });
