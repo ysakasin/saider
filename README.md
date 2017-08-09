@@ -7,7 +7,7 @@
 ボイセ勢のためのオンセ支援ツール
 
 
-[公式デモサーバー](https://saider.sakasin.net)
+[公式デモサーバー](https://saider.herokuapp.com)
 
 ## 有志による公開サーバー
 
