@@ -1,5 +1,5 @@
-import {generateId, passwordToHash, loadConfig} from './helper';
-const escapeHTML = require('escape-html');
+import {generateId, passwordToHash, loadConfig} from './helper'
+import escapeHTML from 'escape-html'
 
 let config = loadConfig();
 
@@ -26,12 +26,13 @@ for (const id in dicebotList) {
 
 /* express */
 
-const express = require('express');
-const helmet = require('helmet');
-const bodyParser = require('body-parser');
+import express from 'express'
+import helmet from 'helmet'
+import bodyParser from 'body-parser'
+import http from 'http'
 
 const app = express();
-const server = require('http').Server(app);
+const server = http.Server(app);
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -44,7 +45,7 @@ app.use(helmet({
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-var ECT = require('ect');
+import ECT from 'ect'
 var ectRenderer = ECT({ watch: true, root: `${__dirname}/views`, ext : '.ect' });
 app.engine('ect', ectRenderer.render);
 app.set('view engine', 'ect');
@@ -115,7 +116,8 @@ server.listen(config.port, function() {
 
 /* socketio */
 
-var io = require('socket.io')(server);
+import socketio from 'socket.io'
+var io = socketio(server);
 var user_hash = {};
 
 io.sockets.on('connection', function(socket) {
