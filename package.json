@@ -6,11 +6,12 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build && NODE_ENV=production node .",
-    "dev": "npm run build && node .",
+    "dev": "cross-env NODE_ENV=develop babel-node server/server.js --presets es2015-node6 --plugins add-module-exports",
     "test": "npm run lint && npm run build",
     "build": "babel src -d lib",
     "build:webpack": "cross-env NODE_ENV=production webpack --config config/webpack.config.js --progress --hide-modules",
     "lint": "eslint src",
+    "aaa": "babel-node",
     "cleanroom": "node scripts/clean.js"
   },
   "repository": {
@@ -27,6 +28,9 @@
     "node": "^6.9.1"
   },
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015-node6": "^0.4.0",
     "body-parser": "1.15.2",
     "common-tags": "1.4.0",
     "ect": "0.5.9",
