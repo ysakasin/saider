@@ -7,11 +7,14 @@ import express from 'express'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import ECT from 'ect'
+import path from 'path'
 
 var dicebotList = {
   'dicebot': '標準ダイスボット',
   'cthulhu': 'クトゥルフ神話TRPG',
 };
+
+const vue_app = path.resolve(__dirname, '../index.html')
 
 export default function app(datastore, dicebots, room_dicebot) {
   const app = express();
@@ -31,16 +34,20 @@ export default function app(datastore, dicebots, room_dicebot) {
   app.engine('ect', ectRenderer.render);
   app.set('view engine', 'ect');
 
-  app.get('/', function(req, res) {
-    datastore.getRooms(function(rooms, passwords) {
-      res.render('index', {
-        rooms: rooms,
-        passwords: passwords,
-        dicebot: dicebotList,
-        escape: escapeHTML,
-      });
-    });
-  });
+  app.get('/', (req, res) => {
+    res.sendFile(vue_app);
+  })
+
+  // app.get('/', function(req, res) {
+  //   datastore.getRooms(function(rooms, passwords) {
+  //     res.render('index', {
+  //       rooms: rooms,
+  //       passwords: passwords,
+  //       dicebot: dicebotList,
+  //       escape: escapeHTML,
+  //     });
+  //   });
+  // });
 
   app.post('/create-room', function (req, res) {
     var room_id = generateId();
@@ -70,6 +77,8 @@ export default function app(datastore, dicebots, room_dicebot) {
   });
 
   app.get('/:room_id', function(req, res) {
+    res.sendFile(vue_app);
+    return
     var room_id = req.params.room_id;
     datastore.isExistRoom(room_id, function(err, is_exist) {
       if (is_exist) {
@@ -90,6 +99,7 @@ export default function app(datastore, dicebots, room_dicebot) {
   });
 
   app.use(express.static('public'));
+  app.use('/dist', express.static('dist'));
 
   return app
 }
