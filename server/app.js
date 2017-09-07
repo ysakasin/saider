@@ -38,16 +38,20 @@ export default function app(datastore, dicebots, room_dicebot) {
     res.sendFile(vue_app);
   })
 
-  // app.get('/', function(req, res) {
-  //   datastore.getRooms(function(rooms, passwords) {
-  //     res.render('index', {
-  //       rooms: rooms,
-  //       passwords: passwords,
-  //       dicebot: dicebotList,
-  //       escape: escapeHTML,
-  //     });
-  //   });
-  // });
+  app.get('/api/rooms', (req, res) => {
+    datastore.getRooms((room_names, passwords) => {
+      let rooms = []
+      for (var id in room_names) {
+        let room = {
+          id: id,
+          name: room_names[id],
+          has_password: Boolean(passwords[id])
+        }
+        rooms.push(room)
+      }
+      res.send(rooms)
+    })
+  })
 
   app.post('/create-room', function (req, res) {
     var room_id = generateId();
