@@ -2,9 +2,10 @@
   <div id="room-list">
     <md-list>
       <md-list-item v-for="room in rooms" :href="room.id">
-        <md-icon>group</md-icon>
+        <md-icon v-if="room.has_password">group</md-icon>
+        <md-icon v-else>lock</md-icon>
         <span>{{ room.name }}</span>
-        <md-divider></md-divider>
+        <!-- <md-divider></md-divider> -->
       </md-list-item>
     </md-list>
   </div>
