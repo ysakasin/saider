@@ -9,6 +9,12 @@ import bodyParser from 'body-parser'
 import ECT from 'ect'
 import path from 'path'
 
+/* for dev */
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpack from 'webpack'
+import webpackConfig from '../config/webpack.config'
+
+
 var dicebotList = {
   'dicebot': '標準ダイスボット',
   'cthulhu': 'クトゥルフ神話TRPG',
@@ -19,16 +25,18 @@ const vue_app = path.resolve(__dirname, '../index.html')
 export default function app(datastore, dicebots, room_dicebot) {
   const app = express();
 
-  app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'", `${config.hostname}`, `ws://${config.hostname}`],
-        imgSrc: ["'self'", '*'],
-        styleSrc: ["'self'", 'fonts.googleapis.com'],
-        fontSrc: ["'self'", 'fonts.gstatic.com'],
+  if (process.env.NODE_ENV === 'production') {
+    app.use(helmet({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'", `${config.hostname}`, `ws://${config.hostname}`],
+          imgSrc: ["'self'", '*'],
+          styleSrc: ["'self'", 'fonts.googleapis.com'],
+          fontSrc: ["'self'", 'fonts.gstatic.com'],
+        },
       },
-    },
-  }));
+    }))
+  }
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
 
@@ -104,8 +112,16 @@ export default function app(datastore, dicebots, room_dicebot) {
     });
   });
 
+
+  if (process.env.NODE_ENV !== 'production') {
+    const compiler = webpack(webpackConfig)
+    app.use('/dist', webpackDevMiddleware(compiler))
+  }
+  else {
+    app.use('/dist', express.static('dist'))
+  }
+
   app.use(express.static('public'));
-  app.use('/dist', express.static('dist'));
 
   return app
 }

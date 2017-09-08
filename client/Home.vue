@@ -1,7 +1,11 @@
 <template>
   <div id="app">
-    <h1>Home</h1>
-    <RoomList></RoomList>
+    <md-toolbar>
+      <h1 class="md-title">Saider</h1>
+    </md-toolbar>
+    <div class="main-content">
+      <RoomList></RoomList>
+    </div>
   </div>
 </template>
 

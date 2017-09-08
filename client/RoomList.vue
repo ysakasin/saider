@@ -1,8 +1,12 @@
 <template>
-  <div id="aaa">
-    <h1 v-for="room in rooms">
-      {{ room }}
-    </h1>
+  <div id="room-list">
+    <md-list>
+      <md-list-item v-for="room in rooms" :href="room.id">
+        <md-icon>group</md-icon>
+        <span>{{ room.name }}</span>
+        <md-divider></md-divider>
+      </md-list-item>
+    </md-list>
   </div>
 </template>
 
@@ -21,10 +25,16 @@ export default {
 axios.get('/api/rooms')
   .then((res) => {
     console.log(res)
-    var list = document.getElementById("aaa").__vue__
-    list.rooms = res.data.map((r) => r.name)
+    var list = document.getElementById("room-list").__vue__
+    list.rooms = res.data
   })
   .catch((err) => {
     console.log(err)
   })
 </script>
+
+<style>
+#room-list ul {
+  padding-top: 0;
+}
+</style>
