@@ -10,6 +10,14 @@ const routes = {
 }
 
 Vue.use(VueMaterial)
+Vue.material.registerTheme({
+  default: {
+    primary: {
+      color: 'cyan',
+      hue: 500
+    }
+  }
+})
 
 new Vue({
   el: '#app',

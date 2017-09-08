@@ -63,28 +63,28 @@ export default function app(datastore, dicebots, room_dicebot) {
     })
   })
 
-  app.post('/create-room', function (req, res) {
+  app.post('/api/rooms/new', (req, res) =>{
     var room_id = generateId();
-    var room_name = req.param('room-name');
-    var room_password = req.param('room-password');
+    var room_name = req.param('name');
+    var room_password = req.param('password');
     var dicebot_id = req.param('dicebot');
 
     if (room_password != '') {
-      var hash = passwordToHash(room_password);
-      datastore.setPassword(room_id, hash);
+      var hash = passwordToHash(room_password)
+      datastore.setPassword(room_id, hash)
     }
 
     if (!(dicebot_id in dicebotList)) {
-      dicebot_id = 'dicebot';
+      dicebot_id = 'dicebot'
     }
-    room_dicebot[room_id] = dicebot_id;
-    datastore.setDicebot(room_id, dicebot_id);
 
-    res.redirect('./' + room_id);
+    room_dicebot[room_id] = dicebot_id
+    datastore.setDicebot(room_id, dicebot_id)
+    datastore.setRoom(room_id, room_name)
+    datastore.updateTime(room_id)
 
-    datastore.setRoom(room_id, room_name);
-    datastore.updateTime(room_id);
-  });
+    res.send({room_id: room_id})
+  })
 
   app.get('/licenses', function(req, res) {
     res.sendFile(`${__dirname }/licenses.html`);
