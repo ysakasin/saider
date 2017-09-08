@@ -24,6 +24,8 @@ export default function app(datastore, dicebots, room_dicebot) {
       directives: {
         defaultSrc: ["'self'", `${config.hostname}`, `ws://${config.hostname}`],
         imgSrc: ["'self'", '*'],
+        styleSrc: ["'self'", 'fonts.googleapis.com'],
+        fontSrc: ["'self'", 'fonts.gstatic.com'],
       },
     },
   }));
