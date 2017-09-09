@@ -86,10 +86,6 @@ export default function app(datastore, dicebots, room_dicebot) {
     res.send({room_id: room_id})
   })
 
-  app.get('/licenses', function(req, res) {
-    res.sendFile(`${__dirname }/licenses.html`);
-  });
-
   app.get('/:room_id', function(req, res) {
     res.sendFile(vue_app);
     return
