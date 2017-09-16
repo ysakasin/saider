@@ -48,6 +48,10 @@ export default function app(datastore, dicebots, room_dicebot) {
     res.sendFile(vue_app);
   })
 
+  app.get('/:room_id', (req, res) => {
+    res.sendFile(vue_app)
+  })
+
   app.get('/api/rooms', (req, res) => {
     datastore.getRooms((room_names, passwords) => {
       let rooms = []
@@ -65,9 +69,13 @@ export default function app(datastore, dicebots, room_dicebot) {
 
   app.post('/api/rooms/new', (req, res) =>{
     var room_id = generateId();
-    var room_name = req.param('name');
-    var room_password = req.param('password');
-    var dicebot_id = req.param('dicebot');
+    var room_name = req.param('name') || "デフォルト名"
+    var room_password = req.param('password') || ""
+    var dicebot_id = req.param('dicebot') || "dicebot"
+
+    console.log(room_name)
+    console.log(room_password)
+    console.log(dicebot_id)
 
     if (room_password != '') {
       var hash = passwordToHash(room_password)
@@ -86,27 +94,24 @@ export default function app(datastore, dicebots, room_dicebot) {
     res.send({room_id: room_id})
   })
 
-  app.get('/:room_id', function(req, res) {
-    res.sendFile(vue_app);
-    return
-    var room_id = req.params.room_id;
-    datastore.isExistRoom(room_id, function(err, is_exist) {
-      if (is_exist) {
-        datastore.isExistPassword(room_id, function (err, is_need_password) {
-          res.render('room', {
-            room_id: room_id,
-            is_need_password: is_need_password,
-            dicebots: dicebotList,
-            dicebot: room_dicebot[room_id],
-            escape: escapeHTML,
-          });
-        });
+  app.get('/api/rooms/:room_id', (req, res) => {
+    let room_id = req.params.room_id
+    datastore.findRoom(room_id, (err, room) => {
+      if (err) {
+        res.status(500).send({ok: false, reason: "internal error"})
+      }
+      else if (room == null) {
+        res.status(404).send({ok: false, reason: err.message})
       }
       else {
-        res.redirect('./');
+        let resp = {
+          name: room.name,
+          is_need_password: (room.password !== "")
+        }
+        res.send({ok: true, room: resp})
       }
-    });
-  });
+    })
+  })
 
 
   if (process.env.NODE_ENV !== 'production') {

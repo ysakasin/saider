@@ -37,10 +37,11 @@
     "escape-html": "1.0.3",
     "express": "4.14.0",
     "helmet": "3.1.0",
-    "redis": "2.6.2",
+    "redis": "^2.8.0",
     "socket.io": "1.5.1",
     "vue": "^2.3.3",
-    "vue-material": "^0.7.4"
+    "vue-material": "^0.7.4",
+    "vue-socket.io": "^2.1.1-a"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

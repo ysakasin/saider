@@ -5,6 +5,8 @@ var dicebotList = {
   'cthulhu': 'クトゥルフ神話TRPG',
 };
 
+const timeout = 1000 // milliseconds
+
 export default function socket(datastore, dicebots, room_dicebot) {
   var io = socketio();
   // io.serveClient(false);
@@ -12,6 +14,27 @@ export default function socket(datastore, dicebots, room_dicebot) {
   var user_hash = {};
 
   io.sockets.on('connection', function(socket) {
+
+    setTimeout(() => {
+      if (socket.authed !== true) {
+        socket.disconnect()
+      }
+    }, timeout)
+
+    socket.on("auth", (params) => {
+      const room = params.room
+      const password = params.password
+      datastore.auth(room, password, (err, authed) => {
+        console.log(err)
+        if (authed) {
+          socket.authed = true
+          console.log("authed!!!!!")
+        }
+        else {
+          socket.disconnect()
+        }
+      })
+    })
 
     socket.on('connected', function(user) {
       datastore.isExistRoom(user.room, function(err, is_exist) {

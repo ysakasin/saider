@@ -1,5 +1,6 @@
 import redis from 'redis';
 import url from 'url';
+import {passwordToHash} from './helper'
 let client;
 
 const key = (target, id) => target + '.' + id;
@@ -22,6 +23,35 @@ export default class DataStore {
     client.quit();
   }
 
+  auth(room_id, passwd, callback) {
+    client.hexists('room', room_id, (err, is_exist) => {
+      if (err) {
+        callback(err, null)
+        return
+      }
+      else if (!is_exist) {
+        callback(new Error("not found room"), null)
+        return
+      }
+
+      client.hget("password", room_id, (err, hashed_passwd) => {
+        if (err) {
+          callback(err, null)
+        }
+        else if (Boolean(hashed_passwd)) {
+          console.log(hashed_passwd)
+          console.log(passwd)
+          console.log(passwordToHash(passwd))
+          callback(null, passwordToHash(passwd) === hashed_passwd)
+        }
+        else {
+          console.log("nopass")
+          callback(null, true)
+        }
+      })
+    })
+  }
+
   /* room */
   getRooms(callback) {
     client.hgetall('room', function(err, rooms) {
@@ -31,6 +61,29 @@ export default class DataStore {
         callback(rooms, passwords);
       });
     });
+  }
+
+  findRoom(room_id, callback) {
+    client.hget('room', room_id, (err, name) => {
+      if (err) {
+        callback(err, null)
+      }
+      if (name == null) {
+        callback(null, null)
+      }
+
+      client.hget('password', room_id, (err, password) => {
+        if (err) {
+          callback(err, null)
+        }
+        let room = {
+          id: room_id,
+          name: name,
+          password: (password == null ? "" : password)
+        }
+        callback(null, room)
+      })
+    })
   }
 
   setRoom(id, name) {
