@@ -1,6 +1,11 @@
 <template>
-  <div id="room">
-    <h1>{{ name }}</h1>
+  <div id="room" class="container">
+    <div class="main-area">
+      <md-toolbar class="main-header">
+        <h1 class="md-title" style="flex: 1">{{ name }}</h1>
+      </md-toolbar>
+    </div>
+    <DiceArea class="dice-area"></DiceArea>
     <DialogLogin ref="dialog-login"></DialogLogin>
     <AlertDisconnect></AlertDisconnect>
   </div>
@@ -12,11 +17,13 @@ import path from 'path'
 
 import AlertDisconnect from './AlertDisconnect.vue'
 import DialogLogin from './DialogLogin.vue'
+import DiceArea from './DiceArea.vue'
 
 export default {
   components: {
     AlertDisconnect,
-    DialogLogin
+    DialogLogin,
+    DiceArea
   },
   data () {
     return {
@@ -43,3 +50,37 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+@import '../node_modules/vue-material/src/core/stylesheets/variables.scss';
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow-x: scroll;
+}
+
+#room {
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.main-area {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+
+.dice-area {
+  width: 240px;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  flex-flow: column nowrap;
+  box-shadow: $material-shadow-2dp;
+}
+</style>

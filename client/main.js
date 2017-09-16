@@ -7,6 +7,7 @@ import VueSocketio from 'vue-socket.io'
 import io from 'socket.io-client'
 
 import 'vue-material/dist/vue-material.css'
+import 'mdi/css/materialdesignicons.min.css'
 
 const routes = {
   '/': Home
