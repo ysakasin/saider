@@ -4,6 +4,7 @@
       <md-toolbar class="main-header">
         <h1 class="md-title" style="flex: 1">{{ name }}</h1>
       </md-toolbar>
+      <Board></Board>
     </div>
     <DiceArea class="dice-area"></DiceArea>
     <DialogLogin ref="dialog-login"></DialogLogin>
@@ -16,12 +17,14 @@ import axios from 'axios'
 import path from 'path'
 
 import AlertDisconnect from './AlertDisconnect.vue'
+import Board from './Board.vue'
 import DialogLogin from './DialogLogin.vue'
 import DiceArea from './DiceArea.vue'
 
 export default {
   components: {
     AlertDisconnect,
+    Board,
     DialogLogin,
     DiceArea
   },
