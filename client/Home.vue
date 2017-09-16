@@ -21,8 +21,8 @@ export default {
     DialogNewRoom
   },
   methods: {
-    openDialog() {
-      this.$refs['dialog'].openDialog();
+    openDialog () {
+      this.$refs['dialog'].openDialog()
     }
   }
 }

@@ -24,28 +24,27 @@
 export default {
   data () {
     return {
-      password: "",
+      password: ""
     }
   },
   sockets: {
-    connect() {
+    connect () {
       this.$socket.emit("auth", {room: window.room, password: this.password})
     }
   },
   methods: {
-    join() {
+    join () {
       console.log("join")
-      let vue_this = this
       this.$socket.open()
       this.close()
     },
-    leave() {
+    leave () {
       window.location.pathname = '/'
     },
-    open() {
+    open () {
       this.$refs['dialog'].open()
     },
-    close() {
+    close () {
       this.$refs['dialog'].close()
     }
   }

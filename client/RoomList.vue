@@ -20,7 +20,7 @@ export default {
       rooms: []
     }
   },
-  created() {
+  created () {
     axios.get('/api/rooms')
       .then((res) => {
         console.log(res)

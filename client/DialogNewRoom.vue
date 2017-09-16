@@ -36,7 +36,7 @@
 import axios from 'axios'
 
 export default {
-  data() {
+  data () {
     return {
       dicebot: "dicebot",
       room_name: "",
@@ -45,13 +45,13 @@ export default {
     }
   },
   methods: {
-    openDialog() {
-      this.$refs['dialog'].open();
+    openDialog () {
+      this.$refs['dialog'].open()
     },
-    closeDialog() {
-      this.$refs['dialog'].close();
+    closeDialog () {
+      this.$refs['dialog'].close()
     },
-    createRoom() {
+    createRoom () {
       let params = {
         name: this.room_name,
         dicebot: this.dicebot,

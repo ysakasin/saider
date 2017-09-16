@@ -9,14 +9,14 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       title: "切断されました",
       text: "ルームとの接続が切断されました。再度ログインする場合にはリロードを試みてください。"
     }
   },
   sockets: {
-    disconnect() {
+    disconnect () {
       this.$refs['alert'].open()
       this.$socket.close()
     }

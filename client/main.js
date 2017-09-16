@@ -13,7 +13,6 @@ const routes = {
 }
 
 window.room = window.location.pathname.slice(1)
-console.log(window.room)
 
 Vue.use(VueMaterial)
 Vue.material.registerTheme({
@@ -27,7 +26,7 @@ Vue.material.registerTheme({
 
 Vue.use(VueSocketio, io(window.location.host, {autoConnect: false}))
 
-new Vue({
+window.saider = new Vue({
   el: '#app',
   data: {
     currentRoute: window.location.pathname
