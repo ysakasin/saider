@@ -17,11 +17,15 @@
         {{ log }}
       </p>
     </div>
+    <vue-toast ref="toast"></vue-toast>
   </div>
 </template>
 
 <script>
 import BCDice from 'bcdice-js'
+import VueToast from 'vue-toast'
+
+import 'vue-toast/dist/vue-toast.min.css'
 
 export default {
   data () {
@@ -31,12 +35,20 @@ export default {
       logs: []
     }
   },
+  components: {
+    VueToast
+  },
   sockets: {
     roll (data) {
       if (data.from !== this.$socket.id || !data.secret) {
         this.push(data)
       }
     }
+  },
+  mounted () {
+    this.$refs.toast.setOptions({
+      position: "right top"
+    })
   },
   methods: {
     diceroll () {
@@ -48,7 +60,10 @@ export default {
       let msg = result[0]
       let secret = result[1]
       if (result[0] === "1") {
-        // 実行失敗
+        this.$refs.toast.showToast("コマンドを解釈できませんでした", {
+          theme: "error",
+          timeLife: 1000
+        })
         return
       }
 
