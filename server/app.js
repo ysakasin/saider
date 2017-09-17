@@ -1,12 +1,8 @@
 import {generateId, passwordToHash, loadConfig} from './helper'
-import escapeHTML from 'escape-html'
-
-let config = loadConfig();
 
 import express from 'express'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
-import ECT from 'ect'
 import path from 'path'
 
 /* for dev */
@@ -14,6 +10,7 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpack from 'webpack'
 import webpackConfig from '../config/webpack.config'
 
+let config = loadConfig()
 
 var dicebotList = {
   'dicebot': '標準ダイスボット',
@@ -39,10 +36,6 @@ export default function app(datastore, dicebots, room_dicebot) {
   }
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
-
-  var ectRenderer = ECT({ watch: true, root: `${__dirname}/views`, ext : '.ect' });
-  app.engine('ect', ectRenderer.render);
-  app.set('view engine', 'ect');
 
   app.get('/', (req, res) => {
     res.sendFile(vue_app);
