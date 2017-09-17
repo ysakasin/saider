@@ -47,17 +47,17 @@ export default {
     }
   },
   computed: {
-    width: function() {
+    width () {
       return this.x * gridsize
     },
-    height: function() {
+    height () {
       return this.y * gridsize
     },
-    scale: function() {
+    scale () {
       return `scale(${this.zoom})`
     }
   },
-  data() {
+  data () {
     return {
       gridsize: gridsize,
       interval: 1,
@@ -65,7 +65,7 @@ export default {
       y: 10,
       zoom: 1.0,
       keepAspect: "none",
-      pieces: [],
+      pieces: []
     }
   },
   components: {
