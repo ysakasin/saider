@@ -99,23 +99,9 @@ export default function socket(datastore, dicebots, room_dicebot) {
       user_hash[socket.id] = user_name;
     });
 
-    socket.on('roll', function(request) {
-      var dicebot_id = room_dicebot[socket.room];
-      var dicebot = dicebots[dicebot_id];
-      var res = dicebot.roll(request);
-      if (res == null) {
-        return;
-      }
-
-      res['name'] = user_hash[socket.id];
-      res['request'] = request;
-
-      io.sockets.to(socket.room).emit('roll', res);
-
-      var result_text = `${request}→${(res.total || res.result)}`;
-      var json = JSON.stringify({name: user_hash[socket.id], text: result_text});
-      datastore.setResult(socket.room, json);
-    });
+    socket.on('roll', (data) => {
+      io.sockets.to(socket.room).emit('roll', data)
+    })
 
     socket.on('dicebot', function(dicebot_id) {
       if (!(dicebot_id in dicebotList)) {
