@@ -19,7 +19,7 @@ var dicebotList = {
 
 const vue_app = path.resolve(__dirname, '../index.html')
 
-export default function app (datastore, dicebots, room_dicebot) {
+export default function app (datastore, room_dicebot) {
   const app = express()
 
   if (process.env.NODE_ENV === 'production') {

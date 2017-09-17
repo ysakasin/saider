@@ -7,7 +7,7 @@ var dicebotList = {
 
 const timeout = 1000 // milliseconds
 
-export default function socket(datastore, dicebots, room_dicebot) {
+export default function socket(datastore, room_dicebot) {
   var io = socketio();
   // io.serveClient(false);
 
@@ -110,7 +110,7 @@ export default function socket(datastore, dicebots, room_dicebot) {
 
       room_dicebot[socket.room] = dicebot_id;
 
-      var bot = dicebots[dicebot_id];
+      // var bot = dicebots[dicebot_id];
       var res = {id: dicebot_id, name: bot.name, description: bot.description};
       io.sockets.to(socket.room).emit('dicebot', res);
     });
