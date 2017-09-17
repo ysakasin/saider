@@ -86,4 +86,27 @@ html, body {
   flex-flow: column nowrap;
   box-shadow: $material-shadow-2dp;
 }
+
+.dice {
+  position: absolute;
+  height: 100px;
+  overflow: hidden;
+}
+
+.dice img {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  top: 0;
+}
+
+#amount {
+  width: 100px;
+  position: absolute;
+  border: solid 1px #000000;
+  border-radius: 5px;
+  padding: 10px 0;
+  text-align: center;
+  background-color: #ffffff;
+}
 </style>

@@ -62,7 +62,7 @@ export default {
       }
     },
     make_resp (msg, secret, dice) {
-      let log = this.name + (secret ? "：シークレットダイス" : msg)
+      let log = this.name + (secret ? "：シークレットダイス ＞ ？" : msg)
       if (secret) {
         dice = []
       }
@@ -75,6 +75,13 @@ export default {
       }
     },
     push (data) {
+      if (data.dice.length > 0) {
+        let dice = data.dice.map((x) => {
+          return {d: x[1], numbers: [x[0]]}
+        })
+        let result = data.log.split("＞").pop().trim()
+        let v = new DiceRoll({dices: dice, result: result})
+      }
       this.logs.push(data.log)
     }
   }

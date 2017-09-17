@@ -80,12 +80,11 @@ var DiceRoll = (function() {
       is_drawable &= drawing_dice.indexOf(this.dices[i].d) != -1;
     }
     if (!is_drawable || this.dices.length == 0) {
-      this.showResultToLog();
       return;
     }
 
-    window_width  = $(window).width();
-    window_height = $(window).height();
+    window_width  = window.innerWidth;
+    window_height = window.innerHeight;
 
     var p = 0;
     for (var j = 0; j < this.dices.length; j++) {
@@ -160,14 +159,8 @@ var DiceRoll = (function() {
           que[0].begin();
         }, 500);
       }
-      instans.showResultToLog();
       showAmount(instans.total, instans.result, (instans.dice[0].y - 50) + 'px', instans.dice[0].style.left);
     }
-  };
-
-  DiceRoll.prototype.showResultToLog = function() {
-    var text = this.request + '→' + (this.total || this.result);
-    addResult({name: this.name, text: text});
   };
 
   var erase = function() {
