@@ -14,13 +14,13 @@ let config = loadConfig()
 
 var dicebotList = {
   'dicebot': '標準ダイスボット',
-  'cthulhu': 'クトゥルフ神話TRPG',
-};
+  'cthulhu': 'クトゥルフ神話TRPG'
+}
 
 const vue_app = path.resolve(__dirname, '../index.html')
 
-export default function app(datastore, dicebots, room_dicebot) {
-  const app = express();
+export default function app (datastore, dicebots, room_dicebot) {
+  const app = express()
 
   if (process.env.NODE_ENV === 'production') {
     app.use(helmet({
@@ -29,16 +29,16 @@ export default function app(datastore, dicebots, room_dicebot) {
           defaultSrc: ["'self'", `${config.hostname}`, `ws://${config.hostname}`],
           imgSrc: ["'self'", '*'],
           styleSrc: ["'self'", 'fonts.googleapis.com'],
-          fontSrc: ["'self'", 'fonts.gstatic.com'],
-        },
-      },
+          fontSrc: ["'self'", 'fonts.gstatic.com']
+        }
+      }
     }))
   }
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({extended: true}));
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({extended: true}))
 
   app.get('/', (req, res) => {
-    res.sendFile(vue_app);
+    res.sendFile(vue_app)
   })
 
   app.get('/:room_id', (req, res) => {
@@ -60,17 +60,13 @@ export default function app(datastore, dicebots, room_dicebot) {
     })
   })
 
-  app.post('/api/rooms/new', (req, res) =>{
-    var room_id = generateId();
+  app.post('/api/rooms/new', (req, res) => {
+    var room_id = generateId()
     var room_name = req.param('name') || "デフォルト名"
     var room_password = req.param('password') || ""
     var dicebot_id = req.param('dicebot') || "dicebot"
 
-    console.log(room_name)
-    console.log(room_password)
-    console.log(dicebot_id)
-
-    if (room_password != '') {
+    if (room_password !== '') {
       var hash = passwordToHash(room_password)
       datastore.setPassword(room_id, hash)
     }
@@ -92,11 +88,9 @@ export default function app(datastore, dicebots, room_dicebot) {
     datastore.findRoom(room_id, (err, room) => {
       if (err) {
         res.status(500).send({ok: false, reason: "internal error"})
-      }
-      else if (room == null) {
+      } else if (room == null) {
         res.status(404).send({ok: false, reason: err.message})
-      }
-      else {
+      } else {
         let resp = {
           name: room.name,
           is_need_password: (room.password !== "")
@@ -106,16 +100,14 @@ export default function app(datastore, dicebots, room_dicebot) {
     })
   })
 
-
   if (process.env.NODE_ENV !== 'production') {
     const compiler = webpack(webpackConfig)
     app.use('/dist', webpackDevMiddleware(compiler))
-  }
-  else {
+  } else {
     app.use('/dist', express.static('dist'))
   }
 
-  app.use(express.static('public'));
+  app.use(express.static('public'))
 
   return app
 }
