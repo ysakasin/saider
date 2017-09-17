@@ -28,7 +28,8 @@ export default function socket(datastore, dicebots, room_dicebot) {
         console.log(err)
         if (authed) {
           socket.authed = true
-          console.log("authed!!!!!")
+          socket.room = room
+          socket.join(room)
         }
         else {
           socket.disconnect()
