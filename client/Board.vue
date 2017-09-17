@@ -1,5 +1,15 @@
 <template>
-  <div class="board-area" :style="style">
+  <div class="board-area">
+    <div>
+      <div class="zoom in has-ripple" v-on:click="zoomin">
+        <md-ink-ripple></md-ink-ripple>
+        <i class="material-icons">zoom_in</i>
+      </div>
+      <div class="zoom out has-ripple" v-on:click="zoomout">
+        <md-ink-ripple></md-ink-ripple>
+        <i class="material-icons">zoom_out</i>
+      </div>
+    </div>
     <svg
       id="board"
       :width="width * zoom"
@@ -20,11 +30,17 @@ import Grid from "./Grid.vue"
 import Piece from "./Piece.vue"
 
 const gridsize = 64
+const diff = 0.2
 
 export default {
   methods: {
-    zoomin() {
-      this.zoom += 0.5
+    zoomin () {
+      this.zoom += diff
+    },
+    zoomout () {
+      if (this.zoom - diff > 0) {
+        this.zoom -= diff
+      }
     },
     style (width, height) {
       return `width:${width}px;height:${height}px;`
@@ -59,7 +75,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .board-area {
   overflow: scroll;
   background-color: #f5f5f5;
@@ -72,5 +88,39 @@ svg {
   min-height: initial;
   background-color: #fff;
   margin: 64px;
+}
+
+.zoom {
+  flex: none;
+  position: fixed;
+  height: 60px;
+  width: 60px;
+  background: #00bcd4;
+  border-radius: 30px;
+  cursor: pointer;
+
+  &.in {
+    bottom: 6px;
+    left: 6px;
+  }
+
+  &.out {
+    bottom: 6px;
+    left: 72px;
+  }
+
+  .md-ink-ripple {
+    border-radius: 30px;
+  }
+
+  i {
+    user-select: none;
+    display: block;
+    width: 36px;
+    height: 36px;
+    font-size: 36px;
+    margin: 12px;
+    color: white;
+  }
 }
 </style>
