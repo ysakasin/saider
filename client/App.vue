@@ -4,6 +4,7 @@
       <md-toolbar class="main-header">
         <h1 class="md-title" style="flex: 1">{{ name }}</h1>
       </md-toolbar>
+      <MemoArea></MemoArea>
       <Board></Board>
     </div>
     <DiceArea class="dice-area"></DiceArea>
@@ -20,13 +21,15 @@ import AlertDisconnect from './AlertDisconnect.vue'
 import Board from './Board.vue'
 import DialogLogin from './DialogLogin.vue'
 import DiceArea from './DiceArea.vue'
+import MemoArea from './MemoArea.vue'
 
 export default {
   components: {
     AlertDisconnect,
     Board,
     DialogLogin,
-    DiceArea
+    DiceArea,
+    MemoArea
   },
   data () {
     return {
@@ -63,6 +66,10 @@ html, body {
   overflow-x: scroll;
 }
 
+.main-header {
+  color: #fff!important;
+}
+
 #room {
   height: 100%;
   display: flex;
@@ -76,6 +83,11 @@ html, body {
   flex-flow: column nowrap;
   overflow-y: scroll;
   overflow-x: scroll;
+}
+
+.md-theme-default.md-chip.md-color-memo {
+  margin-bottom: 3px;
+  background-color: #ddd;
 }
 
 .dice-area {
