@@ -1,9 +1,10 @@
-import {generateId, passwordToHash, loadConfig} from './helper'
+import {passwordToHash, loadConfig} from './helper'
 
 import express from 'express'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import path from 'path'
+import nanoid from 'nanoid'
 
 /* for dev */
 import webpackDevMiddleware from 'webpack-dev-middleware'
@@ -61,7 +62,7 @@ export default function app (datastore, room_dicebot) {
   })
 
   app.post('/api/rooms/new', (req, res) => {
-    var room_id = generateId()
+    var room_id = nanoid()
     var room_name = req.param('name') || "デフォルト名"
     var room_password = req.param('password') || ""
     var dicebot_id = req.param('dicebot') || "dicebot"
