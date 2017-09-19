@@ -42,17 +42,20 @@ export default function app (datastore, room_dicebot) {
   })
 
   app.get('/api/rooms', (req, res) => {
-    datastore.getRooms((room_names, passwords) => {
-      let rooms = []
-      for (var id in room_names) {
-        let room = {
-          id: id,
-          name: room_names[id],
-          has_password: Boolean(passwords[id])
-        }
-        rooms.push(room)
+    datastore.findAllRooms((err, rooms) => {
+      if (err) {
+        res.status(500).send({ok: false, reason: "internal error"})
+        return
       }
-      res.send(rooms)
+
+      const resp = rooms.map((room) => {
+        return {
+          id: room.id,
+          name: room.name,
+          has_password: Boolean(room.password)
+        }
+      })
+      res.send(resp)
     })
   })
 

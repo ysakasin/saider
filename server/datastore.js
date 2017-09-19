@@ -63,14 +63,15 @@ export default class DataStore {
   }
 
   /* room */
-  getRooms(callback) {
-    client.hgetall('room', function(err, rooms) {
-      client.hgetall('password', function(err, passwords) {
-        if (rooms == null) rooms = {};
-        if (passwords == null) passwords = {};
-        callback(rooms, passwords);
-      });
-    });
+
+  findAllRooms (callback) {
+    db.collection("room").find().toArray((err, rooms) => {
+      if (err) {
+        callback(err, null)
+      } else {
+        callback(null, rooms)
+      }
+    })
   }
 
   findRoom (room_id, callback) {
