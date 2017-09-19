@@ -1,4 +1,4 @@
-import {passwordToHash, loadConfig} from './helper'
+import {loadConfig} from './helper'
 
 import express from 'express'
 import helmet from 'helmet'
@@ -12,11 +12,6 @@ import webpack from 'webpack'
 import webpackConfig from '../config/webpack.config'
 
 let config = loadConfig()
-
-var dicebotList = {
-  'dicebot': '標準ダイスボット',
-  'cthulhu': 'クトゥルフ神話TRPG'
-}
 
 const vue_app = path.resolve(__dirname, '../index.html')
 
@@ -67,19 +62,7 @@ export default function app (datastore, room_dicebot) {
     var room_password = req.param('password') || ""
     var dicebot_id = req.param('dicebot') || "dicebot"
 
-    if (room_password !== '') {
-      var hash = passwordToHash(room_password)
-      datastore.setPassword(room_id, hash)
-    }
-
-    if (!(dicebot_id in dicebotList)) {
-      dicebot_id = 'dicebot'
-    }
-
-    room_dicebot[room_id] = dicebot_id
-    datastore.setDicebot(room_id, dicebot_id)
-    datastore.setRoom(room_id, room_name)
-    datastore.updateTime(room_id)
+    datastore.createRoom(room_id, room_name, dicebot_id, room_password)
 
     res.send({room_id: room_id})
   })

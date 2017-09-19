@@ -1,9 +1,13 @@
+import {MongoClient} from 'mongodb'
 import redis from 'redis';
 import url from 'url';
 import {passwordToHash} from './helper'
 let client;
+let db;
 
 const key = (target, id) => target + '.' + id;
+
+const mongo_url = "mongodb://localhost:27017/saider"
 
 export default class DataStore {
   constructor(config) {
@@ -17,38 +21,44 @@ export default class DataStore {
     else {
       client = redis.createClient(config.redis);
     }
+
+    MongoClient.connect(mongo_url, (err, _db) => {
+      if (err) throw err
+
+      db = _db
+    })
   }
 
   quit() {
+    db.close()
     client.quit();
   }
 
-  auth(room_id, passwd, callback) {
-    client.hexists('room', room_id, (err, is_exist) => {
+  createRoom (id, name, dicebot, password) {
+    const doc = {
+      id: id,
+      name: name,
+      dicebot: dicebot,
+      password: (password === "" ? "" : passwordToHash(password))
+    }
+    db.collection("room").insert(doc)
+  }
+
+  auth (id, password, callback) {
+    db.collection("room").findOne({id: id}, (err, room) => {
       if (err) {
         callback(err, null)
         return
-      }
-      else if (!is_exist) {
+      } else if (room == null) {
         callback(new Error("not found room"), null)
         return
       }
 
-      client.hget("password", room_id, (err, hashed_passwd) => {
-        if (err) {
-          callback(err, null)
-        }
-        else if (Boolean(hashed_passwd)) {
-          console.log(hashed_passwd)
-          console.log(passwd)
-          console.log(passwordToHash(passwd))
-          callback(null, passwordToHash(passwd) === hashed_passwd)
-        }
-        else {
-          console.log("nopass")
-          callback(null, true)
-        }
-      })
+      if (room.password === "") {
+        callback(null, true)
+      } else {
+        callback(null, passwordToHash(password) === room.password)
+      }
     })
   }
 
@@ -63,26 +73,15 @@ export default class DataStore {
     });
   }
 
-  findRoom(room_id, callback) {
-    client.hget('room', room_id, (err, name) => {
+  findRoom (room_id, callback) {
+    db.collection("room").findOne({id: room_id}, (err, room) => {
       if (err) {
         callback(err, null)
-      }
-      if (name == null) {
+      } else if (room == null) {
         callback(null, null)
-      }
-
-      client.hget('password', room_id, (err, password) => {
-        if (err) {
-          callback(err, null)
-        }
-        let room = {
-          id: room_id,
-          name: name,
-          password: (password == null ? "" : password)
-        }
+      } else {
         callback(null, room)
-      })
+      }
     })
   }
 
