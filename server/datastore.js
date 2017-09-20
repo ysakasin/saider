@@ -124,13 +124,23 @@ export default class DataStore {
     client.hset('dicebot', id, hash);
   }
 
-  /* result */
-  getAllResult(id, callback) {
-    client.lrange(key('result', id), 0, -1, callback);
+  /* DiceLog */
+  findAllDiceLogById (room_id, callback) {
+    db.collection("log").find({room_id: room_id}).toArray((err, logs) => {
+      if (err) {
+        callback(err, null)
+      } else {
+        callback(null, logs)
+      }
+    })
   }
 
-  setResult(id, json) {
-    client.rpush(key('result', id), json);
+  addDiceLog (room_id, log) {
+    const doc = {
+      room_id: room_id,
+      log: log
+    }
+    db.collection("log").insert(doc)
   }
 
   /* memo */

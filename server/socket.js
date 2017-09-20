@@ -30,6 +30,10 @@ export default function socket(datastore, room_dicebot) {
           socket.authed = true
           socket.room = room
           socket.join(room)
+
+          datastore.findAllDiceLogById(socket.room, (err, logs) => {
+            socket.emit("init_log", logs)
+          })
         }
         else {
           socket.disconnect()
@@ -101,6 +105,7 @@ export default function socket(datastore, room_dicebot) {
 
     socket.on('roll', (data) => {
       io.sockets.to(socket.room).emit('roll', data)
+      datastore.addDiceLog(socket.room, data.log)
     })
 
     socket.on('dicebot', function(dicebot_id) {

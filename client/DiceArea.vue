@@ -43,6 +43,9 @@ export default {
       if (data.from !== this.$socket.id || !data.secret) {
         this.push(data)
       }
+    },
+    init_log (logs) {
+      this.logs = logs.map((x) => x.log)
     }
   },
   mounted () {
