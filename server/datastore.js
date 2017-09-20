@@ -86,44 +86,6 @@ export default class DataStore {
     })
   }
 
-  setRoom(id, name) {
-    client.hset('room', id, name);
-  }
-
-  isExistRoom(id, callback) {
-    client.hexists('room', id, callback);
-  }
-
-  /* password */
-  getPassword(id, callback) {
-    client.hget('password', id, callback);
-  }
-
-  setPassword(id, hash) {
-    client.hset('password', id, hash);
-  }
-
-  isExistPassword(id, callback) {
-    client.hexists('password', id, callback);
-  }
-
-  /* dicebot */
-
-  getDicebot(id, callback) {
-    client.hget('dicebot', id, callback);
-  }
-
-  getAllDicebot(callback) {
-    client.hgetall('dicebot', function(err, dicebots) {
-      if (dicebots == null) dicebots = {};
-      callback(dicebots);
-    });
-  }
-
-  setDicebot(id, hash) {
-    client.hset('dicebot', id, hash);
-  }
-
   /* DiceLog */
   findAllDiceLogById (room_id, callback) {
     db.collection("log").find({room_id: room_id}).toArray((err, logs) => {
