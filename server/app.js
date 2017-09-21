@@ -52,6 +52,7 @@ export default function app (datastore, room_dicebot) {
         return {
           id: room.id,
           name: room.name,
+          dicebot: room.dicebot,
           has_password: Boolean(room.password)
         }
       })
@@ -80,6 +81,7 @@ export default function app (datastore, room_dicebot) {
       } else {
         let resp = {
           name: room.name,
+          dicebot: room.dicebot,
           is_need_password: (room.password !== "")
         }
         res.send({ok: true, room: resp})

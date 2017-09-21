@@ -7,7 +7,7 @@
       <MemoArea></MemoArea>
       <Board></Board>
     </div>
-    <DiceArea class="dice-area"></DiceArea>
+    <DiceArea class="dice-area" :dicebot="dicebot"></DiceArea>
     <DialogLogin ref="dialog-login"></DialogLogin>
     <AlertDisconnect></AlertDisconnect>
   </div>
@@ -34,6 +34,7 @@ export default {
   data () {
     return {
       name: "",
+      dicebot: "",
       password: ""
     }
   },
@@ -44,6 +45,7 @@ export default {
       .then((res) => {
         const room = res.data.room
         vue_this.name = room.name
+        vue_this.dicebot = room.dicebot
         if (room.is_need_password) {
           vue_this.$refs['dialog-login'].open()
         } else {

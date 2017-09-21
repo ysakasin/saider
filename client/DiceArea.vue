@@ -9,7 +9,7 @@
       </form>
     </div>
     <div class="room-infos">
-      <md-chip>Dicebot</md-chip>
+      <md-chip>{{ dicebot }}</md-chip>
       <md-chip><i class="mdi mdi-settings"></i></md-chip>
     </div>
     <div class="dice-log">
@@ -28,6 +28,9 @@ import VueToast from 'vue-toast'
 import 'vue-toast/dist/vue-toast.min.css'
 
 export default {
+  props: [
+    "dicebot"
+  ],
   data () {
     return {
       name: "ななしくん",

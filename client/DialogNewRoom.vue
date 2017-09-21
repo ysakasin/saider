@@ -19,8 +19,8 @@
       <md-input-container>
         <label for="dicebot">ダイスボット</label>
         <md-select name="dicebot" id="dicebot" v-model="dicebot">
-          <md-option value="dicebot">標準ダイスボット</md-option>
-          <md-option value="cthulhu">クトゥルフ神話TRPG</md-option>
+          <md-option value="DiceBot">標準ダイスボット</md-option>
+          <md-option v-for="d in dicebot_descs" :value="d.gameType">{{ d.gameName }}</md-option>
         </md-select>
       </md-input-container>
     </md-dialog-content>
@@ -34,11 +34,16 @@
 
 <script>
 import axios from 'axios'
+import {DiceBotLoader} from 'bcdice-js'
+
+const DiceBotDescs = DiceBotLoader.collectDiceBotDescriptions()
+  .map(([filename, gameType, gameName]) => ({ filename, gameType, gameName }));
 
 export default {
   data () {
     return {
-      dicebot: "dicebot",
+      dicebot: "DiceBot",
+      dicebot_descs: DiceBotDescs,
       room_name: "",
       is_lock: false,
       password: ""
