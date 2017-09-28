@@ -1,27 +1,11 @@
 import {MongoClient} from 'mongodb'
-import redis from 'redis';
-import url from 'url';
 import {passwordToHash} from './helper'
-let client;
-let db;
-
-const key = (target, id) => target + '.' + id;
+let db
 
 const mongo_url = "mongodb://localhost:27017/saider"
 
 export default class DataStore {
-  constructor(config) {
-    if (process.env.REDISTOGO_URL) {
-      // For Heroku
-      let rtg = url.parse(process.env.REDISTOGO_URL);
-      client = redis.createClient(rtg.port, rtg.hostname);
-
-      client.auth(rtg.auth.split(':')[1]);
-    }
-    else {
-      client = redis.createClient(config.redis);
-    }
-
+  constructor (config) {
     MongoClient.connect(mongo_url, (err, _db) => {
       if (err) throw err
 
@@ -29,9 +13,8 @@ export default class DataStore {
     })
   }
 
-  quit() {
+  quit () {
     db.close()
-    client.quit();
   }
 
   createRoom (id, name, dicebot, password) {
@@ -105,100 +88,16 @@ export default class DataStore {
     db.collection("log").insert(doc)
   }
 
-  /* memo */
-  getAllMemo(id, callback) {
-    client.hgetall(key('memo', id), callback);
-  }
-
-  createMemo(id, title, body, callback) {
-    client.hincrby('memo_id', id, 1, function(err, memo_id){
-      var data = {
-        memo_id: memo_id.toString(),
-        title: title,
-        body: body,
-      };
-
-      client.hset(key('memo', id), memo_id, JSON.stringify(data));
-      callback(data);
-    });
-  }
-
-  setMemo(id, memo_id, json) {
-    client.hset(key('memo', id), memo_id, json);
-  }
-
-  deleteMemo(id, memo_id) {
-    client.hdel(key('memo', id), memo_id);
-  }
-
-  /* map */
-  getMap(id, callback) {
-    client.hget('map', id, callback);
-  }
-
-  setMap(id, url) {
-    client.hset('map', id, url);
-  }
-
-  createPiece(id, url, x, y, callback) {
-    client.hincrby('piece_id', id, 1, (err, piece_id) => {
-      piece_id = 'piece-' + piece_id;
-      var data = {
-        piece_id: piece_id,
-        url: url,
-        x: x,
-        y: y,
-      };
-
-      client.hset(key('piece', id), piece_id, JSON.stringify(data));
-      callback(data);
-    });
-  }
-
-  updatePiece(id, piece_id, url, x, y) {
-    var data = {
-      piece_id: piece_id,
-      url: url,
-      x: x,
-      y: y,
-    };
-
-    client.hset(key('piece', id), piece_id, JSON.stringify(data));
-  }
-
-  getAllPiece(id, callback) {
-    client.hgetall(key('piece', id), callback);
-  }
-
-  deletePiece(id, piece_id) {
-    client.hdel(key('piece', id), piece_id);
-  }
-
-  deleteRoom(id) {
-    client.hdel('map', id);
-    client.del(key('memo', id));
-    client.hdel('memo_id', id);
-    client.del(key('result', id));
-    client.hdel('room', id);
-    client.hdel('password', id);
-    client.hdel('dicebot', id);
-    client.hdel('time', id);
-    client.hdel('piece_id', id);
-    client.del(key('piece', id));
-  }
-
-  /* time */
-
-  updateTime(id) {
-    const date = new Date;
-    const time = date.getTime();
-
-    client.hset('time', id, time);
-  }
-
-  getTimes(callback) {
-    client.hgetall('time', function(err, times) {
-      callback(times);
-    });
+  createOrUpdateMemo (data, callback) {
+    if (data._id == null) {
+      db.collection("memo").insertOne(data, (err, result) => {
+        if (err) throw err
+        data._id = result.insertedId
+        callback(data)
+      })
+    } else {
+      db.collection("memo").update({_id: data._id}, data)
+      callback(data)
+    }
   }
 }
