@@ -10,8 +10,7 @@
     "test": "npm run lint && npm run build",
     "build": "babel src -d lib",
     "build:webpack": "cross-env NODE_ENV=production webpack --config config/webpack.config.js --progress --hide-modules",
-    "lint": "eslint -c config/eslintrc.js --ext .js,.vue client server",
-    "cleanroom": "node scripts/clean.js"
+    "lint": "eslint -c config/eslintrc.js --ext .js,.vue client server"
   },
   "repository": {
     "type": "git",
@@ -40,7 +39,6 @@
     "mdi": "^2.0.46",
     "mongodb": "^2.2.31",
     "nanoid": "^0.2.1",
-    "redis": "^2.8.0",
     "socket.io": "1.5.1",
     "vue": "^2.3.3",
     "vue-material": "^0.7.4",
