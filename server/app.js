@@ -1,4 +1,4 @@
-import {loadConfig} from './helper'
+import config from './config'
 
 import express from 'express'
 import helmet from 'helmet'
@@ -11,8 +11,6 @@ import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpack from 'webpack'
 import webpackConfig from '../config/webpack.config'
 
-let config = loadConfig()
-
 const vue_app = path.resolve(__dirname, '../index.html')
 
 export default function app (datastore, room_dicebot) {
@@ -22,7 +20,7 @@ export default function app (datastore, room_dicebot) {
     app.use(helmet({
       contentSecurityPolicy: {
         directives: {
-          defaultSrc: ["'self'", `${config.hostname}`, `ws://${config.hostname}`],
+          defaultSrc: ["'self'", `${config.http.hostname}`, `ws://${config.http.hostname}`],
           imgSrc: ["'self'", '*'],
           styleSrc: ["'self'", 'fonts.googleapis.com'],
           fontSrc: ["'self'", 'fonts.gstatic.com']

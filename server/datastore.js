@@ -2,11 +2,9 @@ import {MongoClient, ObjectId} from 'mongodb'
 import {passwordToHash} from './helper'
 let db
 
-const mongo_url = "mongodb://localhost:27017/saider"
-
 export default class DataStore {
   constructor (config) {
-    MongoClient.connect(mongo_url, (err, _db) => {
+    MongoClient.connect(config.url, (err, _db) => {
       if (err) throw err
 
       db = _db

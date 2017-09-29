@@ -1,13 +1,11 @@
-import {loadConfig} from './helper'
+import config from './config'
 import DataStore from './datastore'
 
 import App from './app'
 import http from 'http'
 import Socket from './socket'
 
-let config = loadConfig()
-
-var datastore = new DataStore(config)
+var datastore = new DataStore(config.datastore)
 var room_dicebot = {}
 
 const app = App(datastore, room_dicebot)
@@ -16,6 +14,6 @@ const server = http.Server(app)
 
 socket.attach(server)
 
-server.listen(config.port, () => {
-  console.log(`listening on ${config.host}`)
+server.listen(config.http.port, () => {
+  console.log(`listening on ${config.http.host}:${config.http.port}`)
 })

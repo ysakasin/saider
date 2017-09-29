@@ -30,7 +30,7 @@ node_modules
 public/m.html
 public/i.html
 *.rdb
-config.json
+config/config.json
 dist
 
 test.js

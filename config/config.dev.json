@@ -1,0 +1,9 @@
+{
+  "http": {
+    "host": "localhost",
+    "port": 9000
+  },
+  "datastore": {
+    "url": "mongodb://localhost:27017/saider"
+  }
+}
