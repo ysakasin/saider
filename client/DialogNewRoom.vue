@@ -37,7 +37,7 @@ import axios from 'axios'
 import {DiceBotLoader} from 'bcdice-js'
 
 const DiceBotDescs = DiceBotLoader.collectDiceBotDescriptions()
-  .map(([filename, gameType, gameName]) => ({ filename, gameType, gameName }));
+  .map(([filename, gameType, gameName]) => ({ filename, gameType, gameName }))
 
 export default {
   data () {

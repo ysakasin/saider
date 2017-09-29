@@ -13,11 +13,9 @@
 const inRange = (p, min, max) => {
   if (p < min) {
     return min
-  }
-  else if (p > max) {
+  } else if (p > max) {
     return max
-  }
-  else {
+  } else {
     return p
   }
 }
@@ -25,27 +23,27 @@ const inRange = (p, min, max) => {
 export default {
   props: ["zoom", "cwidth", "cheight", "x", "y", "size"],
   methods: {
-    dummy(e) {
-      e.stopPropagation();
+    dummy (e) {
+      e.stopPropagation()
     },
-    onMouseDown(e) {
+    onMouseDown (e) {
       this.moving = true
     },
-    onMouseMove(e) {
+    onMouseMove (e) {
       if (this.moving === true) {
         this.x += e.movementX / this.zoom
         this.y += e.movementY / this.zoom
       }
     },
-    onMouseUp(e) {
+    onMouseUp (e) {
       if (this.moving === true) {
-        this.x = inRange(Math.floor((this.x + 32) / 64) * 64, 0, this.cwidth-64);
-        this.y = inRange(Math.floor((this.y + 32) / 64) * 64, 0, this.cheight-64);
+        this.x = inRange(Math.floor((this.x + 32) / 64) * 64, 0, this.cwidth - 64)
+        this.y = inRange(Math.floor((this.y + 32) / 64) * 64, 0, this.cheight - 64)
         this.moving = false
       }
     }
   },
-  data() {
+  data () {
     return {
       moving: false
     }
