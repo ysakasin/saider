@@ -42,7 +42,7 @@ export default {
     },
     update () {
       const data = {
-        id: this.id,
+        _id: this.id,
         title: this.title,
         body: this.body
       }

@@ -1,4 +1,4 @@
-import {MongoClient} from 'mongodb'
+import {MongoClient, ObjectId} from 'mongodb'
 import {passwordToHash} from './helper'
 let db
 
@@ -88,6 +88,16 @@ export default class DataStore {
     db.collection("log").insert(doc)
   }
 
+  findAllMemos (room_id, callback) {
+    db.collection("memo").find({room_id: room_id}).toArray((err, memos) => {
+      if (err) {
+        callback(err, null)
+      } else {
+        callback(null, memos)
+      }
+    })
+  }
+
   createOrUpdateMemo (data, callback) {
     if (data._id == null) {
       db.collection("memo").insertOne(data, (err, result) => {
@@ -96,6 +106,7 @@ export default class DataStore {
         callback(data)
       })
     } else {
+      data._id = new ObjectId(data._id)
       db.collection("memo").update({_id: data._id}, data)
       callback(data)
     }

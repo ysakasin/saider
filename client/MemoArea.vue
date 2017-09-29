@@ -5,7 +5,11 @@
       <i class="material-icons">note_add</i>
     </div>
     <div>
-      <md-chip v-for="memo in memoes">{{ memo.title }}</md-chip>
+      <span v-for="memo in memoes">
+        <span v-on:click="update_memo(memo)">
+          <md-chip>{{ memo.title }}</md-chip>
+        </span>
+      </span>
     </div>
     <DialogMemoEdit ref="memo-editor"></DialogMemoEdit>
   </div>
@@ -13,8 +17,6 @@
 
 <script>
 import DialogMemoEdit from "./DialogMemoEdit.vue"
-
-let hoge = []
 
 export default {
   components: {
@@ -26,23 +28,32 @@ export default {
     }
   },
   sockets: {
+    init_memo (memoes) {
+      this.memoes = memoes
+    },
     update_memo (data) {
-      console.log(data)
       const memo = {
+        _id: data._id,
         title: data.title,
         body: data.body
       }
-      this.push(memo)
-      // console.log(this.memoes[data._id])
+      const index = this.memoes.findIndex((col) => { return col._id === data._id })
+      if (index >= 0) {
+        this.memoes.splice(index, 1, memo)
+      } else {
+        this.push(memo)
+      }
     }
   },
   methods: {
     create_memo () {
       this.$refs["memo-editor"].create()
     },
+    update_memo (memo) {
+      this.$refs["memo-editor"].edit(memo._id, memo.title, memo.body)
+    },
     push (data) {
       this.memoes.push(data)
-      console.log(this.memoes)
     }
   }
 }

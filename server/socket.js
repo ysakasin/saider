@@ -26,6 +26,10 @@ export default function socket (datastore, room_dicebot) {
             if (err) throw err
             socket.emit("init_log", logs)
           })
+          datastore.findAllMemos(socket.room, (err, memos) => {
+            if (err) throw err
+            socket.emit("init_memo", memos)
+          })
         } else {
           socket.disconnect()
         }
@@ -38,7 +42,7 @@ export default function socket (datastore, room_dicebot) {
     })
 
     socket.on('update_memo', (request) => {
-      request.room = socket.room
+      request.room_id = socket.room
       datastore.createOrUpdateMemo(request, (resp) => {
         io.sockets.to(socket.room).emit('update_memo', resp)
       })
