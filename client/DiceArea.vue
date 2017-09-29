@@ -24,6 +24,7 @@
 <script>
 import BCDice from 'bcdice-js'
 import VueToast from 'vue-toast'
+import enqueue_dice from './dice'
 
 import 'vue-toast/dist/vue-toast.min.css'
 
@@ -101,7 +102,7 @@ export default {
           return {d: x[1], numbers: [x[0]]}
         })
         let result = data.log.split("＞").pop().trim()
-        let v = new DiceRoll({dices: dice, result: result})
+        enqueue_dice({dices: dice, result: result})
       }
       this.logs.push(data.log)
     }
