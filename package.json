@@ -1,45 +1,29 @@
 {
-  "name": "Saider",
-  "version": "0.6.0",
+  "name": "saider",
+  "version": "0.1.0",
   "private": true,
-  "description": "A interactive dice bot",
-  "main": "index.js",
   "scripts": {
-    "start": "npm run build && NODE_ENV=production node .",
-    "postinstall": "babel src -d lib",
-    "dev": "npm run build && node .",
-    "test": "npm run lint && npm run build",
-    "build": "babel src -d lib",
-    "lint": "eslint src",
-    "cleanroom": "node scripts/clean.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/NKMR6194/saider.git"
-  },
-  "author": "SAKATA Sinji",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/NKMR6194/saider/issues"
-  },
-  "homepage": "https://github.com/NKMR6194/saider",
-  "engines": {
-    "node": "^6.9.1"
-  },
-  "devDependencies": {
-    "eslint": "3.8.1"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "babel-cli": "6.18.0",
-    "babel-plugin-add-module-exports": "0.2.1",
-    "babel-preset-es2015-node6": "0.3.0",
-    "body-parser": "1.15.2",
-    "common-tags": "1.4.0",
-    "ect": "0.5.9",
-    "escape-html": "1.0.3",
-    "express": "4.14.0",
-    "helmet": "3.1.0",
-    "redis": "2.6.2",
-    "socket.io": "1.5.1"
+    "vue": "^2.5.17",
+    "vue-class-component": "^6.0.0",
+    "vue-property-decorator": "^7.0.0",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-eslint": "^3.1.1",
+    "@vue/cli-plugin-typescript": "^3.1.1",
+    "@vue/cli-service": "^3.1.1",
+    "@vue/eslint-config-prettier": "^4.0.0",
+    "@vue/eslint-config-typescript": "^3.1.0",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0-0",
+    "typescript": "^3.0.0",
+    "vue-template-compiler": "^2.5.17"
   }
 }
